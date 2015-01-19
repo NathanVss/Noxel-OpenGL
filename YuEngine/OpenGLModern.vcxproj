@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\YuEngine\Camera2D.cpp" />
+    <ClCompile Include="..\YuEngine\Container.cpp" />
+    <ClCompile Include="..\YuEngine\DebugOverlay.cpp" />
+    <ClCompile Include="..\YuEngine\FontRenderer.cpp" />
+    <ClCompile Include="..\YuEngine\FpsCounter.cpp" />
+    <ClCompile Include="..\YuEngine\GameRenderer.cpp" />
+    <ClCompile Include="..\YuEngine\Input.cpp" />
+    <ClCompile Include="..\YuEngine\Object.cpp" />
+    <ClCompile Include="..\YuEngine\OpenGlScene.cpp" />
+    <ClCompile Include="..\YuEngine\Perlin2D.cpp" />
+    <ClCompile Include="..\YuEngine\Renderable.cpp" />
+    <ClCompile Include="..\YuEngine\Shader.cpp" />
+    <ClCompile Include="..\YuEngine\Spritesheet.cpp" />
+    <ClCompile Include="..\YuEngine\SpritesheetsManager.cpp" />
+    <ClCompile Include="..\YuEngine\Texture.cpp" />
+    <ClCompile Include="..\YuEngine\Utils.cpp" />
+    <ClCompile Include="..\YuEngine\YuBoudingbox.cpp" />
+    <ClCompile Include="..\YuEngine\YuWindow.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\YuEngine\Camera2D.h" />
+    <ClInclude Include="..\YuEngine\Container.h" />
+    <ClInclude Include="..\YuEngine\DebugOverlay.h" />
+    <ClInclude Include="..\YuEngine\Errors.h" />
+    <ClInclude Include="..\YuEngine\FontRenderer.h" />
+    <ClInclude Include="..\YuEngine\FpsCounter.h" />
+    <ClInclude Include="..\YuEngine\GameRenderer.h" />
+    <ClInclude Include="..\YuEngine\Glyph.h" />
+    <ClInclude Include="..\YuEngine\Input.h" />
+    <ClInclude Include="..\YuEngine\Object.h" />
+    <ClInclude Include="..\YuEngine\OpenGlScene.h" />
+    <ClInclude Include="..\YuEngine\Perlin2D.h" />
+    <ClInclude Include="..\YuEngine\Renderable.h" />
+    <ClInclude Include="..\YuEngine\Shader.h" />
+    <ClInclude Include="..\YuEngine\Spritesheet.h" />
+    <ClInclude Include="..\YuEngine\SpritesheetsManager.h" />
+    <ClInclude Include="..\YuEngine\Texture.h" />
+    <ClInclude Include="..\YuEngine\Utils.h" />
+    <ClInclude Include="..\YuEngine\Vertex.h" />
+    <ClInclude Include="..\YuEngine\YuBoudingbox.h" />
+    <ClInclude Include="..\YuEngine\YuWindow.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F51A3D27-D677-4893-8404-E8DCCB5E3924}</ProjectGuid>
+    <RootNamespace>OpenGLModern</RootNamespace>
+    <ProjectName>YuEngine</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(SolutionDir)/;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Nathan\Documents\Visual Studio 2012\Projects\OpenGLModern\Dependecies\SDL2_image-2.0.0\lib\x86;C:\Users\Nathan\Documents\Visual Studio 2012\Projects\OpenGLModern\Dependecies\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>C:\Users\Nathan\Documents\Visual Studio 2012\Projects\OpenGLModern;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Nathan\Documents\Visual Studio 2012\Projects\OpenGLModern\Dependecies\SDL2_image-2.0.0\lib\x86;C:\Users\Nathan\Documents\Visual Studio 2012\Projects\OpenGLModern\Dependecies\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;glew32s.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;glew32s.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

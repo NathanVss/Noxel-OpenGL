@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "YuEngine", "YuEngine\OpenGLModern.vcxproj", "{F51A3D27-D677-4893-8404-E8DCCB5E3924}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MyOpenGL", "MyOpenGL\MyOpenGL.vcxproj", "{30C4A6B2-C109-4DB3-A0E1-74BC078B20A9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F51A3D27-D677-4893-8404-E8DCCB5E3924}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F51A3D27-D677-4893-8404-E8DCCB5E3924}.Debug|Win32.Build.0 = Debug|Win32
+		{F51A3D27-D677-4893-8404-E8DCCB5E3924}.Release|Win32.ActiveCfg = Release|Win32
+		{F51A3D27-D677-4893-8404-E8DCCB5E3924}.Release|Win32.Build.0 = Release|Win32
+		{30C4A6B2-C109-4DB3-A0E1-74BC078B20A9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{30C4A6B2-C109-4DB3-A0E1-74BC078B20A9}.Debug|Win32.Build.0 = Debug|Win32
+		{30C4A6B2-C109-4DB3-A0E1-74BC078B20A9}.Release|Win32.ActiveCfg = Release|Win32
+		{30C4A6B2-C109-4DB3-A0E1-74BC078B20A9}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
