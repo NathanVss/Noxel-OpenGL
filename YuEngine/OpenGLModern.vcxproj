@@ -29,6 +29,7 @@
     <ClCompile Include="..\YuEngine\Utils.cpp" />
     <ClCompile Include="..\YuEngine\YuBoudingbox.cpp" />
     <ClCompile Include="..\YuEngine\YuWindow.cpp" />
+    <ClCompile Include="DDAHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\YuEngine\Camera2D.h" />
@@ -52,6 +53,7 @@
     <ClInclude Include="..\YuEngine\Vertex.h" />
     <ClInclude Include="..\YuEngine\YuBoudingbox.h" />
     <ClInclude Include="..\YuEngine\YuWindow.h" />
+    <ClInclude Include="DDAHelper.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F51A3D27-D677-4893-8404-E8DCCB5E3924}</ProjectGuid>

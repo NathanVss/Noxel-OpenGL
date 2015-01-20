@@ -1,22 +1,24 @@
 #pragma once
 
-#include <YuEngine\Object.h>
+#include "Entity.h"
 #include <YuEngine\YuBoudingbox.h>
 
-class Player: public YuEngine::Object
+class Player: public Entity
 {
 public:
-	Player(void) {};
-	Player(float _x, float _y);
+	Player(void);
 	~Player(void);
 	void teleport(float _x, float _y);
 	void update();
 	void render();
+
+	
 private:
-	float x;
-	float y;
-	float width;
-	float height;
+	float speedX;
+	float jumpHeight;
+
+	bool jumping;
+
 	YuEngine::YuBoudingbox boudingBox;
 };
 

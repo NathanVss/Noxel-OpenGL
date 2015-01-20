@@ -15,6 +15,8 @@
 #include "LightManager.h"
 #include "PixelsMap.h"
 #include "LightSun.h"
+#include "Player.h"
+#include <YuEngine\DDAHelper.h>
 
 //using namespace YuEngine;
 
@@ -47,12 +49,17 @@ void MainScene::loop() {
 	LightManager lightManager;
 	lightManager.setMyContainer(container);
 
+	Player player;
+	player.setContainer(container);
+	player.teleport(Block::size * 2, Block::size * 64);
+
 	world->init();
 	world->generate();
 	int cx = 0;
 	int cy = 0;
 
 	LightSun lightSun;
+
 
 	lightManager.addLightSun(&lightSun);
 	container->getCamera()->setPosition(glm::vec2(0,80*Block::size)); 
@@ -61,7 +68,7 @@ void MainScene::loop() {
 
 		lightSun.setSeconds(lightSun.getSeconds() + 100);
 		//lightSun.setSeconds(3600*14);
-		std::cout << "Il est : " << lightSun.getSeconds() / 3600 << "h" << std::endl;
+		//std::cout << "Il est : " << lightSun.getSeconds() / 3600 << "h" << std::endl;
 
 		cx++;
 		cy++;
@@ -72,6 +79,8 @@ void MainScene::loop() {
 		fpsCounter.update();
 		world->update();
 		lightManager.update();
+		player.update();
+		container->getCamera()->setPosition(glm::vec2(player.getX(), player.getY()));
 		
 		gameRenderer->begin();
 
@@ -89,6 +98,7 @@ void MainScene::loop() {
 		}
 		container->getGameRenderer()->addGlyph(0, 0, 10,10, 2.0f ,1.0f,  1.0f, 1.0f, 1.0f, spritesheetsManager->getFontSpritesheet(), 0,1);
 		world->render();
+		player.render();
 
 		debugOverlay->addDebugString(std::string("Memory Usage : ") + YuEngine::Utils::getMemoryUsage() + std::string("Mo"));
 		debugOverlay->addDebugString(std::string("FPS : ") + fpsCounter.getLastFps());

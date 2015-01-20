@@ -1,8 +1,8 @@
-﻿La génération a démarré 19/01/2015 23:58:53.
+﻿La génération a démarré 20/01/2015 09:18:32.
      1>Projet "C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\YuEngine\OpenGLModern.vcxproj" sur le nœud 2 (Build cible(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W0 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\YuEngine\GameRenderer.cpp
-         GameRenderer.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W0 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt DDAHelper.cpp
+         DDAHelper.cpp
        Lib:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\Lib.exe /OUT:"C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Debug\YuEngine.lib" /NOLOGO Debug\Camera2D.obj
          Debug\Container.obj
@@ -22,9 +22,10 @@
          Debug\Utils.obj
          Debug\YuBoudingbox.obj
          Debug\YuWindow.obj
+         Debug\DDAHelper.obj
          OpenGLModern.vcxproj -> C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Debug\YuEngine.lib
      1>Génération du projet "C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\YuEngine\OpenGLModern.vcxproj" terminée (Build cible(s)).
 
 La génération a réussi.
 
-Temps écoulé 00:00:00.66
+Temps écoulé 00:00:00.13

@@ -18,6 +18,7 @@ public:
 	bool getKeyQ() { return this->keys[SDL_SCANCODE_A]; }
 	bool getKeyD() { return this->keys[SDL_SCANCODE_D]; }
 	bool getKeyE() { return this->keys[SDL_SCANCODE_E]; }
+	bool getKeySpace() { return this->keys[SDL_SCANCODE_SPACE]; }
 	int getMouseX() { return this->mouseX; }
 	int getMouseY() { return this->mouseY; }
 	int getRelMouseX() { return this->mouseRelX; } 
