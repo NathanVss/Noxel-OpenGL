@@ -4,16 +4,18 @@
 #include "Block.h"
 #include <YuEngine\SpritesheetsManager.h>
 #include <YuEngine\Input.h>
+#include "Container.h"
 
 Player::Player(): Entity(){
 	width = Block::size;
 	height = Block::size;
-	speedX = Block::size * 2;
+	//speedX = Block::size * 1;
+	speedX = 20;
 	jumpHeight = Block::size * 2;
 	jumping = false;
 	YuEngine::YuBoudingbox _boudingBox(x, y, width, height);
 	_boudingBox.setContainer(container);
-	boudingBox = _boudingBox;
+	boundingBox = _boudingBox;
 }
 
 void Player::teleport(float _x, float _y) {
@@ -23,11 +25,11 @@ void Player::teleport(float _x, float _y) {
 
 void Player::render() {
 
-	container->getGameRenderer()->addGlyph(x, y, width, height, 16.0f, 1.0f, 1.0f, 1.0f, 1.0f, container->getSpritesheetsManager()->getBlocksSpritesheet(), 0,0);
+	myContainer->getGameRenderer()->addGlyph(x, y, width, height, 16.0f, 1.0f, 1.0f, 1.0f, 1.0f, myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), 1,0);
 }
 
 void Player::update() {
-	YuEngine::Input* input = this->container->getInput();
+	YuEngine::Input* input = myContainer->getInput();
 
 	velocityX = 0;
 	velocityY = 0;
@@ -53,12 +55,13 @@ void Player::update() {
 
 	float destX = x + velocityX;
 	float destY = y + velocityY;
-	std::cout << "CurPos [" << x << ";" << y << "]" << std::endl;
-	std::cout << "DestPos [" << destX << ";" << destY << "]" << std::endl;
+	//std::cout << "CurPos [" << x << ";" << y << "]" << std::endl;
+	//std::cout << "DestPos [" << destX << ";" << destY << "]" << std::endl;
 
-	boudingBox.changePos(x, y);
 
 	checkCollisions(destX, destY);
+	boundingBox.changePos(x, y);
+
 }
 
 Player::~Player(void)

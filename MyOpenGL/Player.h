@@ -19,6 +19,5 @@ private:
 
 	bool jumping;
 
-	YuEngine::YuBoudingbox boudingBox;
 };
 

@@ -2,6 +2,8 @@
 #include "Block.h"
 #include <YuEngine\DDAHelper.h>
 #include <vector>
+#include "World.h"
+#include "Container.h"
 
 Entity::Entity(void){
 	x = 0;
@@ -34,6 +36,25 @@ void Entity::checkCollisions(float destX, float destY) {
 	bool idleMov = false;
 
 	bool canPass = false;
+
+
+	std::vector<YuEngine::coords> traj;
+	YuEngine::DDAHelper trajHelper(x, y, destX, destY);
+	YuEngine::coords trajCoords;
+	trajCoords.x = x;
+	trajCoords.y = y;
+	while(true) {
+
+		YuEngine::coords curCoords;
+		curCoords = trajCoords;
+		traj.push_back(curCoords);
+		if((trajCoords.x == destX && trajCoords.y == destY)) {
+			break;
+		}
+		trajCoords = trajHelper.getNextCoords();
+	}
+
+
 	while(canPass == false) {
 		verticalToTopMov = false;
 		verticalToBottomMov = false;
@@ -99,8 +120,8 @@ void Entity::checkCollisions(float destX, float destY) {
 	int buY = floor(y / Block::size);
 	int destBuX = floor((destX / Block::size));
 	int destBuY = floor(destY / Block::size);
-	std::cout << "BlockUnit [" << buX << ";" << buY << "]" << std::endl;
-	std::cout << "BlockUnit Dest [" << destBuX << ";" << destBuY << "]" << std::endl;
+	//std::cout << "BlockUnit [" << buX << ";" << buY << "]" << std::endl;
+	//std::cout << "BlockUnit Dest [" << destBuX << ";" << destBuY << "]" << std::endl;
 
 	YuEngine::DDAHelper ddaHelper(buX, buY, destBuX, destBuY);
 	YuEngine::coords coords;
@@ -109,11 +130,180 @@ void Entity::checkCollisions(float destX, float destY) {
 
 	std::vector<Block*> blocksToCheck;
 
-	while(!(coords.x == destBuX && coords.y == destBuY)) {
+	bool first = true;
+	while(true) {
+		//std::cout << "[" << coords.x << ";" << coords.y << "]" << std::endl;
+		std::vector<Block*> curBlocks;
+
+		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size, coords.y * Block::size));
+		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size, coords.y * Block::size + 1 *Block::size));
+		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size, coords.y * Block::size - 1 *Block::size));
+
+		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size - 1 * Block::size, coords.y*Block::size));
+		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 1 * Block::size, coords.y*Block::size));
+		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size - 1 * Block::size, coords.y*Block::size + 1 *Block::size));
+		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size - 1 * Block::size, coords.y*Block::size - 1 *Block::size));
+		
+		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 1 * Block::size, coords.y*Block::size + 1 *Block::size));
+		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 1 * Block::size, coords.y*Block::size - 1 *Block::size));
+
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 1 * Block::size, coords.y * Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 1 * Block::size, coords.y + 1 *Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 1 * Block::size, coords.y - 1 *Block::size));
+
+		for(int i = 0; i < curBlocks.size(); i++) {
+			if(curBlocks[i] && std::find(blocksToCheck.begin(), blocksToCheck.end(), curBlocks[i]) == blocksToCheck.end()) {
+				blocksToCheck.push_back(curBlocks[i]);
+			}
+		}
+		if((coords.x == destBuX && coords.y == destBuY)) {
+
+			break;
+		}
 		coords = ddaHelper.getNextCoords();
-		std::cout << "[" << coords.x << ";" << coords.y << "]" << std::endl;
+	}
+	YuEngine::Color c;
+	c.r = 255;
+	c.g = 255;
+	c.b = 255;
+	c.a = 255;
+
+	collideOnRight = false;
+	collideOnTop = false;
+	collideOnBottom = false;
+	collideOnLeft = false;
+	collideOnTopLeft = false;
+	collideOnTopRight = false;
+	collideOnBottomLeft = false;
+	collideOnBottomRight = false;
+
+	for(int j = 0; j < traj.size(); j++) {
+
+		for(int i = 0; i < blocksToCheck.size(); i++) {
+			blocksToCheck[i]->setLightIndice(c);
+			if(!(blocksToCheck[i]->getHasBoudingbox())) {
+				continue;
+			}
+		
+			Block* CurBlock = blocksToCheck[i];
+			YuEngine::YuBoudingbox CurBoundingBox = CurBlock->getBoundingbox();
+
+			/* 
+			[ ME ]
+			[ BLOCK ]
+			*/
+			if(boundingBox.doesCollideTopOf(CurBoundingBox)) {
+				this->collideOnBottom = true;
+				//std::cout << "BOTTOM" << std::endl;
+			}
+
+			/*
+			[ BLOCK ]
+			[ ME ]
+			*/
+			if(boundingBox.doesCollideBottomOf(CurBoundingBox)) {
+				this->collideOnTop = true;
+				//std::cout << "TOP" << std::endl;
+			}
+
+			/*
+			[ BLOCK ][ ME ]
+			*/
+			if(boundingBox.doesCollideRightOf(CurBoundingBox)) {
+				this->collideOnLeft = true;
+						
+				//std::cout << "LEFT" << std::endl;
+			}
+
+			/*
+			[ ME ][ BLOCK ]
+			*/
+			if(boundingBox.doesCollideLeftOf(CurBoundingBox)) {
+				this->collideOnRight = true;
+				//std::cout << "RIGHT" << std::endl;	
+			}
+
+			/*
+			[ ME ] <-
+					[ BLOCK ]
+			*/
+			if(boundingBox.doesCollideTopLeftOf(CurBoundingBox)) {
+				this->collideOnBottomRight = true;
+			}
+
+			/*
+						[ ME ] <-
+			[ BLOCK ]
+			*/
+			if(boundingBox.doesCollideTopRightOf(CurBoundingBox)) {
+				this->collideOnBottomLeft = true;
+			}
+
+			/*
+					[ BLOCK ]
+			[ ME ] <-
+			*/
+			if(boundingBox.doesCollideBottomLeftOf(CurBoundingBox)) {
+				this->collideOnTopRight = true;
+			}
+					
+			/*
+			[ BLOCK ]
+						[ ME ] <-
+			*/
+			if(boundingBox.doesCollideBottomRightOf(CurBoundingBox)) {
+				this->collideOnTopLeft = true;
+			}
+
+
+		}
+
+
+		if(transvToLeftMov && this->collideOnLeft){
+			this->x = traj[j].x;
+			this->y = traj[j].y;
+			return;
+		}
+		if(transvToRightMov && this->collideOnRight){
+			this->x = traj[j].x;
+			this->y = traj[j].y;
+			return;
+		}
+		if(verticalToBottomMov && this->collideOnBottom) {
+			this->x = traj[j].x;
+			this->y = traj[j].y;
+			return;
+		}
+		if(verticalToTopMov && this->collideOnTop) {
+			this->x = traj[j].x;
+			this->y = traj[j].y;
+			return;
+		}
+		if(diagToTopLeftMov && (this->collideOnLeft || this->collideOnTop || this->collideOnTopLeft)) {
+			this->x = traj[j].x;
+			this->y = traj[j].y;
+			return;
+		}
+		if(diagToTopRightMov && (this->collideOnRight || this->collideOnTop || this->collideOnTopRight)) {
+			this->x = traj[j].x;
+			this->y = traj[j].y;
+			return;
+		}
+		if(diagToBottomLeftMov && (this->collideOnLeft || this->collideOnBottom || this->collideOnBottomLeft)) {
+			this->x = traj[j].x;
+			this->y = traj[j].y;
+			return;
+		}
+		if(diagToBottomRightMov && (this->collideOnRight || this->collideOnBottom || this->collideOnBottomRight)) {
+			this->x = traj[j].x;
+			this->y = traj[j].y;
+			return;
+		}
 
 	}
+
+	this->x = traj[traj.size()-1].x;
+	this->y = traj[traj.size()-1].y;
 
 }
 

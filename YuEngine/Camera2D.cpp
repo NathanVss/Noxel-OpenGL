@@ -56,18 +56,18 @@ void Camera2D::update() {
 
 	Input* iInput = this->container->getInput();
 
-	if(iInput->getKeyZ()) {
-		this->setPosition(this->position + glm::vec2(0.0f, cameraSpeed));
-	}
-	if(iInput->getKeyS()) {
-		this->setPosition(this->position + glm::vec2(0.0f, -cameraSpeed));
-	}
-	if(iInput->getKeyQ()) {
-		this->setPosition(this->position + glm::vec2(-cameraSpeed, 0.0f));
-	}
-	if(iInput->getKeyD()) {
-		this->setPosition(this->position + glm::vec2(cameraSpeed, 0.0f));
-	}
+	//if(iInput->getKeyZ()) {
+	//	this->setPosition(this->position + glm::vec2(0.0f, cameraSpeed));
+	//}
+	//if(iInput->getKeyS()) {
+	//	this->setPosition(this->position + glm::vec2(0.0f, -cameraSpeed));
+	//}
+	//if(iInput->getKeyQ()) {
+	//	this->setPosition(this->position + glm::vec2(-cameraSpeed, 0.0f));
+	//}
+	//if(iInput->getKeyD()) {
+	//	this->setPosition(this->position + glm::vec2(cameraSpeed, 0.0f));
+	//}
 	if(iInput->getKeyA()) {
 		this->setScale(this->scale + scaleSpeed);
 	}	

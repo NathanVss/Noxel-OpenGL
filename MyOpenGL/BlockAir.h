@@ -11,7 +11,7 @@ public:
 		transparent = true;
 		textX = 2;
 		textY = 0;
-	
+		hasBoundingbox = false;
 	};
 	~BlockAir(void) {
 	};

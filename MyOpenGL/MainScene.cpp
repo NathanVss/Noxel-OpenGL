@@ -17,10 +17,12 @@
 #include "LightSun.h"
 #include "Player.h"
 #include <YuEngine\DDAHelper.h>
-
+#include <YuEngine\Vertex.h>
 //using namespace YuEngine;
 
 MainScene::MainScene() : YuEngine::OpenGlScene(1280,720, "YuEngine Infdev") {
+	frameRate = ( 1000 / 60 );
+	
 	container = new Container;
 	init(container);
 	loop();
@@ -50,13 +52,15 @@ void MainScene::loop() {
 	lightManager.setMyContainer(container);
 
 	Player player;
-	player.setContainer(container);
-	player.teleport(Block::size * 2, Block::size * 64);
+	player.setMyContainer(container);
+	player.teleport(Block::size * 2, Block::size * 80);
 
 	world->init();
 	world->generate();
 	int cx = 0;
 	int cy = 0;
+
+	//Block* b = world->getBlock(Block::size * 3, Block::size * 64);
 
 	LightSun lightSun;
 
@@ -66,22 +70,28 @@ void MainScene::loop() {
 	while(!mustFinish) {
 		beginIteration();
 
-		lightSun.setSeconds(lightSun.getSeconds() + 100);
-		//lightSun.setSeconds(3600*14);
+		//lightSun.setSeconds(lightSun.getSeconds() + 100);
+		lightSun.setSeconds(3600*16);
 		//std::cout << "Il est : " << lightSun.getSeconds() / 3600 << "h" << std::endl;
 
 		cx++;
 		cy++;
 
 		container->getInput()->update();
-		container->getCamera()->update();
 		debugOverlay->update();
 		fpsCounter.update();
 		world->update();
+
 		lightManager.update();
+
+
 		player.update();
+
+		//std::cout << "player : [" <<  player.getX() << ";" << player.getY() << std::endl;
 		container->getCamera()->setPosition(glm::vec2(player.getX(), player.getY()));
-		
+		container->getCamera()->update();
+
+
 		gameRenderer->begin();
 
 		//PixelsMap px(1280, 720);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Object.h"
+#include <YuEngine\YuBoudingbox.h>
 
 class Entity: public Object
 {
@@ -35,6 +36,8 @@ protected:
 
 	float width;
 	float height;
+
+	YuEngine::YuBoudingbox boundingBox;
 
 };
 

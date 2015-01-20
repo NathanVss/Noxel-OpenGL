@@ -19,6 +19,9 @@ public:
 	Block*** getBlocks() {
 		return blocks;
 	}
+	Block* getBlock(int x, int y) {
+		return blocks[x][y];
+	}
 
 	static int width;
 	static int height;

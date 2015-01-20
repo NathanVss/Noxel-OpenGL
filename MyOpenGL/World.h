@@ -27,6 +27,7 @@ public:
 	void render();
 	void update();
 	void setBlock(Block* block);
+	Block* getBlock(float x, float y);
 	std::vector<Chunk*>* getActiveChunks() {
 		return &activeChunks;
 	}

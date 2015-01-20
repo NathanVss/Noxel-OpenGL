@@ -9,7 +9,7 @@ public:
 		textX = 1;
 		textY = 0;
 		transparent = false;
-
+		hasBoundingbox = true;
 	};
 	~BlockDirt(void);
 };

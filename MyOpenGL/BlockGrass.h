@@ -11,6 +11,7 @@ public:
 		textX = 0;
 		textY = 0;
 		transparent = false;
+		hasBoundingbox = true;
 	};
 	~BlockGrass(void) {
 

@@ -81,6 +81,26 @@ void World::init() {
 
 }
 
+Block* World::getBlock(float x, float y) {
+
+	for(int i = 0; i < chunks.size(); i++) {
+		if(chunks[i]->getX() + Chunk::width*Block::size > x && 
+			x >= chunks[i]->getX() &&
+			y >= chunks[i]->getY() &&
+			y < chunks[i]->getY() + Chunk::height*Block::size) {
+
+				float relX = x - chunks[i]->getX();
+				float relY = y - chunks[i]->getY();
+				relX /= Block::size;
+				relY /= Block::size;
+				return chunks[i]->getBlock(relX, relY);
+
+		}
+	}
+	return false;
+
+}
+
 void World::setBlock(Block* block) {
 
 	float blockX = block->getX();
