@@ -10,7 +10,7 @@ Player::Player(): Entity(){
 	width = Block::size;
 	height = Block::size;
 	//speedX = Block::size * 1;
-	speedX = 20;
+	speedX = 1;
 	jumpHeight = Block::size * 2;
 	jumping = false;
 	YuEngine::YuBoudingbox _boudingBox(x, y, width, height);
@@ -26,6 +26,9 @@ void Player::teleport(float _x, float _y) {
 void Player::render() {
 
 	myContainer->getGameRenderer()->addGlyph(x, y, width, height, 16.0f, 1.0f, 1.0f, 1.0f, 1.0f, myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), 1,0);
+	//boundingBox.render(myContainer);
+	myContainer->getGameRenderer()->addGlyph(boundingBox.getX1(), boundingBox.getY1(), width, height, 18.0f, 1.0f, 1.0f, 1.0f, 1.0f, myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), 3,0);
+
 }
 
 void Player::update() {

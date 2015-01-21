@@ -1,21 +1,31 @@
-﻿  DDAHelper.cpp
-  YuWindow.cpp
-  YuBoudingbox.cpp
-  Utils.cpp
-  Texture.cpp
-  SpritesheetsManager.cpp
-  Spritesheet.cpp
-  Shader.cpp
-  Renderable.cpp
-  Perlin2D.cpp
-  OpenGlScene.cpp
-  Object.cpp
-  Input.cpp
-  GameRenderer.cpp
-  FpsCounter.cpp
-  FontRenderer.cpp
-  DebugOverlay.cpp
-  Container.cpp
-  Camera2D.cpp
-  Génération de code en cours...
-  OpenGLModern.vcxproj -> C:\Users\Nathan\Documents\Visual Studio 2012\Projects\Noxel-OpenGL\Debug\YuEngine.lib
+﻿La génération a démarré 20/01/2015 23:49:21.
+     1>Projet "C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\YuEngine\OpenGLModern.vcxproj" sur le nœud 2 (Build cible(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W0 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\YuEngine\YuBoudingbox.cpp
+         YuBoudingbox.cpp
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\Lib.exe /OUT:"C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Debug\YuEngine.lib" /NOLOGO Debug\Camera2D.obj
+         Debug\Container.obj
+         Debug\DebugOverlay.obj
+         Debug\FontRenderer.obj
+         Debug\FpsCounter.obj
+         Debug\GameRenderer.obj
+         Debug\Input.obj
+         Debug\Object.obj
+         Debug\OpenGlScene.obj
+         Debug\Perlin2D.obj
+         Debug\Renderable.obj
+         Debug\Shader.obj
+         Debug\Spritesheet.obj
+         Debug\SpritesheetsManager.obj
+         Debug\Texture.obj
+         Debug\Utils.obj
+         Debug\YuBoudingbox.obj
+         Debug\YuWindow.obj
+         Debug\DDAHelper.obj
+         OpenGLModern.vcxproj -> C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Debug\YuEngine.lib
+     1>Génération du projet "C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\YuEngine\OpenGLModern.vcxproj" terminée (Build cible(s)).
+
+La génération a réussi.
+
+Temps écoulé 00:00:00.60

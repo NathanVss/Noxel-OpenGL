@@ -64,6 +64,8 @@ void MainScene::loop() {
 
 	LightSun lightSun;
 
+	BlockGrass* bg = new BlockGrass(Block::size* 1, Block::size*5*16-1);
+	world->setBlock(bg);
 
 	lightManager.addLightSun(&lightSun);
 	container->getCamera()->setPosition(glm::vec2(0,80*Block::size)); 
@@ -71,7 +73,7 @@ void MainScene::loop() {
 		beginIteration();
 
 		//lightSun.setSeconds(lightSun.getSeconds() + 100);
-		lightSun.setSeconds(3600*16);
+		lightSun.setSeconds(3600*2);
 		//std::cout << "Il est : " << lightSun.getSeconds() / 3600 << "h" << std::endl;
 
 		cx++;
@@ -91,6 +93,9 @@ void MainScene::loop() {
 		container->getCamera()->setPosition(glm::vec2(player.getX(), player.getY()));
 		container->getCamera()->update();
 
+		if(container->getInput()->getKeySpace()) {
+			player.teleport(Block::size * 3, Block::size * 84);
+		}
 
 		gameRenderer->begin();
 

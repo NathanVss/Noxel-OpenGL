@@ -18,6 +18,7 @@ public:
 	int getY2();
 	int getY3();
 	int getY4();
+	void render(Container* container);
 	void changePos(int x1, int y1);
 
 	void setColor(int red, int green, int blue);
