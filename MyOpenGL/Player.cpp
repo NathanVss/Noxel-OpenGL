@@ -8,9 +8,9 @@
 
 Player::Player(): Entity(){
 	width = Block::size;
-	height = Block::size;
+	height = Block::size*2;
 	//speedX = Block::size * 1;
-	speedX = 1;
+	speedX = 10;
 	jumpHeight = Block::size * 2;
 	jumping = false;
 	YuEngine::YuBoudingbox _boudingBox(x, y, width, height);
@@ -42,18 +42,29 @@ void Player::update() {
 	if(input->getKeyD()) {
 		velocityX += speedX;
 	}
+	if(!collideOnBottom) {
+		if(velocityY == 0) {
+			velocityY = -1.0f;
+		}
+		velocityY *= gravity;
+		if(velocityY > 0) {
+			velocityY = -velocityY;
+		}
+
+	}
 	if(input->getKeyZ()) {
 		velocityY += speedX;
 	}
 	if(input->getKeyS()) {
 		velocityY -= speedX;
 	}
-	if(input->getKeySpace()) {
+	if(input->getKeySpace() && !jumping) {
 
-		if(!jumping) {
-			jumping = true;
-			velocityY += jumpHeight;
-		}
+		jumping = true;
+		velocityY += jumpHeight;
+	}
+	if(jumping && collideOnBottom) {
+		jumping = false;
 	}
 
 	float destX = x + velocityX;
@@ -61,8 +72,10 @@ void Player::update() {
 	//std::cout << "CurPos [" << x << ";" << y << "]" << std::endl;
 	//std::cout << "DestPos [" << destX << ";" << destY << "]" << std::endl;
 
-
+	std::cout << "Player [" << x << ";" << y << "]" << std::endl;
 	checkCollisions(destX, destY);
+	//x = destX;
+	//y = destY;
 	boundingBox.changePos(x, y);
 
 }

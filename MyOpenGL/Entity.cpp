@@ -8,7 +8,7 @@
 Entity::Entity(void){
 	x = 0;
 	y = 0;
-	gravity = 50;
+	gravity = 1.06f;
 	velocityX = 0;
 	velocityY = 0;
 	width = 0;
@@ -93,7 +93,6 @@ void Entity::checkCollisions(float destX, float destY) {
 		} else if(diagToTopRightMov && this->collideOnTop) {
 			destY = this->y;
 		} else if (diagToBottomLeftMov && this->collideOnLeft) {
-			std::cout << "CORRECTION" << std::endl;
 			destX = this->x;
 		} else if (diagToBottomRightMov && this->collideOnRight) {
 			destX = this->x;
@@ -108,6 +107,8 @@ void Entity::checkCollisions(float destX, float destY) {
 
 
 	std::vector<YuEngine::coords> traj;
+	destX = (int)destX;
+	destY = (int)destY;
 	YuEngine::DDAHelper trajHelper(x, y, destX, destY);
 	YuEngine::coords trajCoords;
 	trajCoords.x = x;
@@ -123,42 +124,11 @@ void Entity::checkCollisions(float destX, float destY) {
 		
 		trajCoords = trajHelper.getNextCoords();
 	}
-
-	if(!idleMov) {
-	std::cout << "Player [" << x << ";" << y << "] => [" << destX << ";" << destY << "]" << std::endl;
-
-	}
-	if(diagToBottomLeftMov) {
-		std::cout << "DIAG TO BOTTOM LEFT" << std::endl;
-	}
-	if(diagToBottomRightMov) {
-		std::cout << "DIAG TO BOTTOM RIGHT" << std::endl;
-	}
-	if(diagToTopLeftMov) {
-		std::cout << "DIAG TO TOP LEFT" << std::endl;
-	}
-	if(diagToTopRightMov) {
-		std::cout << "DIAG TO TOP RIGHT" << std::endl;
-	}
-	if(verticalToBottomMov) {
-		std::cout << "VERTICAL TO BOTTOM" << std::endl;
-	}
-	if(verticalToTopMov) {
-		std::cout << "VERTICAL TO TOP" << std::endl;
-	}
-	if(transvToLeftMov) {
-		std::cout << "TRANSV TO LEFT" << std::endl;
-	}
-	if(transvToRightMov) {
-		std::cout << "TRANSV TO RIGHT" << std::endl;
-	}
 	// Conversion des coords en block unit
 	int buX = floor(x / Block::size);
 	int buY = floor(y / Block::size);
 	int destBuX = floor((destX / Block::size));
 	int destBuY = floor(destY / Block::size);
-	//std::cout << "BlockUnit [" << buX << ";" << buY << "]" << std::endl;
-	//std::cout << "BlockUnit Dest [" << destBuX << ";" << destBuY << "]" << std::endl;
 
 	YuEngine::DDAHelper ddaHelper(buX, buY, destBuX, destBuY);
 	YuEngine::coords coords;
@@ -169,7 +139,6 @@ void Entity::checkCollisions(float destX, float destY) {
 
 	bool first = true;
 	while(true) {
-		//std::cout << "[" << coords.x << ";" << coords.y << "]" << std::endl;
 		std::vector<Block*> curBlocks;
 
 		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size, coords.y * Block::size));
@@ -189,7 +158,7 @@ void Entity::checkCollisions(float destX, float destY) {
 		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 1 * Block::size, coords.y*Block::size - 1 *Block::size));
 		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 1 * Block::size, coords.y*Block::size + 2 *Block::size));
 		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 1 * Block::size, coords.y*Block::size - 2 *Block::size));
-
+		if((coords.x == destBuX && coords.y == destBuY)) {
 
 		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size - 2*Block::size, coords.y*Block::size));
 		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size - 2 * Block::size, coords.y*Block::size + 1 *Block::size));
@@ -202,10 +171,7 @@ void Entity::checkCollisions(float destX, float destY) {
 		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 2 * Block::size, coords.y*Block::size - 1 *Block::size));
 		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 2 * Block::size, coords.y*Block::size - 2 *Block::size));
 		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 2 * Block::size, coords.y*Block::size + 2 *Block::size));
-
-		//curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 1 * Block::size, coords.y * Block::size));
-		//curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 1 * Block::size, coords.y + 1 *Block::size));
-		//curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 1 * Block::size, coords.y - 1 *Block::size));
+		}
 
 		for(int i = 0; i < curBlocks.size(); i++) {
 			if(curBlocks[i] && std::find(blocksToCheck.begin(), blocksToCheck.end(), curBlocks[i]) == blocksToCheck.end()) {
@@ -235,13 +201,11 @@ void Entity::checkCollisions(float destX, float destY) {
 
 	for(int j = 0; j < traj.size(); j++) {
 
-		if(!idleMov)
-			std::cout << "Checking [" << traj[j].x << ";" << traj[j].y << std::endl;
 
 		boundingBox.changePos(traj[j].x, traj[j].y);
 
 		for(int i = 0; i < blocksToCheck.size(); i++) {
-			blocksToCheck[i]->setLightIndice(c);
+			//blocksToCheck[i]->setLightIndice(c);
 			if(!(blocksToCheck[i]->getHasBoudingbox())) {
 				continue;
 			}
@@ -255,7 +219,7 @@ void Entity::checkCollisions(float destX, float destY) {
 			*/
 			if(boundingBox.doesCollideTopOf(CurBoundingBox)) {
 				this->collideOnBottom = true;
-				std::cout << "BOTTOM" << std::endl;
+				//std::cout << "BOTTOM" << std::endl;
 			}
 
 			/*
@@ -264,7 +228,7 @@ void Entity::checkCollisions(float destX, float destY) {
 			*/
 			if(boundingBox.doesCollideBottomOf(CurBoundingBox)) {
 				this->collideOnTop = true;
-				std::cout << "TOP" << std::endl;
+				//std::cout << "TOP" << std::endl;
 			}
 
 			/*
@@ -273,7 +237,7 @@ void Entity::checkCollisions(float destX, float destY) {
 			if(boundingBox.doesCollideRightOf(CurBoundingBox)) {
 				this->collideOnLeft = true;
 						
-				std::cout << "LEFT" << std::endl;
+				//std::cout << "LEFT" << std::endl;
 			}
 
 			/*
@@ -281,7 +245,7 @@ void Entity::checkCollisions(float destX, float destY) {
 			*/
 			if(boundingBox.doesCollideLeftOf(CurBoundingBox)) {
 				this->collideOnRight = true;
-				std::cout << "RIGHT" << std::endl;	
+				//std::cout << "RIGHT" << std::endl;	
 			}
 
 			/*
@@ -290,7 +254,7 @@ void Entity::checkCollisions(float destX, float destY) {
 			*/
 			if(boundingBox.doesCollideTopLeftOf(CurBoundingBox)) {
 				this->collideOnBottomRight = true;
-				std::cout << "BOTTOM RIGHT" << std::endl;
+				//std::cout << "BOTTOM RIGHT" << std::endl;
 			}
 
 			/*
@@ -299,7 +263,7 @@ void Entity::checkCollisions(float destX, float destY) {
 			*/
 			if(boundingBox.doesCollideTopRightOf(CurBoundingBox)) {
 				this->collideOnBottomLeft = true;
-				std::cout << "BOTTOM LEFT" << std::endl;
+				//std::cout << "BOTTOM LEFT" << std::endl;
 			}
 
 			/*
@@ -308,7 +272,7 @@ void Entity::checkCollisions(float destX, float destY) {
 			*/
 			if(boundingBox.doesCollideBottomLeftOf(CurBoundingBox)) {
 				this->collideOnTopRight = true;
-				std::cout << "TOP RIGHT" << std::endl;
+				//std::cout << "TOP RIGHT" << std::endl;
 			}
 					
 			/*
@@ -316,7 +280,7 @@ void Entity::checkCollisions(float destX, float destY) {
 						[ ME ] <-
 			*/
 			if(boundingBox.doesCollideBottomRightOf(CurBoundingBox)) {
-				std::cout << "TOP LEFT" << std::endl;
+				//std::cout << "TOP LEFT" << std::endl;
 				this->collideOnTopLeft = true;
 			}
 

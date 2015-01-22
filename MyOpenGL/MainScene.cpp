@@ -60,7 +60,19 @@ void MainScene::loop() {
 	int cx = 0;
 	int cy = 0;
 
-	//Block* b = world->getBlock(Block::size * 3, Block::size * 64);
+	YuEngine::DDAHelper helper(1504,2414,1514,2402);
+	YuEngine::coords crds;
+	crds.x = 0;
+	crds.y = 0;
+	float a = -1.5;
+	std::cout << floor(a) << ";" << ceil(a) << std::endl;
+	while(true) {
+
+		crds = helper.getNextCoords();
+		if(crds.x == 1514 && crds.y == 2402) {
+			break;
+		}
+	}
 
 	LightSun lightSun;
 
@@ -72,8 +84,8 @@ void MainScene::loop() {
 	while(!mustFinish) {
 		beginIteration();
 
-		//lightSun.setSeconds(lightSun.getSeconds() + 100);
-		lightSun.setSeconds(3600*2);
+		lightSun.setSeconds(lightSun.getSeconds() + 50);
+		//lightSun.setSeconds(3600*2);
 		//std::cout << "Il est : " << lightSun.getSeconds() / 3600 << "h" << std::endl;
 
 		cx++;
@@ -93,9 +105,9 @@ void MainScene::loop() {
 		container->getCamera()->setPosition(glm::vec2(player.getX(), player.getY()));
 		container->getCamera()->update();
 
-		if(container->getInput()->getKeySpace()) {
-			player.teleport(Block::size * 3, Block::size * 84);
-		}
+		//if(container->getInput()->getKeySpace()) {
+		//	player.teleport(Block::size * 3, Block::size * 84);
+		//}
 
 		gameRenderer->begin();
 

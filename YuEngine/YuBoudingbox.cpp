@@ -108,14 +108,13 @@ bool YuBoudingbox::doesCollideTopRightOf(YuBoudingbox &Rect2)  {
 
 */
 bool YuBoudingbox::doesCollideRightOf(YuBoudingbox &Rect2) {
-	if(Rect2.getX1() + Rect2.getWidth() == this->x1) {
+	if(Rect2.getX1() + Rect2.getWidth() == x1) {
 
-		if((this->y1 > Rect2.getY1() && this->y1 < Rect2.getY1() + Rect2.getHeight()) || 
-			(this->y1 + this->height > Rect2.getY1() && this->y1 + this->height < Rect2.getY1() + Rect2.getHeight()) || 
-			(Rect2.getY1() > this->y1 && Rect2.getY1() < this->y1 + this->height) || 
-			(Rect2.getY1() + Rect2.getHeight() > this->y1 && Rect2.getY1() + Rect2.getHeight() < this->y1 + this->height) ||
-			(this->y1 == Rect2.getY1() && this->y1 + this->height == Rect2.getY1() + Rect2.getHeight())) {
-			//std::cout << " TOUCH RIGHT " << std::endl;
+
+		if((Rect2.getY1() > y1 - height && y1 - height > Rect2.getY1() - Rect2.getHeight()) ||
+			(y1  < Rect2.getY1() && y1 > Rect2.getY1() - Rect2.getHeight()) ||
+			(Rect2.getY1() < y1 && Rect2.getY1() > y1 - height) ||
+			(y1 < Rect2.getY1() && y1 > Rect2.getY1() - Rect2.getHeight())) {
 			return true;
 		}
 
@@ -132,14 +131,13 @@ bool YuBoudingbox::doesCollideRightOf(YuBoudingbox &Rect2) {
 bool YuBoudingbox::doesCollideLeftOf(YuBoudingbox &Rect2) {
 
 	if(this->x1 + this->width == Rect2.getX1()) {
-		if((this->y1 > Rect2.getY1() && this->y1 < Rect2.getY1() + Rect2.getHeight()) || 
-			(this->y1 + this->height > Rect2.getY1() && this->y1 + this->height < Rect2.getY1() + Rect2.getHeight()) || 
-			(Rect2.getY1() > this->y1 && Rect2.getY1() < this->y1 + this->height) || 
-			(Rect2.getY1() + Rect2.getHeight() > this->y1 && Rect2.getY1() + Rect2.getHeight() < this->y1 + this->height) ||
-			(this->y1 == Rect2.getY1() && this->y1 + this->height == Rect2.getY1() + Rect2.getHeight())) {
-			//std::cout << " TOUCH LEFT " << std::endl;
+		if((Rect2.getY1() > y1 - height && y1 - height > Rect2.getY1() - Rect2.getHeight()) ||
+			(y1  < Rect2.getY1() && y1 > Rect2.getY1() - Rect2.getHeight()) ||
+			(Rect2.getY1() < y1 && Rect2.getY1() > y1 - height) ||
+			(y1 < Rect2.getY1() && y1 > Rect2.getY1() - Rect2.getHeight())) {
 			return true;
 		}
+
 
 	}
 
