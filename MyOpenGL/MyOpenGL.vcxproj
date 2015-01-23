@@ -74,10 +74,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Biome.cpp" />
+    <ClCompile Include="BiomeDesert.cpp" />
+    <ClCompile Include="BiomePlains.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockAir.cpp" />
     <ClCompile Include="BlockDirt.cpp" />
     <ClCompile Include="BlockGrass.cpp" />
+    <ClCompile Include="BlockSand.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="Container.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -92,10 +96,14 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Biome.h" />
+    <ClInclude Include="BiomeDesert.h" />
+    <ClInclude Include="BiomePlains.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockAir.h" />
     <ClInclude Include="BlockDirt.h" />
     <ClInclude Include="BlockGrass.h" />
+    <ClInclude Include="BlockSand.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="Container.h" />
     <ClInclude Include="Entity.h" />

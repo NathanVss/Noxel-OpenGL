@@ -1,11 +1,11 @@
 #pragma once
 
-#include <YuEngine\Object.h>
+#include "Object.h"
 
 class Block;
 class YuEngine::Container;
 
-class Chunk : public YuEngine::Object
+class Chunk : public Object
 {
 public:
 	Chunk() {

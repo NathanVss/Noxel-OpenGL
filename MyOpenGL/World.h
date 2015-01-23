@@ -9,9 +9,12 @@
 #include <Dependecies\glm\gtc\type_ptr.hpp>
 #include <Dependecies\glm\gtx\transform.hpp>
 
-class Block;
+#include "Object.h"
 
-class World: public YuEngine::Object
+class Block;
+class Biome;
+
+class World: public Object
 {
 public:
 	World(void) {
@@ -20,10 +23,12 @@ public:
 
 	};
 	static int worldHeight;
+	static int worldWidth;
 
 	~World(void);
 	void init();
 	void generate();
+
 	void render();
 	void update();
 	void setBlock(Block* block);

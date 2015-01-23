@@ -4,7 +4,9 @@
 #include <YuEngine\Vertex.h>
 #include <YuEngine\YuBoudingbox.h>
 
-class Block: public YuEngine::Object
+#include "Object.h"
+
+class Block: public Object
 {
 public:
 	Block(void) {
@@ -12,7 +14,13 @@ public:
 	Block(float _x, float _y) {
 		x = _x;
 		y = _y;
-			boundingBox = YuEngine::YuBoudingbox(x, y, Block::size, Block::size);
+		boundingBox = YuEngine::YuBoudingbox(x, y, Block::size, Block::size);
+		YuEngine::Color c;
+		c.r = 255;
+		c.g = 255;
+		c.b = 255;
+		c.a = 255;
+		lightIndice = c;
 	};
 	virtual ~Block(void) {
 

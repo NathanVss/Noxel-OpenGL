@@ -2,6 +2,9 @@
 #include "BlockAir.h"
 #include "BlockGrass.h"
 #include <iostream>
+#include "Container.h"
+
+
 int Chunk::width = 16;
 int Chunk::height = 16;
 
@@ -16,7 +19,7 @@ void Chunk::init() {
 		for(int y = 0; y < Chunk::height; y++) {
 
 			blocks[x][y] = new BlockAir(this->x + x*Block::size, this->y + y*Block::size);
-			blocks[x][y]->setContainer(container);
+			blocks[x][y]->setMyContainer(myContainer);
 		}
 	}
 }
@@ -41,7 +44,7 @@ void Chunk::setBlock(Block* block) {
 	
 	delete blocks[(int)absX][(int)absY];
 	blocks[(int)absX][(int)absY] = block;
-	blocks[(int)absX][(int)absY]->setContainer(container);
+	blocks[(int)absX][(int)absY]->setMyContainer(myContainer);
 }
 
 

@@ -45,7 +45,7 @@ void MainScene::loop() {
 	gameRenderer->init();
 	
 	World* world = new World();
-	world->setContainer(container);
+	world->setMyContainer(container);
 	container->setWorld(world);
 
 	LightManager lightManager;
@@ -76,7 +76,7 @@ void MainScene::loop() {
 
 	LightSun lightSun;
 
-	BlockGrass* bg = new BlockGrass(Block::size* 1, Block::size*5*16-1);
+	BlockGrass* bg = new BlockGrass(Block::size* 1, Block::size*51);
 	world->setBlock(bg);
 
 	lightManager.addLightSun(&lightSun);
@@ -84,8 +84,8 @@ void MainScene::loop() {
 	while(!mustFinish) {
 		beginIteration();
 
-		lightSun.setSeconds(lightSun.getSeconds() + 50);
-		//lightSun.setSeconds(3600*2);
+		//lightSun.setSeconds(lightSun.getSeconds() + 50);
+		lightSun.setSeconds(3600*14);
 		//std::cout << "Il est : " << lightSun.getSeconds() / 3600 << "h" << std::endl;
 
 		cx++;
@@ -96,7 +96,7 @@ void MainScene::loop() {
 		fpsCounter.update();
 		world->update();
 
-		lightManager.update();
+		//lightManager.update();
 
 
 		player.update();

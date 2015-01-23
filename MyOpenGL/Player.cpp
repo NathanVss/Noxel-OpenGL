@@ -72,7 +72,7 @@ void Player::update() {
 	//std::cout << "CurPos [" << x << ";" << y << "]" << std::endl;
 	//std::cout << "DestPos [" << destX << ";" << destY << "]" << std::endl;
 
-	std::cout << "Player [" << x << ";" << y << "]" << std::endl;
+	//std::cout << "Player [" << x << ";" << y << "]" << std::endl;
 	checkCollisions(destX, destY);
 	//x = destX;
 	//y = destY;

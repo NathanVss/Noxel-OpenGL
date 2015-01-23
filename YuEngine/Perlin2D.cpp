@@ -3,6 +3,7 @@
 #include <time.h>
 #include <random>
 #include <iostream>
+namespace YuEngine {
 
 Perlin2D::Perlin2D(void)
 {
@@ -55,6 +56,10 @@ double Perlin2D::cosInterpolation(double a, double b, double x) {
 }
 
 void Perlin2D::init(int _size, int _set, int _octaves) {
+	init(_size, _set, _octaves, false);
+
+}
+void Perlin2D::init(int _size, int _set, int _octaves, float firstValue) {
 	octaves = _octaves;
 	set = _set;
 	size = _size;
@@ -66,16 +71,27 @@ void Perlin2D::init(int _size, int _set, int _octaves) {
 	// Si on a deux octaves, alors 103 * 2 valeurs
 	// Si 3 octaves, 103 * 4
 	double power = pow((double)2, (octaves-1));
-	int valuesSize = (int)ceil(size*power);
-	values = new double[valuesSize];
+	int valuesSize = (int)ceil(size*power / set);
+	double* _values = new double[valuesSize];
 
 
 	srand(time(NULL)+rand());
 	for(int i = 0; i <100; i++) { rand(); }
 
+	std::cout << "\n\nVALUES" << std::endl;
 	for(int i = 0 ; i <valuesSize; i++) {
+		if(i == 0) {
+			_values[i] = firstValue;
+			std::cout << "first : " << _values[i] << std::endl;
 
-		values[i] = (double)rand() / RAND_MAX;
+		} else {
+			_values[i] = (double)rand() / RAND_MAX;
+		std::cout << _values[i] << std::endl;
+
+		}
 
 	}
+	values =  _values;
+}
+
 }
