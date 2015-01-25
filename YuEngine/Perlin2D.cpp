@@ -78,15 +78,12 @@ void Perlin2D::init(int _size, int _set, int _octaves, float firstValue) {
 	srand(time(NULL)+rand());
 	for(int i = 0; i <100; i++) { rand(); }
 
-	std::cout << "\n\nVALUES" << std::endl;
 	for(int i = 0 ; i <valuesSize; i++) {
 		if(i == 0) {
 			_values[i] = firstValue;
-			std::cout << "first : " << _values[i] << std::endl;
 
 		} else {
 			_values[i] = (double)rand() / RAND_MAX;
-		std::cout << _values[i] << std::endl;
 
 		}
 

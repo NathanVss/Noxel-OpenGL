@@ -3,51 +3,55 @@
 #include "PixelsMap.h"
 #include <string>
 #include "Object.h"
+#include <YuEngine\Vertex.h>
 #include <YuEngine\YuBoudingbox.h>
+#include <YuEngine\EventTimer.h>
+#include "Block.h"
 
 class LightSun;
+class LightRadius;
 
-class LightBag {
-public:
-	LightBag() { 
-		
-	};
-	LightBag(const LightBag &other) {
-		finalMap = other.finalMap;
-	};
-	virtual ~LightBag() { };
-	PixelsMap finalMap;
-};
-class LightSunBag : public LightBag {
-public:
-	LightSunBag() { };
-	~LightSunBag() { };
-	LightSun* lightSun;
-};
 
 class LightManager: public Object
 {
 public:
-	LightManager(void);
+	LightManager(int _screenWidth, int _screenHeight);
 	~LightManager(void);
-	void convertToBMP(PixelsMap &s, std::string filename);
-	void createBaseMap();
+
+	void resetScreenPixels();
+	void pixelsToBmp();
+	void refreshScreenPixels();
 	void update();
-	void setActiveChunksRect();
+	void render();
 
-	void enableFinalMap();
-	void assignIndices();
 
-	void doSunLighting(LightSunBag &lightSunBag);
+
 	void addLightSun(LightSun* s) {
 		lightsSun.push_back(s);
 	}
+	void addLightRadius(LightRadius* s) {
+		lightsRadius.push_back(s);
+	}
+	GLuint getTexture() {
+		return texture;
+	}
+
 private:
-	std::vector<LightSunBag> lightSunBags;
+	GLubyte *screenPixels;
+	int screenWidth;
+	int screenHeight;
+
+	int textureWidth;
+	int textureHeight;
+	YuEngine::EventTimer eTimer;
+	YuEngine::YuBoudingbox cameraBox;
+	YuEngine::YuBoudingbox textureBox;
+	float sunBias;
+	float offset;
+
+	GLuint texture;
+
 	std::vector<LightSun*> lightsSun;
-	PixelsMap baseMap;
-	PixelsMap finalMap;
-	YuEngine::YuBoudingbox activeChunksRect;
-	int precision;
+	std::vector<LightRadius*> lightsRadius;
 };
 

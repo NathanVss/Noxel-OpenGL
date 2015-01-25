@@ -51,7 +51,17 @@ struct Position {
         float y;
 };
 
-struct Color {
+class Color {
+public:
+	Color() {
+
+	};
+	Color(float _r, float _g, float _b, float _a) : r(_r), g(_g), b(_b), a(_a) {
+
+	};
+	~Color() {
+
+	};
     float r;
     float g;
     float b;
@@ -77,6 +87,13 @@ public:
 
     //UV texture coordinates.
     UV uv;
+
+	Vertex() {
+
+	};
+	~Vertex() {
+
+	};
 
     void setPosition(float x, float y) {
         position.x = x;

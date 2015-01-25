@@ -47,14 +47,17 @@ void GameRenderer::render() {
 		return;
 	}
 
-	
-	glUseProgram(this->container->getClassicShader()->getProgramID());
-	glUniformMatrix4fv(glGetUniformLocation(container->getClassicShader()->getProgramID(), "cameraMatrix"), 1, GL_FALSE, glm::value_ptr(container->getCamera()->getCameraMatrix()));
+
 
 	glBindVertexArray(vaoId);
 
 	for(int i = 0; i<renderBatches.size(); i++) {
+		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, renderBatches[i].textureId);
+		
+		glUniform1i(glGetUniformLocation(container->getClassicShader()->getProgramID(), "spriteTexture"), 1);
+
+
 		glDrawArrays(GL_TRIANGLES, renderBatches[i].offset, renderBatches[i].numVertices);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
@@ -69,7 +72,6 @@ void GameRenderer::render() {
 
 	glBindVertexArray(0);
 
-	glUseProgram(0);
 	return;
 
 }
@@ -147,7 +149,7 @@ void GameRenderer::fillVbo() {
 
 	glBindBuffer(GL_ARRAY_BUFFER, vboId);
 
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), nullptr, GL_STREAM_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vertex), vertices.data());
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -198,11 +200,24 @@ void GameRenderer::updateGlyph(int vertex, float x, float y) {
 
 int GameRenderer::addGlyph(float x, float y, float width, float height, float depth, float r, float g, float b, float a, Spritesheet* spritesheet, int u, int v) {
 	
+	spritesheet->setCurSprite(u, v);
+	TexturingRectangle texturingRectangle = spritesheet->getCoords();
+	return addGlyph(x, y, width, height, depth, r, g, b, a, spritesheet, texturingRectangle);
+}
+
+
+int GameRenderer::addGlyph(float x, float y, float width, float height, float depth, float r, float g, float b, float a, Spritesheet* spritesheet, int u1, int v1, int u2, int v2) {
+	
+	spritesheet->setCurArea(u1, v1, u2, v2);
+	TexturingRectangle texturingRectangle = spritesheet->getCoords();
+	//texturingRectangle.debug();
+	return addGlyph(x, y, width, height, depth, r, g, b, a, spritesheet, texturingRectangle);
+}
+
+int GameRenderer::addGlyph(float x, float y, float width, float height, float depth, float r, float g, float b, float a, Spritesheet* spritesheet, TexturingRectangle &texturingRectangle) {
+	
 	Glyph glyph;
 
-
-	spritesheet->setCurSprite(u, v);
-	TexturingRectangle textureRectangle = spritesheet->getCoords();
 	Color color;
 	color.r = r;
 	color.g = g;
@@ -218,25 +233,26 @@ int GameRenderer::addGlyph(float x, float y, float width, float height, float de
 
 	glyph.topLeft.setPosition(x, y);
 	glyph.topLeft.color = color;
-	glyph.topLeft.setUV(textureRectangle.topLeftX, textureRectangle.topLeftY);
+	glyph.topLeft.setUV(texturingRectangle.topLeftX, texturingRectangle.topLeftY);
 
 	glyph.topRight.setPosition(x + width, y );
 	glyph.topRight.color = color;
-	glyph.topRight.setUV(textureRectangle.topRightX, textureRectangle.topRightY);
+	glyph.topRight.setUV(texturingRectangle.topRightX, texturingRectangle.topRightY);
 	
 	glyph.bottomRight.setPosition(x + width, y - height);
 	glyph.bottomRight.color = color;
-	glyph.bottomRight.setUV(textureRectangle.bottomRightX, textureRectangle.bottomRightY);
+	glyph.bottomRight.setUV(texturingRectangle.bottomRightX, texturingRectangle.bottomRightY);
 
 	glyph.bottomLeft.setPosition(x, y -height);
 	glyph.bottomLeft.color = color;
-	glyph.bottomLeft.setUV(textureRectangle.bottomLeftX, textureRectangle.bottomLeftY);
+	glyph.bottomLeft.setUV(texturingRectangle.bottomLeftX, texturingRectangle.bottomLeftY);
 
 	//glyph.debug();
 	this->glyphs.push_back(glyph);
 	return this->glyphs.size() - 1;
 
 }
+
 
 void GameRenderer::sortGlyphs() {
 	switch(sortType) {

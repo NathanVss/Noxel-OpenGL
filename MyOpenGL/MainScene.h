@@ -6,8 +6,10 @@ class MainScene: public YuEngine::OpenGlScene
 {
 public:
 	MainScene();
-	~MainScene(void);
+	virtual ~MainScene(void);
 	void loop();
+	void pixelsToBmp(GLubyte *pixels);
+	void resetPixels(GLubyte *pixels);
 
 
 protected:

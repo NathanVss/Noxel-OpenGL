@@ -8,7 +8,7 @@
 Entity::Entity(void){
 	x = 0;
 	y = 0;
-	gravity = 1.06f;
+	gravity = 2.0f;
 	velocityX = 0;
 	velocityY = 0;
 	width = 0;

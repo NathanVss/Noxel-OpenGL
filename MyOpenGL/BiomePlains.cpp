@@ -45,14 +45,14 @@ void BiomePlains::generate() {
 			lastBlockY = y;
 		}
 		BlockGrass *blockGrass = new BlockGrass(x*Block::size, y*Block::size);
-		if(x == baseX) {
-			YuEngine::Color c;
-			c.r = 0;
-			c.g = 0;
-			c.b = 0;
-			c.a = 255;
-			blockGrass->setLightIndice(c);
-		}
+		//if(x == baseX) {
+		//	YuEngine::Color c;
+		//	c.r = 0;
+		//	c.g = 0;
+		//	c.b = 0;
+		//	c.a = 255;
+		//	blockGrass->setLightIndice(c);
+		//}
 		myContainer->getWorld()->setBlock(blockGrass);
 
 		for(int dy = y-1; dy >= 0; dy--) {

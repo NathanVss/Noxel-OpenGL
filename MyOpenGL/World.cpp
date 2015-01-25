@@ -8,7 +8,7 @@
 #include "Container.h"
 #include "BiomeDesert.h"
 
-
+#include "WorldGenCaves.h"
 #include <YuEngine\Camera2D.h>
 #include <YuEngine\Container.h>
 
@@ -75,6 +75,9 @@ void World::generate() {
 		lastBlockY = biome->getLastBlockY();
 
 	}
+	WorldGenCaves worldGenCaves;
+	worldGenCaves.setMyContainer(myContainer);
+	worldGenCaves.generate();
 
 	//YuEngine::Perlin2D perlin;
 	//perlin.init(chunksHoriz*Chunk::width, 20, 1);

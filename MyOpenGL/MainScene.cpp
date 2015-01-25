@@ -15,9 +15,14 @@
 #include "LightManager.h"
 #include "PixelsMap.h"
 #include "LightSun.h"
+#include "LightRadius.h"
 #include "Player.h"
 #include <YuEngine\DDAHelper.h>
 #include <YuEngine\Vertex.h>
+#include <Dependecies\EasyBMP\EasyBMP.h>
+#include <YuEngine\EventTimer.h>
+#include <YuEngine\Shader.h>
+#include <YuEngine\Spritesheet.h>
 //using namespace YuEngine;
 
 MainScene::MainScene() : YuEngine::OpenGlScene(1280,720, "YuEngine Infdev") {
@@ -48,7 +53,7 @@ void MainScene::loop() {
 	world->setMyContainer(container);
 	container->setWorld(world);
 
-	LightManager lightManager;
+	LightManager lightManager(width, height);
 	lightManager.setMyContainer(container);
 
 	Player player;
@@ -74,19 +79,29 @@ void MainScene::loop() {
 		}
 	}
 
-	LightSun lightSun;
 
-	BlockGrass* bg = new BlockGrass(Block::size* 1, Block::size*51);
+
+	BlockGrass* bg = new BlockGrass(Block::size* 1, Block::size*16*4+5*Block::size);
 	world->setBlock(bg);
 
+	LightSun lightSun;
+
 	lightManager.addLightSun(&lightSun);
+
+
 	container->getCamera()->setPosition(glm::vec2(0,80*Block::size)); 
+
+	YuEngine::EventTimer eTimer(60);
+
+
+	GLuint texId = 0;
+
+
 	while(!mustFinish) {
 		beginIteration();
 
 		//lightSun.setSeconds(lightSun.getSeconds() + 50);
 		lightSun.setSeconds(3600*14);
-		//std::cout << "Il est : " << lightSun.getSeconds() / 3600 << "h" << std::endl;
 
 		cx++;
 		cy++;
@@ -96,34 +111,43 @@ void MainScene::loop() {
 		fpsCounter.update();
 		world->update();
 
-		//lightManager.update();
+
+		eTimer.update();
+		if(eTimer.isOver()) {
+			if(container->getInput()->getLeftClick()) {
+				glm::vec2 cameraPos = container->getCamera()->getPosition();
+
+				cameraPos.x = cameraPos.x - width/2;
+				cameraPos.y = cameraPos.y + height/2;
+				std::cout << "CLICK" << std::endl;
+				std::cout <<  cameraPos.x+container->getInput()->getMouseX() << ";" << cameraPos.y - container->getInput()->getMouseY() << std::endl;
+				LightRadius* lightRadius = new LightRadius(7*Block::size);
+				lightRadius->setPosition(cameraPos.x+container->getInput()->getMouseX(), cameraPos.y - container->getInput()->getMouseY());
+				lightManager.addLightRadius(lightRadius);
+			}
+
+			eTimer.reset();
+		}
 
 
 		player.update();
 
-		//std::cout << "player : [" <<  player.getX() << ";" << player.getY() << std::endl;
 		container->getCamera()->setPosition(glm::vec2(player.getX(), player.getY()));
 		container->getCamera()->update();
 
-		//if(container->getInput()->getKeySpace()) {
-		//	player.teleport(Block::size * 3, Block::size * 84);
-		//}
+		lightManager.update();
+
 
 		gameRenderer->begin();
 
-		//PixelsMap px(1280, 720);
-	
 		int size = 0;
 		for(int i = 0; i < size; i++) {
 			for(int y = 0; y < size; y++) {
 
-				BlockGrass blockGrass(i*Block::size,y*Block::size);
-				blockGrass.setContainer(container);
-				blockGrass.render();
-				//int index = container->getGameRenderer()->addGlyph(100+i*11, 100+y*11, 10,10, 1.0f,  1.0f, 1.0f, 1.0f, spritesheetsManager->getFontSpritesheet(), 0,1);
+				int index = container->getGameRenderer()->addGlyph(100+i*11, 100+y*11, 10,10, 10, 1.0f,  1.0f, 1.0f, 1.0f, spritesheetsManager->getFontSpritesheet(), 0,1);
 			}
 		}
-		container->getGameRenderer()->addGlyph(0, 0, 10,10, 2.0f ,1.0f,  1.0f, 1.0f, 1.0f, spritesheetsManager->getFontSpritesheet(), 0,1);
+
 		world->render();
 		player.render();
 
@@ -133,11 +157,18 @@ void MainScene::loop() {
 		
 		debugOverlay->render();
 
+		
+		glUseProgram(container->getClassicShader()->getProgramID());
+		glUniformMatrix4fv(glGetUniformLocation(container->getClassicShader()->getProgramID(), "cameraMatrix"), 1, GL_FALSE, glm::value_ptr(container->getCamera()->getCameraMatrix()));
+
+		lightManager.render();
 		gameRenderer->end();
 		clear();
-		
+
+
 		gameRenderer->render();
 
+		glUseProgram(0);
 
 
 		endIteration();

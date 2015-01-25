@@ -31,6 +31,10 @@ class Shader
     GLuint getProgramID() const;
 
 
+	void sendFloat(std::string name, float value);
+	void sendInt(std::string name, int value);
+
+
     private:
 
     GLuint m_vertexID;

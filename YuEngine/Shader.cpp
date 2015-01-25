@@ -49,6 +49,7 @@ Shader& Shader::operator=(Shader const &shaderACopier)
 
 
     // Chargement du nouveau shader
+	
 
     charger();
 
@@ -56,6 +57,16 @@ Shader& Shader::operator=(Shader const &shaderACopier)
     // Retour du pointeur this
 
     return *this;
+}
+
+void Shader::sendFloat(std::string name, float value) {
+	glUniform1f(glGetUniformLocation(m_programID, name.c_str()), value);
+
+}
+void Shader::sendInt(std::string name, int value) {
+	glUniform1i(glGetUniformLocation(m_programID, name.c_str()), value);
+
+
 }
 
 GLuint Shader::getUniformLocation(const std::string& uniformName) {

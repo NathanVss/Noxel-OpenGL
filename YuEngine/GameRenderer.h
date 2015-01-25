@@ -40,7 +40,9 @@ class GameRenderer : public Object
 public:
 	GameRenderer(void);
 	~GameRenderer(void);
+	int addGlyph(float x, float y, float width, float height, float depth, float r, float g, float b, float a, Spritesheet* spritesheet, TexturingRectangle &texturingRectangle);
 	int addGlyph(float x, float y, float width, float height, float depth, float r, float g, float b, float a, Spritesheet* spritesheet, int u, int v);
+	int addGlyph(float x, float y, float width, float height, float depth, float r, float g, float b, float a, Spritesheet* spritesheet, int u1, int v1, int u2, int v2);
 	int addGlyph(float x, float y, float width, float height, float r, float g, float b, float a);
 	void updateGlyph(int vertex, float x, float y);
 	void init();
