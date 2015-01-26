@@ -6,6 +6,7 @@
 
 
 #include "Object.h"
+#include "YuBoudingbox.h"
 namespace YuEngine {
 
 
@@ -25,6 +26,11 @@ public:
 	float getScale();
 
 	glm::mat4 getCameraMatrix();
+
+	YuBoudingbox getCameraBox() {
+		return YuEngine::YuBoudingbox(position.x - screenWidth/2, position.y + screenHeight/2, screenWidth, screenHeight);
+
+	}
 
 	int getScreenWidth() {
 		return this->screenWidth;

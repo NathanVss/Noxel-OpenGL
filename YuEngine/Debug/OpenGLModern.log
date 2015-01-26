@@ -1,12 +1,8 @@
-﻿La génération a démarré 25/01/2015 13:31:07.
+﻿La génération a démarré 27/01/2015 00:02:41.
      1>Projet "C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\YuEngine\OpenGLModern.vcxproj" sur le nœud 2 (Build cible(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W0 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\YuEngine\GameRenderer.cpp ..\YuEngine\OpenGlScene.cpp ..\YuEngine\Shader.cpp
-         Shader.cpp
-         Génération de code en cours...
-         Ignoré... (aucune modification pertinente détectée)
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W0 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\YuEngine\OpenGlScene.cpp
          OpenGlScene.cpp
-         GameRenderer.cpp
        Lib:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\Lib.exe /OUT:"C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Debug\YuEngine.lib" /NOLOGO Debug\Camera2D.obj
          Debug\Container.obj
@@ -28,9 +24,10 @@
          Debug\YuWindow.obj
          Debug\DDAHelper.obj
          Debug\EventTimer.obj
+         Debug\FrameBuffer.obj
          OpenGLModern.vcxproj -> C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Debug\YuEngine.lib
      1>Génération du projet "C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\YuEngine\OpenGLModern.vcxproj" terminée (Build cible(s)).
 
 La génération a réussi.
 
-Temps écoulé 00:00:00.48
+Temps écoulé 00:00:01.16

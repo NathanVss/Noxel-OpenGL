@@ -19,7 +19,23 @@ public:
 		return world;
 	}
 
+	void setLightingShader(YuEngine::Shader *s) {
+		lightingShader = s;
+	}
+	YuEngine::Shader* getLightingShader() {
+		return lightingShader;
+	}
+
+	void setBlurShader(YuEngine::Shader *s) {
+		blurShader = s;
+	}
+	YuEngine::Shader* getBlurShader() {
+		return blurShader;
+	}
+
 protected:
 	World* world;
+	YuEngine::Shader *lightingShader;
+	YuEngine::Shader *blurShader;
 };
 

@@ -5,11 +5,68 @@ namespace YuEngine {
 Texture::Texture(std::string textureFile){
 	this->id = 0;
 	this->textureFile = textureFile;
+	emptyTexture = false;
 }
+Texture::Texture(int _width, int _height) {
+	width = _width;
+	height = _height;
+	emptyTexture = true;
+	id = 0;
+}
+Texture::Texture(Texture const &textureToCopy) {
+	textureFile = textureToCopy.getTextureFile();
+	width = textureToCopy.getWidth();
+	height = textureToCopy.getHeight();
+	emptyTexture = textureToCopy.getEmptyTexture();
+
+	if(emptyTexture && glIsTexture(textureToCopy.getId()) == GL_TRUE) {
+		loadEmpty();
+	} else if(glIsTexture(textureToCopy.getId() == GL_TRUE)) {
+		load();
+	}
+};
+Texture& Texture::operator=(Texture const &textureToCopy) {
+	textureFile = textureToCopy.getTextureFile();
+	width = textureToCopy.getWidth();
+	height = textureToCopy.getHeight();
+	emptyTexture = textureToCopy.getEmptyTexture();
+
+	if(emptyTexture && glIsTexture(textureToCopy.getId()) == GL_TRUE) {
+		loadEmpty();
+	} else if(glIsTexture(textureToCopy.getId() == GL_TRUE)) {
+		load();
+	}
+
+	return *this;
+};
+
 
 
 Texture::~Texture(void)
 {
+	glDeleteTextures(1, &id);
+}
+
+
+bool Texture::loadEmpty() {
+
+	if(glIsTexture(id) == GL_TRUE) {
+		glDeleteTextures(1, &id);
+	}
+
+	glGenTextures(1, &id);
+
+
+	glBindTexture(GL_TEXTURE_2D, id);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	return true;
+
 }
 
 SDL_Surface* Texture::invertPixels(SDL_Surface *imageSource) const
@@ -20,7 +77,6 @@ SDL_Surface* Texture::invertPixels(SDL_Surface *imageSource) const
                                                          imageSource->format->Gmask, imageSource->format->Bmask, imageSource->format->Amask);
 
 
-	std::cout << "Width : " << imageSource->w << std::endl;
     // Tableau intermédiaires permettant de manipuler les pixels
 
     unsigned char* pixelsSources = (unsigned char*) imageSource->pixels;

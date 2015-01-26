@@ -15,7 +15,8 @@ namespace YuEngine {
 GameRenderer::GameRenderer(void){
 	this->vaoId = 0;
 	this->vboId = 0;
-	sortType = GlyphSorting::BACK_TO_FRONT;
+	sortType = GlyphSorting::FRONT_TO_BACK
+		;
 }
 
 
@@ -42,7 +43,7 @@ void GameRenderer::end() {
 	this->fillVbo();
 }
 
-void GameRenderer::render() {
+void GameRenderer::render(int programId) {
 	if(glyphs.empty()) {
 		return;
 	}
@@ -55,7 +56,7 @@ void GameRenderer::render() {
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, renderBatches[i].textureId);
 		
-		glUniform1i(glGetUniformLocation(container->getClassicShader()->getProgramID(), "spriteTexture"), 1);
+		glUniform1i(glGetUniformLocation(programId, "spriteTexture"), 1);
 
 
 		glDrawArrays(GL_TRIANGLES, renderBatches[i].offset, renderBatches[i].numVertices);

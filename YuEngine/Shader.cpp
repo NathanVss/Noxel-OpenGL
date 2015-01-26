@@ -65,9 +65,18 @@ void Shader::sendFloat(std::string name, float value) {
 }
 void Shader::sendInt(std::string name, int value) {
 	glUniform1i(glGetUniformLocation(m_programID, name.c_str()), value);
-
+}
+void Shader::sendMatrix4(std::string name, glm::mat4 &matrix) {
+	glUniformMatrix4fv(glGetUniformLocation(m_programID, "cameraMatrix"), 1, GL_FALSE, glm::value_ptr(matrix));
 
 }
+void Shader::use() {
+	glUseProgram(m_programID);
+}
+void Shader::unuse() {
+	glUseProgram(0);
+}
+
 
 GLuint Shader::getUniformLocation(const std::string& uniformName) {
 	GLuint location = glGetUniformLocation(m_programID, uniformName.c_str());

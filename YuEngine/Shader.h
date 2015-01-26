@@ -3,7 +3,9 @@
 
 
 #include <gl/glew.h>
-
+#include <Dependecies\glm\glm.hpp>
+#include <Dependecies\glm\gtx\transform.hpp>
+#include <Dependecies\glm\gtc\type_ptr.hpp>
 
 
 // Includes communs
@@ -33,7 +35,10 @@ class Shader
 
 	void sendFloat(std::string name, float value);
 	void sendInt(std::string name, int value);
+	void sendMatrix4(std::string name, glm::mat4 &matrix);
 
+	void use();
+	void unuse();
 
     private:
 

@@ -31,6 +31,7 @@
     <ClCompile Include="..\YuEngine\YuWindow.cpp" />
     <ClCompile Include="DDAHelper.cpp" />
     <ClCompile Include="EventTimer.cpp" />
+    <ClCompile Include="FrameBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\YuEngine\Camera2D.h" />
@@ -56,6 +57,7 @@
     <ClInclude Include="..\YuEngine\YuWindow.h" />
     <ClInclude Include="DDAHelper.h" />
     <ClInclude Include="EventTimer.h" />
+    <ClInclude Include="FrameBuffer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F51A3D27-D677-4893-8404-E8DCCB5E3924}</ProjectGuid>

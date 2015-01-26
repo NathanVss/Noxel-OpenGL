@@ -8,7 +8,7 @@ public:
 	MainScene();
 	virtual ~MainScene(void);
 	void loop();
-	void pixelsToBmp(GLubyte *pixels);
+	void pixelsToBmp(GLuint textureId);
 	void resetPixels(GLubyte *pixels);
 
 

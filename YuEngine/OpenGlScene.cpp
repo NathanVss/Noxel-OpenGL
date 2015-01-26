@@ -48,8 +48,10 @@ void OpenGlScene::endIteration() {
 
 void OpenGlScene::clear() {
 
+	//glClearColor(119/255.0f,181/255.0f,254/255.0f,0.0f);
+	glClearColor(1.0f,1.0f,1.0f,1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(119/255.0f,181/255.0f,254/255.0f,1);
+
 }
 
 void OpenGlScene::init(Container* container) {

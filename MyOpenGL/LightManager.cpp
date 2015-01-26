@@ -62,28 +62,29 @@ void LightManager::update() {
 void LightManager::render() {
 
 
-	myContainer->getClassicShader()->sendInt("screenWidth", screenWidth);
-	myContainer->getClassicShader()->sendInt("screenHeight", screenHeight);
+	myContainer->getLightingShader()->sendInt("screenWidth", screenWidth);
+	myContainer->getLightingShader()->sendInt("screenHeight", screenHeight);
 
 
-	myContainer->getClassicShader()->sendFloat("offset", offset);
-	myContainer->getClassicShader()->sendFloat("sunBias", sunBias);
+	myContainer->getLightingShader()->sendFloat("offset", offset);
+	myContainer->getLightingShader()->sendFloat("sunBias", sunBias);
 
-	myContainer->getClassicShader()->sendInt("shadowCasterWidth", textureWidth);
-	myContainer->getClassicShader()->sendInt("shadowCasterHeight", textureHeight);
+	myContainer->getLightingShader()->sendInt("shadowCasterWidth", textureWidth);
+	myContainer->getLightingShader()->sendInt("shadowCasterHeight", textureHeight);
 
-	myContainer->getClassicShader()->sendFloat("screenTopY", cameraBox.getY1());
-	myContainer->getClassicShader()->sendFloat("textureTopY", textureBox.getY1());
+	myContainer->getLightingShader()->sendFloat("screenTopY", cameraBox.getY1());
+	myContainer->getLightingShader()->sendFloat("textureTopY", textureBox.getY1());
 
 
-	myContainer->getClassicShader()->sendFloat("worldHeight", World::worldHeight);
-	myContainer->getClassicShader()->sendFloat("blockSize", Block::size);
-	myContainer->getClassicShader()->sendFloat("maxDepthLightable", 50);
-	myContainer->getClassicShader()->sendFloat("depthGradient", 200);
+	myContainer->getLightingShader()->sendFloat("worldHeight", World::worldHeight);
+	myContainer->getLightingShader()->sendFloat("blockSize", Block::size);
+	myContainer->getLightingShader()->sendFloat("maxDepthLightable", 50);
+	myContainer->getLightingShader()->sendFloat("depthGradient", 200);
+	myContainer->getLightingShader()->sendFloat("hourIndice", lightSun->getIndice());
 	
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
-	myContainer->getClassicShader()->sendInt("lightTexture", 0);
+	myContainer->getLightingShader()->sendInt("lightTexture", 0);
 
 }
 

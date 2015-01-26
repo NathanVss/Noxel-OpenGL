@@ -48,7 +48,7 @@ public:
 	void init();
 	void begin();
 	void end();
-	void render();
+	void render(int programId);
 
 	void freeObjects();
 	int getGlyphsNumber();

@@ -26,8 +26,8 @@ public:
 
 
 
-	void addLightSun(LightSun* s) {
-		lightsSun.push_back(s);
+	void setLightSun(LightSun* l) {
+		lightSun = l;
 	}
 	void addLightRadius(LightRadius* s) {
 		lightsRadius.push_back(s);
@@ -50,6 +50,8 @@ private:
 	float offset;
 
 	GLuint texture;
+	
+	LightSun* lightSun;
 
 	std::vector<LightSun*> lightsSun;
 	std::vector<LightRadius*> lightsRadius;

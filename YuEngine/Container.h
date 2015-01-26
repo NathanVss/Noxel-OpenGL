@@ -53,6 +53,7 @@ public:
 		return this->gameRenderer;
 	}
 
+
 protected:
 	Input *input;
 	Camera2D *camera;
