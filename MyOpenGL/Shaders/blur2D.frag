@@ -11,6 +11,8 @@ uniform int screenWidth;
 uniform int screenHeight;
 
 uniform int vertical;
+uniform int invertY;
+uniform float offset;
 
 bool isWhite(vec4 texture) {
 
@@ -22,7 +24,13 @@ void main() {
 
     float intensity = 1.0f;
 
-        vec2 coords = vec2(1.0f / screenWidth * gl_FragCoord.x, 1.0f / screenHeight * gl_FragCoord.y);
+
+        vec2 coords = vec2(1.0f / screenWidth * gl_FragCoord.x + offset / screenWidth, 1.0f / screenHeight * gl_FragCoord.y - offset / screenHeight);
+
+        if(invertY == 1) {
+
+            coords.y = 1.0f - coords.y;
+        }
 
     vec4 textureColor = texture(screenTexture, coords);
     if(!isWhite(textureColor)) {

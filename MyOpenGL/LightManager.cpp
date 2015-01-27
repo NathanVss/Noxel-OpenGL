@@ -11,6 +11,7 @@
 #include "Block.h"
 #include <YuEngine\Camera2D.h>
 #include <YuEngine\Shader.h>
+#include <YuEngine\GameRenderer.h>
 
 LightManager::LightManager(int _screenWidth, int _screenHeight) {
 	texture = 0;
@@ -18,13 +19,21 @@ LightManager::LightManager(int _screenWidth, int _screenHeight) {
 	offset = sunBias;
 	screenWidth = _screenWidth;
 	screenHeight = _screenHeight;
-	textureWidth = screenWidth + offset * 2;
-	textureHeight = screenHeight + offset * 2;
+	//textureWidth = screenWidth + offset * 2;
+	//textureHeight = screenHeight + offset * 2;
+
+	textureWidth = screenWidth;
+	textureHeight = screenHeight;
+
 	screenPixels = new GLubyte[textureWidth*textureHeight*4];
 	resetScreenPixels();
 	pixelsToBmp();
 	eTimer = YuEngine::EventTimer(60);
 
+	frameBufferHorizBlur = new YuEngine::FrameBuffer(screenWidth, screenHeight);
+	frameBufferHorizBlur->load();
+	
+	lightSpritesheet = YuEngine::Spritesheet("textures/voidblank.png", 1);
 }
 
 LightManager::~LightManager(void){
@@ -56,6 +65,42 @@ void LightManager::update() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+}
+
+void LightManager::renderLighting() {
+
+
+	frameBufferHorizBlur->bind();
+
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+		myContainer->getGameRenderer()->begin();
+		myContainer->getGameRenderer()->addGlyph(cameraBox.getX1(), cameraBox.getY1(), cameraBox.getWidth(), cameraBox.getHeight(), 10.0f, 1.0f, 1.0f, 1.0f, 1.0f, &lightSpritesheet, 0,0,1,1);
+		myContainer->getGameRenderer()->end();
+
+
+		myContainer->getBlurShader()->use();
+		myContainer->getBlurShader()->sendMatrix4("cameraMatrix", myContainer->getCamera()->getCameraMatrix());
+		myContainer->getBlurShader()->sendInt("screenWidth", textureWidth);
+		myContainer->getBlurShader()->sendInt("screenHeight", textureHeight);
+		myContainer->getBlurShader()->sendInt("vertical", 0);
+		myContainer->getBlurShader()->sendInt("invertY", 1);
+		myContainer->getBlurShader()->sendFloat("offset", offset);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		myContainer->getBlurShader()->sendInt("screenTexture", 0);
+
+		myContainer->getGameRenderer()->end();
+
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		myContainer->getGameRenderer()->render(myContainer->getBlurShader()->getProgramID());
+
+		myContainer->getBlurShader()->unuse();
+
+	frameBufferHorizBlur->unbind();
+
 
 }
 

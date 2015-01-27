@@ -6,6 +6,10 @@
 #include <YuEngine\Vertex.h>
 #include <YuEngine\YuBoudingbox.h>
 #include <YuEngine\EventTimer.h>
+#include <YuEngine\FrameBuffer.h>
+#include <YuEngine\Spritesheet.h>
+
+
 #include "Block.h"
 
 class LightSun;
@@ -24,6 +28,8 @@ public:
 	void update();
 	void render();
 
+	void renderLighting();
+
 
 
 	void setLightSun(LightSun* l) {
@@ -34,6 +40,9 @@ public:
 	}
 	GLuint getTexture() {
 		return texture;
+	}
+	YuEngine::FrameBuffer* getFrameBufferHorizBlur() {
+		return frameBufferHorizBlur;
 	}
 
 private:
@@ -55,5 +64,8 @@ private:
 
 	std::vector<LightSun*> lightsSun;
 	std::vector<LightRadius*> lightsRadius;
+
+	YuEngine::FrameBuffer* frameBufferHorizBlur;
+	YuEngine::Spritesheet lightSpritesheet;
 };
 

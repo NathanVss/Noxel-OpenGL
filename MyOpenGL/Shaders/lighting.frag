@@ -138,8 +138,5 @@ void main() {
 
     }
     color = vec4(fragmentColor.r * intensity, fragmentColor.g * intensity, fragmentColor.b * intensity, fragmentColor.a) * textureColor * light * vec4(hourIndice, hourIndice, hourIndice, 1.0f);
-    // color = textureColor * light * vec4(hourIndice, hourIndice, hourIndice, 1.0f);
-    //color = textureColor * light;
-    // color = vec4(1.0f, 0,0,1.0f);
     
 }

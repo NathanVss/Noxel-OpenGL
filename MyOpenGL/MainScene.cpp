@@ -92,6 +92,7 @@ void MainScene::loop() {
 
 	YuEngine::FrameBuffer frameBufferBlurVert(width, height);
 	frameBufferBlurVert.load();
+			YuEngine::Spritesheet spritesheetLight("textures/voidblank.png", 1);
 
 	while(!mustFinish) {
 		beginIteration();
@@ -119,7 +120,7 @@ void MainScene::loop() {
 				lightRadius->setPosition(cameraPos.x+container->getInput()->getMouseX(), cameraPos.y - container->getInput()->getMouseY());
 				lightManager.addLightRadius(lightRadius);
 			}
-			//pixelsToBmp(frameBuffer.getColorBufferId(0));
+			pixelsToBmp(frameBuffer.getColorBufferId(0));
 
 			eTimer.reset();
 		}
@@ -130,30 +131,28 @@ void MainScene::loop() {
 		lightManager.update();
 
 
+		lightManager.renderLighting();
 
-		frameBuffer.bind();
+		//frameBuffer.bind();
 
-			// RENDU AVEC LUMIERE
-			
-			clear();
-			
+		//	// RENDU AVEC LUMIERE
+		//	
+		//	clear();
+		//	
 
-			gameRenderer->begin();
+		//	gameRenderer->begin();
+		//	gameRenderer->addGlyph(cameraBox.getX1(),cameraBox.getY1(), width, height, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, &spritesheetLight, 0,0,1,1);
 
-			YuEngine::Spritesheet spritesheetLight("textures/voidblank.png", 1);
-			gameRenderer->addGlyph(cameraBox.getX1(),cameraBox.getY1(), width, height, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, &spritesheetLight, 0,0,1,1);
+		//	container->getLightingShader()->use();
+		//	container->getLightingShader()->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
+		//	lightManager.render();
 
+		//	gameRenderer->end();
 
-			container->getLightingShader()->use();
-			container->getLightingShader()->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
-			lightManager.render();
+		//	gameRenderer->render(container->getLightingShader()->getProgramID());
+		//	container->getLightingShader()->unuse();
 
-			gameRenderer->end();
-
-			gameRenderer->render(container->getLightingShader()->getProgramID());
-			container->getLightingShader()->unuse();
-
-		frameBuffer.unbind();
+		//frameBuffer.unbind();
 
 #pragma region blur
 
@@ -229,7 +228,8 @@ void MainScene::loop() {
 
 		// LIGHT
 		gameRenderer->begin();
-		YuEngine::Spritesheet spritesheet(frameBuffer.getColorBufferId(0), 1);
+		YuEngine::Spritesheet spritesheet(lightManager.getFrameBufferHorizBlur()->getColorBufferId(0), 1);
+		//YuEngine::Spritesheet spritesheet(frameBufferBlurVert.getColorBufferId(0), 1);
 		gameRenderer->addGlyph(cameraBox.getX1(),cameraBox.getY1(), width, height, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, &spritesheet, 0,0,1,1);
 		
 		container->getClassicShader()->use();

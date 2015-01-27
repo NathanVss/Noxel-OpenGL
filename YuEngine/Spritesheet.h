@@ -10,6 +10,8 @@ class Spritesheet
 {
 public:
 	Spritesheet(std::string textureFile, int size);
+	Spritesheet() { 
+	};
 	Spritesheet(int _textureId, int _size);
 	~Spritesheet(void);
 
