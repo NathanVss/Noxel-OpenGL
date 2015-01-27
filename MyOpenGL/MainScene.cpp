@@ -97,8 +97,8 @@ void MainScene::loop() {
 	while(!mustFinish) {
 		beginIteration();
 
-		//lightSun.setSeconds(lightSun.getSeconds() + 300);
-		lightSun.setSeconds(3600*14);
+		lightSun.setSeconds(lightSun.getSeconds() + 500);
+		//lightSun.setSeconds(3600*14);
 
 
 		container->getInput()->update();
@@ -120,7 +120,7 @@ void MainScene::loop() {
 				lightRadius->setPosition(cameraPos.x+container->getInput()->getMouseX(), cameraPos.y - container->getInput()->getMouseY());
 				lightManager.addLightRadius(lightRadius);
 			}
-			pixelsToBmp(frameBuffer.getColorBufferId(0));
+			//pixelsToBmp(frameBuffer.getColorBufferId(0));
 
 			eTimer.reset();
 		}
@@ -228,7 +228,7 @@ void MainScene::loop() {
 
 		// LIGHT
 		gameRenderer->begin();
-		YuEngine::Spritesheet spritesheet(lightManager.getFrameBufferHorizBlur()->getColorBufferId(0), 1);
+		YuEngine::Spritesheet spritesheet(lightManager.getFrameBufferVertBlur()->getColorBufferId(0), 1);
 		//YuEngine::Spritesheet spritesheet(frameBufferBlurVert.getColorBufferId(0), 1);
 		gameRenderer->addGlyph(cameraBox.getX1(),cameraBox.getY1(), width, height, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, &spritesheet, 0,0,1,1);
 		
@@ -237,6 +237,9 @@ void MainScene::loop() {
 		
 		
 		gameRenderer->end();
+
+
+
 		// Blending multiplicatif
 		// Ce qui est devant est égal au fond multiplé par la lumiere normalisée
 		glBlendFunc(GL_DST_COLOR, GL_SRC1_COLOR);

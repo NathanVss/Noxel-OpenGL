@@ -1,3 +1,60 @@
-﻿  LightManager.cpp
-LightManager.cpp(16): error C2512: 'YuEngine::Spritesheet' : aucun constructeur par défaut approprié disponible
-  MainScene.cpp
+﻿La génération a démarré 28/01/2015 00:52:25.
+     1>Projet "C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\MyOpenGL\MyOpenGL.vcxproj" sur le nœud 2 (Build cible(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /Zi /nologo /W0 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt LightManager.cpp MainScene.cpp
+         LightManager.cpp
+         MainScene.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\MyOpenGL.exe" /NOLOGO YuEngine.lib SDL2.lib SDL2main.lib opengl32.lib glew32.lib SDL2_image.lib CompiledEasyBMP.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\MyOpenGL.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\MyOpenGL.lib" /MACHINE:X86 /SAFESEH Release\Biome.obj
+         Release\BiomeDesert.obj
+         Release\BiomePlains.obj
+         Release\Block.obj
+         Release\BlockAir.obj
+         Release\BlockDirt.obj
+         Release\BlockGrass.obj
+         Release\BlockSand.obj
+         Release\Chunk.obj
+         Release\Container.obj
+         Release\Entity.obj
+         Release\Light.obj
+         Release\LightManager.obj
+         Release\LightRadius.obj
+         Release\LightSun.obj
+         Release\main.obj
+         Release\MainScene.obj
+         Release\Object.obj
+         Release\PixelsMap.obj
+         Release\Player.obj
+         Release\World.obj
+         Release\WorldGen.obj
+         Release\WorldGenCaves.obj
+     1>YuEngine.lib(Object.obj) : warning LNK4075: ' /EDITANDCONTINUE' ignoré à cause de la spécification '/OPT:ICF'
+         Génération de code en cours
+         Fin de la génération du code
+     1>YuEngine.lib(Camera2D.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(Camera2D.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(Container.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(Container.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(DebugOverlay.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(DebugOverlay.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(FontRenderer.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(FontRenderer.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(FpsCounter.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(FpsCounter.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(GameRenderer.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(GameRenderer.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(Input.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(Input.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(Object.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(Object.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(OpenGlScene.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(OpenGlScene.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(Perlin2D.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(Perlin2D.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(Shader.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(Shader.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(Spritesheet.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(Spritesheet.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(SpritesheetsManager.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(SpritesheetsManager.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(Texture.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(Texture.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(Utils.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(Utils.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(YuBoudingbox.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(YuBoudingbox.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(YuWindow.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(YuWindow.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(DDAHelper.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(DDAHelper.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(EventTimer.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(EventTimer.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>YuEngine.lib(FrameBuffer.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'YuEngine.lib(FrameBuffer.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+     1>CompiledEasyBMP.lib(EasyBMP.obj) : warning LNK4099: PDB 'vc110.pdb' n'a pu être trouvé avec 'CompiledEasyBMP.lib(EasyBMP.obj)' ou sur 'C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\vc110.pdb' ; l'objet sera lié sans informations de débogage
+         MyOpenGL.vcxproj -> C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\Release\MyOpenGL.exe
+     1>Génération du projet "C:\Users\Nathan\documents\visual studio 2012\Projects\OpenGLModern\MyOpenGL\MyOpenGL.vcxproj" terminée (Build cible(s)).
+
+La génération a réussi.
+
+Temps écoulé 00:00:02.00

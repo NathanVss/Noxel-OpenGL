@@ -28,6 +28,7 @@ public:
 	void update();
 	void render();
 
+	void pixelsToBmp(GLuint texture, std::string, int, int);
 	void renderLighting();
 
 
@@ -43,6 +44,9 @@ public:
 	}
 	YuEngine::FrameBuffer* getFrameBufferHorizBlur() {
 		return frameBufferHorizBlur;
+	}
+	YuEngine::FrameBuffer* getFrameBufferVertBlur() {
+		return frameBufferVertBlur;
 	}
 
 private:
@@ -66,6 +70,7 @@ private:
 	std::vector<LightRadius*> lightsRadius;
 
 	YuEngine::FrameBuffer* frameBufferHorizBlur;
+	YuEngine::FrameBuffer* frameBufferVertBlur;
 	YuEngine::Spritesheet lightSpritesheet;
 };
 
