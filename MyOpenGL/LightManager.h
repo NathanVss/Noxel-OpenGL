@@ -71,6 +71,8 @@ private:
 
 	YuEngine::FrameBuffer* frameBufferHorizBlur;
 	YuEngine::FrameBuffer* frameBufferVertBlur;
+	YuEngine::FrameBuffer* frameBufferObstacle;
+
 	YuEngine::Spritesheet lightSpritesheet;
 };
 

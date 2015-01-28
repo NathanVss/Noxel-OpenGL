@@ -155,10 +155,10 @@ void World::setBlock(Block* block) {
 
 }
 
-void World::render() {
+void World::render(bool obstacles) {
 
 	for(int i = 0; i < activeChunks.size(); i++) {
-		activeChunks[i]->render();
+		activeChunks[i]->render(obstacles);
 	}
 
 }

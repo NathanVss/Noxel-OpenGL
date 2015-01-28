@@ -29,7 +29,7 @@ public:
 	void init();
 	void generate();
 
-	void render();
+	void render(bool obstacles);
 	void update();
 	void setBlock(Block* block);
 	Block* getBlock(float x, float y);

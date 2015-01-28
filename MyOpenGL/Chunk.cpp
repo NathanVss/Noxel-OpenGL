@@ -49,12 +49,22 @@ void Chunk::setBlock(Block* block) {
 
 
 
-void Chunk::render() {
+void Chunk::render(bool obstacles) {
 	for(int x=0; x < Chunk::width; x++) {
 
 		for(int y = 0; y < Chunk::height; y++) {
 
-			blocks[x][y]->render();
+			if(obstacles) {
+
+				if(!blocks[x][y]->isTransparent()) {
+					blocks[x][y]->render(obstacles);
+
+				}
+
+			} else {
+				blocks[x][y]->render(obstacles);
+
+			}
 
 		}
 	}

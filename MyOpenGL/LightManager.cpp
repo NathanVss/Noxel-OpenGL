@@ -25,11 +25,13 @@ LightManager::LightManager(int _screenWidth, int _screenHeight) {
 
 	screenPixels = new GLubyte[textureWidth*textureHeight*4];
 	resetScreenPixels();
-	//pixelsToBmp();
 	eTimer = YuEngine::EventTimer(60);
 
 	frameBufferHorizBlur = new YuEngine::FrameBuffer(textureWidth, textureHeight);
 	frameBufferHorizBlur->load();
+
+	frameBufferObstacle = new YuEngine::FrameBuffer(textureWidth, textureHeight);
+	frameBufferObstacle->load();
 
 	frameBufferVertBlur = new YuEngine::FrameBuffer(screenWidth, screenHeight);
 	frameBufferVertBlur->load();
@@ -44,7 +46,6 @@ LightManager::~LightManager(void){
 
 
 void LightManager::pixelsToBmp(GLuint textureId, std::string file, int width, int height) {
-	//return;
 	GLubyte *pixels =  new GLubyte[width*height*4];
 	glBindTexture(GL_TEXTURE_2D, textureId);
 
@@ -62,7 +63,6 @@ void LightManager::pixelsToBmp(GLuint textureId, std::string file, int width, in
 			(*curBMP)(x, y)->Red = pixels[y*width*4  + x * 4];
 			(*curBMP)(x, y)->Green = pixels[y*width*4  + x * 4 + 1];
 			(*curBMP)(x, y)->Blue = pixels[y*width*4  + x * 4 + 2];
-			//(*curBMP)(x, y)->Alpha = pixels[y*textureWidth*4  + x * 4 + 3];
 			(*curBMP)(x, y)->Alpha = 0;
 		}
 	}
@@ -79,15 +79,6 @@ void LightManager::update() {
 	textureBox = YuEngine::YuBoudingbox(cameraBox.getX1() - offset, cameraBox.getY1() + offset, cameraBox.getWidth() + offset*2, cameraBox.getHeight() + offset*2);
 	
 	refreshScreenPixels();
-
-
-	glDeleteTextures(1, &texture);
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, screenPixels);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 
@@ -116,10 +107,8 @@ void LightManager::renderLighting() {
 		myContainer->getBlurShader()->sendFloat("offset", 0);
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture);
+		glBindTexture(GL_TEXTURE_2D, frameBufferObstacle->getColorBufferId(0));
 		myContainer->getBlurShader()->sendInt("screenTexture", 0);
-
-		myContainer->getGameRenderer()->end();
 
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		myContainer->getGameRenderer()->render(myContainer->getBlurShader()->getProgramID());
@@ -151,14 +140,12 @@ void LightManager::renderLighting() {
 		myContainer->getBlurShader()->sendInt("screenTextureWidth", textureWidth);
 		myContainer->getBlurShader()->sendInt("vertical", 1);
 		myContainer->getBlurShader()->sendFloat("sunIndice", lightSun->getIndice());
-		myContainer->getBlurShader()->sendInt("invertY",1);
+		myContainer->getBlurShader()->sendInt("invertY",0);
 		myContainer->getBlurShader()->sendFloat("offset",offset);
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, frameBufferHorizBlur->getColorBufferId(0));
 		myContainer->getBlurShader()->sendInt("screenTexture", 0);
-
-		myContainer->getGameRenderer()->end();
 
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		myContainer->getGameRenderer()->render(myContainer->getBlurShader()->getProgramID());
@@ -176,9 +163,52 @@ void LightManager::renderLighting() {
 	//pixelsToBmp(frameBufferVertBlur->getColorBufferId(0), "lighting/Vert.bmp", screenWidth, screenHeight);
 	//pixelsToBmp(frameBufferHorizBlur->getColorBufferId(0), "lighting/Horiz.bmp", textureWidth, textureHeight);
 	//pixelsToBmp(texture, "lighting/blocks.bmp", textureWidth, textureHeight);
+	//pixelsToBmp(frameBufferObstacle->getColorBufferId(0), "lighting/obstacle.bmp", textureWidth, textureHeight);
+
 
 		eTimer.reset();
 	}
+
+}
+
+
+
+
+
+void LightManager::refreshScreenPixels() {
+
+	frameBufferObstacle->bind();
+
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glViewport(0, 0, textureWidth, textureHeight);
+
+		myContainer->getGameRenderer()->begin();
+
+		myContainer->getWorld()->render(true);
+
+		myContainer->getGameRenderer()->end();
+
+
+		myContainer->getClassicShader()->use();
+
+
+		YuEngine::Camera2D camBox;
+		camBox.setContainer(myContainer);
+		camBox.init(textureWidth, textureHeight);
+		glm::vec2 position = myContainer->getCamera()->getPosition();
+		camBox.setPosition(position);
+		camBox.update();
+
+		myContainer->getClassicShader()->sendMatrix4("cameraMatrix", camBox.getCameraMatrix());
+
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		myContainer->getGameRenderer()->render(myContainer->getClassicShader()->getProgramID());
+
+		myContainer->getClassicShader()->unuse();
+
+
+	frameBufferObstacle->unbind();
 
 }
 
@@ -213,7 +243,6 @@ void LightManager::render() {
 
 
 
-
 void LightManager::resetScreenPixels() {
 
 	for(int x = 0; x < textureWidth ; x++) {
@@ -228,54 +257,6 @@ void LightManager::resetScreenPixels() {
 	}
 
 }
-
-void LightManager::refreshScreenPixels() {
-
-	resetScreenPixels();
-
-	std::vector<Chunk*>* activeChunks = myContainer->getWorld()->getActiveChunks();
-
-	for(int i = 0; i < activeChunks->size(); i++) {
-
-		Chunk* curChunk = (*activeChunks)[i];
-
-		Block*** blocks = curChunk->getBlocks();
-		for(int x = 0; x < Chunk::width; x++) {
-			for(int y = 0; y < Chunk::height; y++) {
-
-				if(blocks[x][y]->isTransparent()) {
-					continue;
-				}
-
-				//float relX = blocks[x][y]->getX() - cameraBox.getX1();
-				float relX = blocks[x][y]->getX() - textureBox.getX1();
-				//float relY = cameraBox.getY1() - blocks[x][y]->getY();
-				float relY = textureBox.getY1() - blocks[x][y]->getY();
-				if(relX < 0 - Block::size || relY < 0 - Block::size || relX >= textureWidth || relY >= textureHeight) {
-					continue;
-				}
-				for(int ix = 0; ix < Block::size; ix++) {
-					for(int iy = 0; iy < Block::size; iy++) {
-
-						if(relX+ix >= textureWidth || relY+iy >= textureHeight || relX + ix < 0 || relY + iy < 0) {
-							continue;
-						}
-
-						int pos = (relY+iy) * textureWidth * 4 + (relX+ix) * 4;
-
-							screenPixels[pos] = 0;
-							screenPixels[pos + 1] = 0;
-							screenPixels[pos + 2] = 0;
-							screenPixels[pos + 3] = 255;
-					}
-				}
-			}
-		}
-	}
-
-}
-
-
 void LightManager::pixelsToBmp() {
 
 	BMP* curBMP = new BMP();

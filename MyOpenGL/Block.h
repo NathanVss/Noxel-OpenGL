@@ -44,7 +44,7 @@ public:
 		return boundingBox;
 	}
 
-	virtual void render();
+	virtual void render(bool obstacles);
 	virtual void update();
 	static float size;
 

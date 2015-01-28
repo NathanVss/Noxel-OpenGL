@@ -14,7 +14,7 @@ public:
 	~Chunk(void);
 
 	void init();
-	void render();
+	void render(bool obstacles);
 	void setBlock(Block* block);
 	Block*** getBlocks() {
 		return blocks;

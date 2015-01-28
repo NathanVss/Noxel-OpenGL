@@ -97,8 +97,8 @@ void MainScene::loop() {
 	while(!mustFinish) {
 		beginIteration();
 
-		lightSun.setSeconds(lightSun.getSeconds() + 500);
-		//lightSun.setSeconds(3600*14);
+		//lightSun.setSeconds(lightSun.getSeconds() + 500);
+		lightSun.setSeconds(3600*14);
 
 
 		container->getInput()->update();
@@ -133,87 +133,11 @@ void MainScene::loop() {
 
 		lightManager.renderLighting();
 
-		//frameBuffer.bind();
-
-		//	// RENDU AVEC LUMIERE
-		//	
-		//	clear();
-		//	
-
-		//	gameRenderer->begin();
-		//	gameRenderer->addGlyph(cameraBox.getX1(),cameraBox.getY1(), width, height, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, &spritesheetLight, 0,0,1,1);
-
-		//	container->getLightingShader()->use();
-		//	container->getLightingShader()->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
-		//	lightManager.render();
-
-		//	gameRenderer->end();
-
-		//	gameRenderer->render(container->getLightingShader()->getProgramID());
-		//	container->getLightingShader()->unuse();
-
-		//frameBuffer.unbind();
-
-#pragma region blur
-
-		// DEUXIEME PASSE
-		// BLUR
-
-		//frameBufferBlur.bind();
-		//
-		//	clear();
-		//	gameRenderer->begin();
-
-		//	gameRenderer->addGlyph(cameraBox.getX1(),cameraBox.getY1(), width, height, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, &spritesheetLight, 0,0,1,1);
-		//	container->getBlurShader()->use();
-		//	container->getBlurShader()->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
-		//	container->getBlurShader()->sendInt("screenWidth", width);
-		//	container->getBlurShader()->sendInt("screenHeight", height);
-		//	container->getBlurShader()->sendInt("vertical", 0);
-		//
-		//	glActiveTexture(GL_TEXTURE0);
-		//	glBindTexture(GL_TEXTURE_2D, frameBuffer.getColorBufferId(0));
-		//	container->getBlurShader()->sendInt("screenTexture", 0);
-		//
-		//
-		//	gameRenderer->end();
-		//	gameRenderer->render(container->getBlurShader()->getProgramID());
-		//
-		//	container->getBlurShader()->unuse();
-
-		//frameBufferBlur.unbind();
-
-		//frameBufferBlurVert.bind();
-
-		//	clear();
-		//	gameRenderer->begin();
-
-		//	gameRenderer->addGlyph(cameraBox.getX1(),cameraBox.getY1(), width, height, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, &spritesheetLight, 0,0,1,1);
-		//	container->getBlurShader()->use();
-		//	container->getBlurShader()->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
-		//	container->getBlurShader()->sendInt("screenWidth", width);
-		//	container->getBlurShader()->sendInt("screenHeight", height);
-		//	container->getBlurShader()->sendInt("vertical", 1);
-		//
-		//	glActiveTexture(GL_TEXTURE0);
-		//	glBindTexture(GL_TEXTURE_2D, frameBufferBlur.getColorBufferId(0));
-		//	container->getBlurShader()->sendInt("screenTexture", 0);
-		//
-		//
-		//	gameRenderer->end();
-		//	gameRenderer->render(container->getBlurShader()->getProgramID());
-		//
-		//	container->getBlurShader()->unuse();	
-
-		//frameBufferBlurVert.unbind();
-
-#pragma endregion
-
 		// TROISIEME PASSE
 		clear();
 		gameRenderer->begin();
 
-		world->render();
+		world->render(false);
 		player.render();
 
 		container->getClassicShader()->use();
@@ -229,7 +153,6 @@ void MainScene::loop() {
 		// LIGHT
 		gameRenderer->begin();
 		YuEngine::Spritesheet spritesheet(lightManager.getFrameBufferVertBlur()->getColorBufferId(0), 1);
-		//YuEngine::Spritesheet spritesheet(frameBufferBlurVert.getColorBufferId(0), 1);
 		gameRenderer->addGlyph(cameraBox.getX1(),cameraBox.getY1(), width, height, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, &spritesheet, 0,0,1,1);
 		
 		container->getClassicShader()->use();
