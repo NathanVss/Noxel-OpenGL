@@ -14,7 +14,7 @@ public:
 	Block(float _x, float _y) {
 		x = _x;
 		y = _y;
-		boundingBox = YuEngine::YuBoudingbox(x, y, Block::size, Block::size);
+		boundingBox = YuEngine::YuBoudingbox(x, y+Block::size, Block::size, Block::size);
 		YuEngine::Color c;
 		c.r = 255;
 		c.g = 255;

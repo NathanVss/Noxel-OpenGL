@@ -32,10 +32,18 @@ public:
 	YuEngine::Shader* getBlurShader() {
 		return blurShader;
 	}
+	void setLightRadiusShader(YuEngine::Shader *s) {
+		lightRadiusShader = s;
+	}
+	YuEngine::Shader* getLightRadiusShader() {
+		return lightRadiusShader;
+	}
 
 protected:
 	World* world;
 	YuEngine::Shader *lightingShader;
 	YuEngine::Shader *blurShader;
+	YuEngine::Shader *lightRadiusShader;
+
 };
 

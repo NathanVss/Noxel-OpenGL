@@ -114,7 +114,8 @@ bool YuBoudingbox::doesCollideRightOf(YuBoudingbox &Rect2) {
 		if((Rect2.getY1() > y1 - height && y1 - height > Rect2.getY1() - Rect2.getHeight()) ||
 			(y1  < Rect2.getY1() && y1 > Rect2.getY1() - Rect2.getHeight()) ||
 			(Rect2.getY1() < y1 && Rect2.getY1() > y1 - height) ||
-			(y1 < Rect2.getY1() && y1 > Rect2.getY1() - Rect2.getHeight())) {
+			(y1 < Rect2.getY1() && y1 > Rect2.getY1() - Rect2.getHeight()) ||
+			(y1 == Rect2.getY1())) {
 			return true;
 		}
 
@@ -134,7 +135,9 @@ bool YuBoudingbox::doesCollideLeftOf(YuBoudingbox &Rect2) {
 		if((Rect2.getY1() > y1 - height && y1 - height > Rect2.getY1() - Rect2.getHeight()) ||
 			(y1  < Rect2.getY1() && y1 > Rect2.getY1() - Rect2.getHeight()) ||
 			(Rect2.getY1() < y1 && Rect2.getY1() > y1 - height) ||
-			(y1 < Rect2.getY1() && y1 > Rect2.getY1() - Rect2.getHeight())) {
+			(y1 < Rect2.getY1() && y1 > Rect2.getY1() - Rect2.getHeight()) ||
+			(y1 == Rect2.getY1())
+			) {
 			return true;
 		}
 

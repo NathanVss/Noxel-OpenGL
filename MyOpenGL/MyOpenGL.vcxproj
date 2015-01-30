@@ -44,7 +44,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir);$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Dependecies/EasyBMP;$(SolutionDir)Dependecies/SDL2_image-2.0.0/lib/x86;$(SolutionDir)Debug/;$(SolutionDir)Dependecies/SDL2-2.0.3/lib/x86;$(SolutionDir)Dependecies/glew/lib/Release/Win32;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Dependecies/EasyBMP;$(SolutionDir)Dependecies/SDL2_image-2.0.0/lib/x86;$(SolutionDir)Release/;$(SolutionDir)Dependecies/SDL2-2.0.3/lib/x86;$(SolutionDir)Dependecies/glew/lib/Release/Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -85,6 +85,7 @@
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="Container.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="GameConsole.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="LightRadius.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="Container.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="GameConsole.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="LightRadius.h" />

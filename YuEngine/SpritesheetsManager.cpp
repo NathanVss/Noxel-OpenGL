@@ -6,6 +6,7 @@ SpritesheetsManager::SpritesheetsManager(){
 
 	FontSpritesheet = new Spritesheet("textures/font.png", 16);
 	blocksSpritesheet = new Spritesheet("textures/blocks.png", 16);
+	miscSpritesheet = new Spritesheet("textures/misc.png", 16);
 
 }
 

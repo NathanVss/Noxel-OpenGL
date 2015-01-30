@@ -58,9 +58,18 @@ public:
 	static bool compareBackToFront(Glyph* a, Glyph* b);
 	static bool compareTexture(Glyph* a, Glyph* b);
 
+	int getTotalGlyphsNumber() {
+		return totalGlyphsNumber;
+	}
+	void resetTotalGlyphsNumber() {
+		totalGlyphsNumber = 0;
+	}
+
 private:
 	void createVertexArray();
 	void fillVbo();
+
+	int totalGlyphsNumber;
 
 	std::vector<Glyph> glyphs;
 	std::vector<Glyph*> glyphPointers;
@@ -69,6 +78,10 @@ private:
 
 	std::vector<Glyph> colorGlyphs;
 	std::vector<RenderBatch> renderBatches;
+
+	GLuint vboColorId;
+	GLuint vaoColorId;
+
 	GLuint vboId;
 	GLuint vaoId;
 };

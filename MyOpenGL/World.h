@@ -19,7 +19,7 @@ class World: public Object
 public:
 	World(void) {
 		chunksHoriz = 20;
-		chunksVert = 5;
+		chunksVert = 20;
 
 	};
 	static int worldHeight;

@@ -6,6 +6,8 @@
 
 BiomeDesert::BiomeDesert(float _baseX, float _firstBlockY) : Biome(_baseX, _firstBlockY) {
 	groundLevel = 50;
+	topLevel = 60;
+
 	setFirstBlockYRelNoise(firstBlockY);
 
 	YuEngine::Perlin2D _perlin;
@@ -31,7 +33,7 @@ void BiomeDesert::generate() {
 		}
 		
 
-		float y = (int)(groundLevel + ( World::worldHeight - groundLevel ) * noiseValue);
+		float y = (int)(groundLevel + ( topLevel - groundLevel ) * noiseValue);
 
 
 		if( x == (baseX + length - 1) ) {

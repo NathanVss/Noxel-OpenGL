@@ -22,11 +22,8 @@ public:
 	LightManager(int _screenWidth, int _screenHeight);
 	~LightManager(void);
 
-	void resetScreenPixels();
-	void pixelsToBmp();
 	void refreshScreenPixels();
 	void update();
-	void render();
 
 	void pixelsToBmp(GLuint texture, std::string, int, int);
 	void renderLighting();
@@ -48,9 +45,20 @@ public:
 	YuEngine::FrameBuffer* getFrameBufferVertBlur() {
 		return frameBufferVertBlur;
 	}
+	YuEngine::FrameBuffer* getFrameBufferLightsRadius(int index) {
+		if(index == 1) {
+			return frameBufferLightsRadius1;
+
+		} else if (index == 2) {
+			return frameBufferLightsRadius2;
+
+		}
+	}
+	YuEngine::FrameBuffer* getLastFrameBufferLightsRadius() {
+		return lastFrameBufferLightsRadius;
+	}
 
 private:
-	GLubyte *screenPixels;
 	int screenWidth;
 	int screenHeight;
 
@@ -72,6 +80,9 @@ private:
 	YuEngine::FrameBuffer* frameBufferHorizBlur;
 	YuEngine::FrameBuffer* frameBufferVertBlur;
 	YuEngine::FrameBuffer* frameBufferObstacle;
+	YuEngine::FrameBuffer* frameBufferLightsRadius1;
+	YuEngine::FrameBuffer* frameBufferLightsRadius2;
+	YuEngine::FrameBuffer* lastFrameBufferLightsRadius;
 
 	YuEngine::Spritesheet lightSpritesheet;
 };

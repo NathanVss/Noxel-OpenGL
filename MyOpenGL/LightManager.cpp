@@ -13,6 +13,7 @@
 #include <YuEngine\Shader.h>
 #include <YuEngine\GameRenderer.h>
 #include <YuEngine\Camera2D.h>
+#include <YuEngine\Input.h>
 
 LightManager::LightManager(int _screenWidth, int _screenHeight) {
 	texture = 0;
@@ -23,8 +24,6 @@ LightManager::LightManager(int _screenWidth, int _screenHeight) {
 	textureWidth = screenWidth + offset * 2;
 	textureHeight = screenHeight + offset * 2;
 
-	screenPixels = new GLubyte[textureWidth*textureHeight*4];
-	resetScreenPixels();
 	eTimer = YuEngine::EventTimer(60);
 
 	frameBufferHorizBlur = new YuEngine::FrameBuffer(textureWidth, textureHeight);
@@ -35,6 +34,12 @@ LightManager::LightManager(int _screenWidth, int _screenHeight) {
 
 	frameBufferVertBlur = new YuEngine::FrameBuffer(screenWidth, screenHeight);
 	frameBufferVertBlur->load();
+
+	frameBufferLightsRadius1 = new YuEngine::FrameBuffer(screenWidth, screenHeight);
+	frameBufferLightsRadius1->load();	
+	
+	frameBufferLightsRadius2 = new YuEngine::FrameBuffer(screenWidth, screenHeight);
+	frameBufferLightsRadius2->load();
 	
 	lightSpritesheet = YuEngine::Spritesheet("textures/voidblank.png", 1);
 }
@@ -45,32 +50,7 @@ LightManager::~LightManager(void){
 
 
 
-void LightManager::pixelsToBmp(GLuint textureId, std::string file, int width, int height) {
-	GLubyte *pixels =  new GLubyte[width*height*4];
-	glBindTexture(GL_TEXTURE_2D, textureId);
 
-	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	BMP* curBMP = new BMP();
-
-
-	curBMP->SetSize(width,height);
-	curBMP->SetBitDepth(32);
-	for(int x=0; x < width; x++) {
-		for(int y = 0; y < height; y++) {
-			(*curBMP)(x, y)->Red = pixels[y*width*4  + x * 4];
-			(*curBMP)(x, y)->Green = pixels[y*width*4  + x * 4 + 1];
-			(*curBMP)(x, y)->Blue = pixels[y*width*4  + x * 4 + 2];
-			(*curBMP)(x, y)->Alpha = 0;
-		}
-	}
-	curBMP->WriteToFile(file.c_str());
-	delete curBMP;
-	delete[] pixels;
-
-}
 
 void LightManager::update() {
 
@@ -120,8 +100,6 @@ void LightManager::renderLighting() {
 
 	frameBufferVertBlur->bind();
 
-
-
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glViewport(0, 0, screenWidth, screenHeight);
@@ -140,8 +118,15 @@ void LightManager::renderLighting() {
 		myContainer->getBlurShader()->sendInt("screenTextureWidth", textureWidth);
 		myContainer->getBlurShader()->sendInt("vertical", 1);
 		myContainer->getBlurShader()->sendFloat("sunIndice", lightSun->getIndice());
+		myContainer->getBlurShader()->sendFloat("cameraBoxY", cameraBox.getY1());
+		myContainer->getBlurShader()->sendFloat("darkDepthY", Block::size * 40);
+		myContainer->getBlurShader()->sendFloat("darkDepthGradient", Block::size * 20);
 		myContainer->getBlurShader()->sendInt("invertY",0);
 		myContainer->getBlurShader()->sendFloat("offset",offset);
+
+
+
+
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, frameBufferHorizBlur->getColorBufferId(0));
@@ -156,23 +141,92 @@ void LightManager::renderLighting() {
 
 	frameBufferVertBlur->unbind();
 
+	YuEngine::Texture lastTexture;
+
+	YuEngine::FrameBuffer *lastFrameBuffer = frameBufferVertBlur;
+	YuEngine::FrameBuffer *curFrameBuffer = frameBufferLightsRadius1;
+
+
+	for(int i = 0; i < lightsRadius.size(); i++) {
+		
+		
+		curFrameBuffer->bind();
+
+			glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glViewport(0, 0, screenWidth, screenHeight);
+
+
+			myContainer->getGameRenderer()->begin();
+			myContainer->getGameRenderer()->addGlyph(cameraBox.getX1(), cameraBox.getY1(), cameraBox.getWidth(), cameraBox.getHeight(), 10.0f, 1.0f, 1.0f, 1.0f, 1.0f, &lightSpritesheet, 0,0,1,1);
+			myContainer->getGameRenderer()->end();
+
+			myContainer->getLightRadiusShader()->use();
+			myContainer->getLightRadiusShader()->sendMatrix4("cameraMatrix", myContainer->getCamera()->getCameraMatrix());
+
+			myContainer->getLightRadiusShader()->sendFloat("lightX", lightsRadius[i]->getX() - cameraBox.getX1());
+			myContainer->getLightRadiusShader()->sendFloat("lightY", cameraBox.getY1() - lightsRadius[i]->getY());
+			myContainer->getLightRadiusShader()->sendFloat("lightRadius", lightsRadius[i]->getRadius());
+			myContainer->getLightRadiusShader()->sendFloat("lightIntensity", lightsRadius[i]->getIntensity());
+			myContainer->getLightRadiusShader()->sendInt("screenTextureWidth", screenWidth);
+			myContainer->getLightRadiusShader()->sendInt("screenTextureHeight", screenHeight);
+
+
+			glActiveTexture(GL_TEXTURE0);
+			int lastId = lastFrameBuffer->getColorBufferId(0);
+
+			glBindTexture(GL_TEXTURE_2D, lastId);
+			myContainer->getLightRadiusShader()->sendInt("screenTexture", 0);
+			myContainer->getGameRenderer()->render(myContainer->getLightRadiusShader()->getProgramID());
+
+			myContainer->getLightRadiusShader()->unuse();
+
+
+
+		curFrameBuffer->unbind();
+
+		lastFrameBuffer = curFrameBuffer;
+		lastFrameBufferLightsRadius = lastFrameBuffer;
+		//pixelsToBmp(curFrameBuffer->getColorBufferId(0), "lighting/radius" + std::to_string(i) + ".bmp", screenWidth, screenHeight);
+
+		if(curFrameBuffer == frameBufferLightsRadius2) {
+			curFrameBuffer = frameBufferLightsRadius1;
+		} else {
+			curFrameBuffer = frameBufferLightsRadius2;
+
+		}
+		
+
+	}
+
+	glViewport(0, 0, screenWidth, screenHeight);
+
+
+
+		int lightsRadiusNumber = 0;
+		for(int i = 0; i < lightsRadius.size(); i++) {
+			lightsRadiusNumber++;
+			myContainer->getBlurShader()->sendFloat("mousePosX", myContainer->getInput()->getMouseX());
+			myContainer->getBlurShader()->sendFloat("mousePosY", myContainer->getInput()->getMouseY());
+			myContainer->getBlurShader()->sendFloat("lightsRadius[" + std::to_string(i) + "].position.x",lightsRadius[i]->getX() - cameraBox.getX1());
+			myContainer->getBlurShader()->sendFloat("lightsRadius[" + std::to_string(i) + "].position.y",lightsRadius[i]->getY() - cameraBox.getY1());
+			myContainer->getBlurShader()->sendFloat("lightsRadius[" + std::to_string(i) + "].radius",lightsRadius[i]->getRadius());
+
+		}
+		myContainer->getBlurShader()->sendInt("lightsRadiusNumber",lightsRadiusNumber);
+
 
 	eTimer.update();
-
 	if(eTimer.isOver()){
-	//pixelsToBmp(frameBufferVertBlur->getColorBufferId(0), "lighting/Vert.bmp", screenWidth, screenHeight);
-	//pixelsToBmp(frameBufferHorizBlur->getColorBufferId(0), "lighting/Horiz.bmp", textureWidth, textureHeight);
-	//pixelsToBmp(texture, "lighting/blocks.bmp", textureWidth, textureHeight);
-	//pixelsToBmp(frameBufferObstacle->getColorBufferId(0), "lighting/obstacle.bmp", textureWidth, textureHeight);
+		//pixelsToBmp(frameBufferVertBlur->getColorBufferId(0), "lighting/Vert.bmp", screenWidth, screenHeight);
+		//pixelsToBmp(frameBufferHorizBlur->getColorBufferId(0), "lighting/Horiz.bmp", textureWidth, textureHeight);
+		//pixelsToBmp(frameBufferObstacle->getColorBufferId(0), "lighting/obstacle.bmp", textureWidth, textureHeight);
 
 
 		eTimer.reset();
 	}
 
 }
-
-
-
 
 
 void LightManager::refreshScreenPixels() {
@@ -212,66 +266,29 @@ void LightManager::refreshScreenPixels() {
 
 }
 
-void LightManager::render() {
+void LightManager::pixelsToBmp(GLuint textureId, std::string file, int width, int height) {
+	GLubyte *pixels =  new GLubyte[width*height*4];
+	glBindTexture(GL_TEXTURE_2D, textureId);
 
+	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 
-	myContainer->getLightingShader()->sendInt("screenWidth", screenWidth);
-	myContainer->getLightingShader()->sendInt("screenHeight", screenHeight);
-
-
-	myContainer->getLightingShader()->sendFloat("offset", offset);
-	myContainer->getLightingShader()->sendFloat("sunBias", sunBias);
-
-	myContainer->getLightingShader()->sendInt("shadowCasterWidth", textureWidth);
-	myContainer->getLightingShader()->sendInt("shadowCasterHeight", textureHeight);
-
-	myContainer->getLightingShader()->sendFloat("screenTopY", cameraBox.getY1());
-	myContainer->getLightingShader()->sendFloat("textureTopY", textureBox.getY1());
-
-
-	myContainer->getLightingShader()->sendFloat("worldHeight", World::worldHeight);
-	myContainer->getLightingShader()->sendFloat("blockSize", Block::size);
-	myContainer->getLightingShader()->sendFloat("maxDepthLightable", 50);
-	myContainer->getLightingShader()->sendFloat("depthGradient", 200);
-	myContainer->getLightingShader()->sendFloat("hourIndice", lightSun->getIndice());
-	
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	myContainer->getLightingShader()->sendInt("lightTexture", 0);
-
-}
-
-
-
-void LightManager::resetScreenPixels() {
-
-	for(int x = 0; x < textureWidth ; x++) {
-		for(int y = 0; y < textureHeight; y++) {
-
-			screenPixels[y*textureWidth*4 + x*4] = 255;
-			screenPixels[y*textureWidth*4 + x*4 + 1] = 255;
-			screenPixels[y*textureWidth*4 + x*4 + 2] = 255;
-			screenPixels[y*textureWidth*4 + x*4 + 3] = 255;
-		}
-
-	}
-
-}
-void LightManager::pixelsToBmp() {
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	BMP* curBMP = new BMP();
-	curBMP->SetSize(textureWidth,textureHeight);
+
+
+	curBMP->SetSize(width,height);
 	curBMP->SetBitDepth(32);
-	for(int x=0; x < textureWidth; x++) {
-		for(int y = 0; y < textureHeight; y++) {
-			(*curBMP)(x, y)->Red = screenPixels[y*textureWidth*4  + x * 4];
-			(*curBMP)(x, y)->Green = screenPixels[y*textureWidth*4  + x * 4 + 1];
-			(*curBMP)(x, y)->Blue = screenPixels[y*textureWidth*4  + x * 4 + 2];
-			(*curBMP)(x, y)->Alpha = screenPixels[y*textureWidth*4  + x * 4 + 3];
+	for(int x=0; x < width; x++) {
+		for(int y = 0; y < height; y++) {
+			(*curBMP)(x, y)->Red = pixels[y*width*4  + x * 4];
+			(*curBMP)(x, y)->Green = pixels[y*width*4  + x * 4 + 1];
+			(*curBMP)(x, y)->Blue = pixels[y*width*4  + x * 4 + 2];
+			(*curBMP)(x, y)->Alpha = 0;
 		}
 	}
-	curBMP->WriteToFile("lighting/pixels.bmp");
+	curBMP->WriteToFile(file.c_str());
 	delete curBMP;
+	delete[] pixels;
 
 }
-

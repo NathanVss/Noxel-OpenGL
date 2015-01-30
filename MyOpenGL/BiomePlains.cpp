@@ -13,6 +13,7 @@ BiomePlains::BiomePlains(void)
 
 BiomePlains::BiomePlains(float _baseX, float _firstBlockY) : Biome(_baseX, _firstBlockY) {
 	groundLevel = 50;
+	topLevel = 80;
 	setFirstBlockYRelNoise(firstBlockY);
 
 	YuEngine::Perlin2D _perlin;
@@ -38,7 +39,7 @@ void BiomePlains::generate() {
 		}
 		
 
-		float y = (int)(groundLevel + ( World::worldHeight - groundLevel ) * noiseValue);
+		float y = (int)(groundLevel + ( topLevel - groundLevel ) * noiseValue);
 
 
 		if( x == (baseX + length - 1) ) {

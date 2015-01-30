@@ -1,10 +1,13 @@
 #include "Player.h"
 #include <YuEngine\Container.h>
+#include <YuEngine\Camera2D.h>
 #include <YuEngine\GameRenderer.h>
 #include "Block.h"
 #include <YuEngine\SpritesheetsManager.h>
 #include <YuEngine\Input.h>
 #include "Container.h"
+#include "BlockAir.h"
+#include "World.h"
 
 Player::Player(): Entity(){
 	width = Block::size;
@@ -13,7 +16,7 @@ Player::Player(): Entity(){
 	speedX = 10;
 	jumpHeight = Block::size * 2;
 	jumping = false;
-	YuEngine::YuBoudingbox _boudingBox(x, y, width, height);
+	YuEngine::YuBoudingbox _boudingBox(x, y+height, width, height);
 	_boudingBox.setContainer(container);
 	boundingBox = _boudingBox;
 }
@@ -69,15 +72,23 @@ void Player::update() {
 
 	float destX = x + velocityX;
 	float destY = y + velocityY;
-	//std::cout << "CurPos [" << x << ";" << y << "]" << std::endl;
-	//std::cout << "DestPos [" << destX << ";" << destY << "]" << std::endl;
 
-	//std::cout << "Player [" << x << ";" << y << "]" << std::endl;
 	checkCollisions(destX, destY);
-	//x = destX;
-	//y = destY;
+	
 	boundingBox.changePos(x, y);
 
+	if(myContainer->getInput()->getLeftClick()) {
+		YuEngine::YuBoudingbox cameraBox = myContainer->getCamera()->getCameraBox();
+		glm::vec2 mouseWorld(cameraBox.getX1() + myContainer->getInput()->getMouseX(), cameraBox.getY1() - myContainer->getInput()->getMouseY());
+
+		mouseWorld.x = floor(mouseWorld.x / Block::size) * 32;
+		mouseWorld.y = floor(mouseWorld.y / Block::size) * 32;
+
+		BlockAir* blockAir = new BlockAir(mouseWorld.x, mouseWorld.y);
+		myContainer->getWorld()->setBlock(blockAir);
+
+		std::cout << "Mouse : " << mouseWorld.x << ";" << mouseWorld.y << std::endl;
+	}
 }
 
 Player::~Player(void)

@@ -16,10 +16,14 @@ public:
 	Spritesheet* getBlocksSpritesheet() {
 		return blocksSpritesheet;
 	}
+	Spritesheet* getMiscSpritesheet() {
+		return miscSpritesheet;
+	}
 	
 private:
 	Spritesheet* FontSpritesheet;
 	Spritesheet* blocksSpritesheet;
+	Spritesheet* miscSpritesheet;
 };
 
 }

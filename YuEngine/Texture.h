@@ -9,6 +9,9 @@ namespace YuEngine {
 class Texture
 {
 public:
+	Texture() {
+
+	};
 	Texture(std::string textureFile);
 	Texture(int _width, int _height);
 	Texture(Texture const &textureToCopy);

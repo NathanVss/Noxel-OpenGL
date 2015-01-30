@@ -24,6 +24,7 @@
 #include <YuEngine\Shader.h>
 #include <YuEngine\Spritesheet.h>
 #include <YuEngine\FrameBuffer.h>
+#include "GameConsole.h"
 //using namespace YuEngine;
 
 MainScene::MainScene() : YuEngine::OpenGlScene(1280,720, "YuEngine Infdev") {
@@ -46,8 +47,6 @@ void MainScene::loop() {
 
 	YuEngine::FpsCounter fpsCounter;
 
-	//Container container;
-
 	gameRenderer->init();
 
 	YuEngine::Shader *lightingShader = new YuEngine::Shader("Shaders/lighting.vert", "Shaders/lighting.frag");
@@ -57,6 +56,10 @@ void MainScene::loop() {
 	YuEngine::Shader *blurShader = new YuEngine::Shader("Shaders/blur2D.vert", "Shaders/blur2D.frag");
 	blurShader->charger();
 	container->setBlurShader(blurShader);
+
+	YuEngine::Shader *lightRadiusShader = new YuEngine::Shader("Shaders/classic2D.vert", "Shaders/lightRadius.frag");
+	lightRadiusShader->charger();
+	container->setLightRadiusShader(lightRadiusShader);
 	
 	World* world = new World();
 	world->setMyContainer(container);
@@ -73,26 +76,18 @@ void MainScene::loop() {
 	world->init();
 	world->generate();
 
+	LightRadius lightplayer(2000, 0.1);
+	lightManager.addLightRadius(&lightplayer);
 
 	LightSun lightSun;
 	lightManager.setLightSun(&lightSun);
 
 	container->getCamera()->setPosition(glm::vec2(0,80*Block::size)); 
 
-	YuEngine::EventTimer eTimer(60);
+	YuEngine::EventTimer eTimer(10);
 
-
-	GLuint texId = 0;
-
-	YuEngine::FrameBuffer frameBuffer(width, height);
-	frameBuffer.load();
-
-	YuEngine::FrameBuffer frameBufferBlur(width, height);
-	frameBufferBlur.load();
-
-	YuEngine::FrameBuffer frameBufferBlurVert(width, height);
-	frameBufferBlurVert.load();
-			YuEngine::Spritesheet spritesheetLight("textures/voidblank.png", 1);
+	GameConsole gameConsole;
+	gameConsole.setMyContainer(container);
 
 	while(!mustFinish) {
 		beginIteration();
@@ -100,6 +95,8 @@ void MainScene::loop() {
 		//lightSun.setSeconds(lightSun.getSeconds() + 500);
 		lightSun.setSeconds(3600*14);
 
+		//lightplayer.setPosition(1280/2, 720/2);
+		//lightplayer.setPosition(player.getX(), player.getY());
 
 		container->getInput()->update();
 		debugOverlay->update();
@@ -109,17 +106,17 @@ void MainScene::loop() {
 
 		eTimer.update();
 		if(eTimer.isOver()) {
-			if(container->getInput()->getLeftClick()) {
-				glm::vec2 cameraPos = container->getCamera()->getPosition();
+			//if(container->getInput()->getLeftClick()) {
+			//	glm::vec2 cameraPos = container->getCamera()->getPosition();
 
-				cameraPos.x = cameraPos.x - width/2;
-				cameraPos.y = cameraPos.y + height/2;
-				std::cout << "CLICK" << std::endl;
-				std::cout <<  cameraPos.x+container->getInput()->getMouseX() << ";" << cameraPos.y - container->getInput()->getMouseY() << std::endl;
-				LightRadius* lightRadius = new LightRadius(7*Block::size);
-				lightRadius->setPosition(cameraPos.x+container->getInput()->getMouseX(), cameraPos.y - container->getInput()->getMouseY());
-				lightManager.addLightRadius(lightRadius);
-			}
+			//	cameraPos.x = cameraPos.x - width/2;
+			//	cameraPos.y = cameraPos.y + height/2;
+			//	std::cout << "CLICK" << std::endl;
+			//	std::cout <<  cameraPos.x+container->getInput()->getMouseX() << ";" << cameraPos.y - container->getInput()->getMouseY() << std::endl;
+			//	LightRadius* lightRadius = new LightRadius(200, 0.01);
+			//	lightRadius->setPosition(cameraPos.x+container->getInput()->getMouseX(), cameraPos.y - container->getInput()->getMouseY());
+			//	lightManager.addLightRadius(lightRadius);
+			//}
 			//pixelsToBmp(frameBuffer.getColorBufferId(0));
 
 			eTimer.reset();
@@ -127,70 +124,82 @@ void MainScene::loop() {
 		player.update();
 		container->getCamera()->setPosition(glm::vec2(player.getX(), player.getY()));
 		container->getCamera()->update();
-		YuEngine::YuBoudingbox cameraBox = container->getCamera()->getCameraBox();
+		gameConsole.update();
+		
 		lightManager.update();
+		glm::vec2 cameraPos = container->getCamera()->getPosition();
+		YuEngine::YuBoudingbox cameraBox = container->getCamera()->getCameraBox();
 
+		lightplayer.setPosition(container->getInput()->getMouseX() + cameraBox.getX1(),cameraBox.getY1() - container->getInput()->getMouseY());
+		if(container->getInput()->getKeySpace()) {
+			lightplayer.setRadius(lightplayer.getRadius() + 30);
+		}
 
 		lightManager.renderLighting();
+		glViewport(0, 0, width, height);
 
-		// TROISIEME PASSE
-		clear();
+		// RENDU DU MONDE
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//clear();
+
+
 		gameRenderer->begin();
 
-		world->render(false);
-		player.render();
+			world->render(false);
+			player.render();
 
-		container->getClassicShader()->use();
-		
-		container->getClassicShader()->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
-		gameRenderer->end();
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		gameRenderer->render(container->getClassicShader()->getProgramID());
-		container->getClassicShader()->unuse();
 
+			container->getClassicShader()->use();
+			container->getClassicShader()->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
+			gameRenderer->end();
+
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			gameRenderer->render(container->getClassicShader()->getProgramID());
+			container->getClassicShader()->unuse();
 
 		// LIGHT
 		gameRenderer->begin();
-		YuEngine::Spritesheet spritesheet(lightManager.getFrameBufferVertBlur()->getColorBufferId(0), 1);
-		gameRenderer->addGlyph(cameraBox.getX1(),cameraBox.getY1(), width, height, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, &spritesheet, 0,0,1,1);
-		
-		container->getClassicShader()->use();
-		container->getClassicShader()->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
-		
-		
-		gameRenderer->end();
 
-
-
-		// Blending multiplicatif
-		// Ce qui est devant est égal au fond multiplé par la lumiere normalisée
-		glBlendFunc(GL_DST_COLOR, GL_SRC1_COLOR);
-		gameRenderer->render(container->getClassicShader()->getProgramID());
+		YuEngine::Spritesheet spritesheet(lightManager.getLastFrameBufferLightsRadius()->getColorBufferId(0), 1);
+		//YuEngine::Spritesheet spritesheet(lightManager.getFrameBufferVertBlur()->getColorBufferId(0), 1);
+			gameRenderer->addGlyph(cameraBox.getX1(),cameraBox.getY1(), width, height, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, &spritesheet, 0,0,1,1);
+			container->getClassicShader()->use();
+			container->getClassicShader()->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
 		
+			gameRenderer->end();
+			// Blending multiplicatif
+			// Ce qui est devant est égal au fond multiplé par la lumiere normalisée
+			glBlendFunc(GL_DST_COLOR, GL_SRC1_COLOR);
+			gameRenderer->render(container->getClassicShader()->getProgramID());
 		container->getClassicShader()->unuse();
+
+
 
 
 		// RENDU SANS LUMIERE
 		gameRenderer->begin();
 
-		debugOverlay->addDebugString(std::string("Memory Usage : ") + YuEngine::Utils::getMemoryUsage() + std::string("Mo"));
-		debugOverlay->addDebugString(std::string("FPS : ") + fpsCounter.getLastFps());
-		debugOverlay->addDebugString(std::string("Sprites : ") + gameRenderer->getGlyphsNumber());
-		debugOverlay->render();
+			debugOverlay->addDebugString(std::string("Memory Usage : ") + YuEngine::Utils::getMemoryUsage() + std::string("Mo"));
+			debugOverlay->addDebugString(std::string("FPS : ") + fpsCounter.getLastFps());
+			debugOverlay->addDebugString(std::string("Sprites : ") + gameRenderer->getGlyphsNumber());
+			debugOverlay->addDebugString(std::string("Total Sprites : ") + gameRenderer->getTotalGlyphsNumber());
 
-		container->getClassicShader()->use();
-		container->getClassicShader()->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
-		
-		gameRenderer->end();
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			gameRenderer->resetTotalGlyphsNumber();
+			debugOverlay->render();
 
-		gameRenderer->render(container->getClassicShader()->getProgramID());
-		
-		container->getClassicShader()->unuse();
+			gameConsole.render();
 
 
-		
+			container->getClassicShader()->use();
+			container->getClassicShader()->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
+			gameRenderer->end();
+
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			gameRenderer->render(container->getClassicShader()->getProgramID());
+			container->getClassicShader()->unuse();
+
 		
 
 		endIteration();

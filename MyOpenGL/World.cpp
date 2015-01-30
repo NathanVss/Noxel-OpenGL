@@ -68,7 +68,6 @@ void World::generate() {
 			biome = new BiomeDesert(curX, lastBlockY);
 		}
 
-		//BiomePlains biome(curX, lastBlockY);
 		biome->setMyContainer(myContainer);
 		biome->generate();
 		curX = biome->getLastBlockX();
@@ -78,25 +77,6 @@ void World::generate() {
 	WorldGenCaves worldGenCaves;
 	worldGenCaves.setMyContainer(myContainer);
 	worldGenCaves.generate();
-
-	//YuEngine::Perlin2D perlin;
-	//perlin.init(chunksHoriz*Chunk::width, 20, 1);
-
-	// Parcour en Block unit
-	//for(int x = 0; x < chunksHoriz*Chunk::width; x++) {
-
-	//	double noiseValue = perlin.coherentNoise(x, 0.5);
-	//	
-	//	float y = (int)(groundLevel + ( World::worldHeight - groundLevel ) * noiseValue);
-	//	
-	//	BlockGrass *blockGrass = new BlockGrass(x*Block::size, y*Block::size);
-	//	setBlock(blockGrass);
-
-	//	for(int dy = y-1; dy >= 0; dy--) {
-	//		BlockDirt* blockDirt = new BlockDirt(x*Block::size, dy*Block::size);
-	//		setBlock(blockDirt);
-	//	}
-	//}
 }
 
 void World::init() {

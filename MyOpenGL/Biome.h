@@ -20,10 +20,11 @@ public:
 		return lastBlockY;
 	}
 	void setFirstBlockYRelNoise(float firstBlockYRelAbs) {
-		firstBlockYRelNoise = ( firstBlockYRelAbs - groundLevel ) / ( World::worldHeight - groundLevel);
+		firstBlockYRelNoise = ( firstBlockYRelAbs - groundLevel ) / ( topLevel - groundLevel);
 	}
 protected:
 	float groundLevel;
+	float topLevel;
 	float length;
 	float baseX;
 	float firstBlockY;

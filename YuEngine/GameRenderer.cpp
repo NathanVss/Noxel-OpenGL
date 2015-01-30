@@ -15,8 +15,8 @@ namespace YuEngine {
 GameRenderer::GameRenderer(void){
 	this->vaoId = 0;
 	this->vboId = 0;
-	sortType = GlyphSorting::FRONT_TO_BACK
-		;
+	totalGlyphsNumber = 0;
+	sortType = GlyphSorting::FRONT_TO_BACK;
 }
 
 
@@ -31,7 +31,7 @@ int GameRenderer::getGlyphsNumber() {
 }
 
 void GameRenderer::init() {
-	this->createVertexArray();
+	createVertexArray();
 }
 
 void GameRenderer::end() {
@@ -40,7 +40,7 @@ void GameRenderer::end() {
 		glyphPointers[i] = &glyphs[i];
 	}
 	sortGlyphs();
-	this->fillVbo();
+	fillVbo();
 }
 
 void GameRenderer::render(int programId) {
@@ -62,14 +62,6 @@ void GameRenderer::render(int programId) {
 		glDrawArrays(GL_TRIANGLES, renderBatches[i].offset, renderBatches[i].numVertices);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
-	//for(int i = 0; i < this->glyphs.size(); i++) {
-	//	glBindTexture(GL_TEXTURE_2D, this->glyphs[i].textureId);
-
-	//	glDrawArrays(GL_TRIANGLES, i * 6, 6);
-
-	//	glBindTexture(GL_TEXTURE_2D, 0);
-
-	//}
 
 	glBindVertexArray(0);
 
@@ -250,6 +242,7 @@ int GameRenderer::addGlyph(float x, float y, float width, float height, float de
 
 	//glyph.debug();
 	this->glyphs.push_back(glyph);
+	totalGlyphsNumber++;
 	return this->glyphs.size() - 1;
 
 }

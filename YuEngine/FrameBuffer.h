@@ -23,6 +23,9 @@ public:
 	bool load();
 	void createRenderBuffer();
 
+	void clearColorBuffers() {
+		colorBuffers.clear();
+	}
 	GLuint getId() const {
 		return id; 
 	}
@@ -35,8 +38,15 @@ public:
 	int getHeight() const {
 		return height;
 	}
+	GLuint getLastColorUsed() {
+		return lastColorUsed;
+	}
+	Texture* getColorBuffer(int index) {
+		return &(colorBuffers[index]);
+	}
 
 private:
+	GLuint lastColorUsed;
 	int width;
 	int height;
 	GLuint id;

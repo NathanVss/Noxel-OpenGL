@@ -1,1 +1,54 @@
-﻿  OpenGLModern.vcxproj -> C:\Users\Nathan\Documents\Visual Studio 2012\Projects\Noxel-OpenGL\Release\YuEngine.lib
+﻿La génération a démarré 30/01/2015 01:34:11.
+     1>Projet "C:\Users\Nathan\Documents\visual studio 2012\Projects\OpenGLModern\YuEngine\OpenGLModern.vcxproj" sur le nœud 2 (Rebuild cible(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /Zi /nologo /W0 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\YuEngine\Camera2D.cpp ..\YuEngine\Container.cpp ..\YuEngine\DebugOverlay.cpp ..\YuEngine\FontRenderer.cpp ..\YuEngine\FpsCounter.cpp ..\YuEngine\GameRenderer.cpp ..\YuEngine\Input.cpp ..\YuEngine\Object.cpp ..\YuEngine\OpenGlScene.cpp ..\YuEngine\Perlin2D.cpp ..\YuEngine\Renderable.cpp ..\YuEngine\Shader.cpp ..\YuEngine\Spritesheet.cpp ..\YuEngine\SpritesheetsManager.cpp ..\YuEngine\Texture.cpp ..\YuEngine\Utils.cpp ..\YuEngine\YuBoudingbox.cpp ..\YuEngine\YuWindow.cpp DDAHelper.cpp EventTimer.cpp FrameBuffer.cpp
+         Camera2D.cpp
+         Container.cpp
+         DebugOverlay.cpp
+         FontRenderer.cpp
+         FpsCounter.cpp
+         GameRenderer.cpp
+         Input.cpp
+         Object.cpp
+         OpenGlScene.cpp
+         Perlin2D.cpp
+         Renderable.cpp
+         Shader.cpp
+         Spritesheet.cpp
+         SpritesheetsManager.cpp
+         Texture.cpp
+         Utils.cpp
+         YuBoudingbox.cpp
+         YuWindow.cpp
+         DDAHelper.cpp
+         EventTimer.cpp
+         Compilation en cours...
+         FrameBuffer.cpp
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\Lib.exe /OUT:"C:\Users\Nathan\Documents\Visual Studio 2012\Projects\OpenGLModern\Release\YuEngine.lib" /NOLOGO /LTCG Release\Camera2D.obj
+         Release\Container.obj
+         Release\DebugOverlay.obj
+         Release\FontRenderer.obj
+         Release\FpsCounter.obj
+         Release\GameRenderer.obj
+         Release\Input.obj
+         Release\Object.obj
+         Release\OpenGlScene.obj
+         Release\Perlin2D.obj
+         Release\Renderable.obj
+         Release\Shader.obj
+         Release\Spritesheet.obj
+         Release\SpritesheetsManager.obj
+         Release\Texture.obj
+         Release\Utils.obj
+         Release\YuBoudingbox.obj
+         Release\YuWindow.obj
+         Release\DDAHelper.obj
+         Release\EventTimer.obj
+         Release\FrameBuffer.obj
+         OpenGLModern.vcxproj -> C:\Users\Nathan\Documents\Visual Studio 2012\Projects\OpenGLModern\Release\YuEngine.lib
+     1>Génération du projet "C:\Users\Nathan\Documents\visual studio 2012\Projects\OpenGLModern\YuEngine\OpenGLModern.vcxproj" terminée (Rebuild cible(s)).
+
+La génération a réussi.
+
+Temps écoulé 00:00:05.13

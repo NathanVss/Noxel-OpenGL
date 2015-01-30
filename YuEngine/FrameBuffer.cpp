@@ -28,15 +28,15 @@ void FrameBuffer::unbind() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+
+
 bool FrameBuffer::load() {
 
 	if(glIsFramebuffer(id) == GL_TRUE) {
 		glDeleteFramebuffers(1, &id);
 
-		colorBuffers.clear();
-
+			colorBuffers.clear();
 	}
-
 	glGenFramebuffers(1, &id);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, id);
