@@ -12,6 +12,9 @@ public:
 	~EventTimer(void);
 	void update();
 	bool isOver();
+	bool isUnder(int a, int b);
+	void setOver();
+	bool isOver(int ticks);
 	void reset();
 
 

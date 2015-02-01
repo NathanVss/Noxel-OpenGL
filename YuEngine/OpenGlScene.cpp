@@ -15,6 +15,7 @@
 #include <random>
 #include <time.h>
 #include "YuWindow.h"
+#include "ParticlesRenderer.h"
 
 
 namespace YuEngine {
@@ -57,13 +58,28 @@ void OpenGlScene::clear() {
 void OpenGlScene::init(Container* container) {
 	//container = new Container();
 
+
+
+	
+    //glBindAttribLocation(m_programID, 0, "vertexPosition");
+    //glBindAttribLocation(m_programID, 1, "vertexColor");
+    //glBindAttribLocation(m_programID, 2, "vertexUV");
+	std::vector<std::string> locations;
+	locations.push_back("vertexPosition");
+	locations.push_back("vertexColor");
+	locations.push_back("vertexUV");
 	classicShader = new Shader("Shaders/classic2D.vert", "Shaders/classic2D.frag");
-	classicShader->charger();
+	classicShader->charger(locations);
 	container->setClassicShader(classicShader);
 
 	gameRenderer = new GameRenderer();
 	gameRenderer->setContainer(container);
 	container->setGameRenderer(gameRenderer);
+
+
+	ParticlesRenderer *particlesRenderer = new ParticlesRenderer();
+	particlesRenderer->setContainer(container);
+	container->setParticlesRenderer(particlesRenderer);
 
 	spritesheetsManager = new SpritesheetsManager();
 	container->setSpritesheetsManager(spritesheetsManager);

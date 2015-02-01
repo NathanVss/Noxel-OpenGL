@@ -179,15 +179,16 @@ bool YuBoudingbox::doesCollideBottomOf(YuBoudingbox &Rect2) {
 
 */
 bool YuBoudingbox::doesCollideTopOf(YuBoudingbox &Rect2) {
-
+	int is = this->y1 - this->height;
 	if(this->y1 - this->height == Rect2.getY1()) {
+
+
 		if ((Rect2.getX1() > this->x1 && Rect2.getX1() < this->x1 + this->width) || 
 			(Rect2.getX1() + Rect2.getWidth() > this->x1 && Rect2.getX1() + Rect2.getWidth() < this->x1 + this->width) ||
 			(this->x1 > Rect2.getX1() && this->x1 < Rect2.getX1() + Rect2.getWidth()) || 
 			(this->x1 + this->width > Rect2.getX1() && this->x1 + this->width < Rect2.getX1() + Rect2.getWidth()) ||
 			(this->x1 == Rect2.getX1() && this->x1 + this->width == Rect2.getX1() + Rect2.getWidth())) {
 
-		//std::cout << "TOUCH TOP" << std::endl;
 		return true;
 		}
 	}

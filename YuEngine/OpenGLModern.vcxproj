@@ -32,6 +32,7 @@
     <ClCompile Include="DDAHelper.cpp" />
     <ClCompile Include="EventTimer.cpp" />
     <ClCompile Include="FrameBuffer.cpp" />
+    <ClCompile Include="ParticlesRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\YuEngine\Camera2D.h" />
@@ -58,6 +59,7 @@
     <ClInclude Include="DDAHelper.h" />
     <ClInclude Include="EventTimer.h" />
     <ClInclude Include="FrameBuffer.h" />
+    <ClInclude Include="ParticlesRenderer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F51A3D27-D677-4893-8404-E8DCCB5E3924}</ProjectGuid>

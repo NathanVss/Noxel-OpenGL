@@ -6,6 +6,7 @@
 #include "BlockDirt.h"
 #include "Container.h"
 #include "BlockSand.h"
+#include "BlockStone.h"
 
 BiomePlains::BiomePlains(void)
 {
@@ -46,19 +47,21 @@ void BiomePlains::generate() {
 			lastBlockY = y;
 		}
 		BlockGrass *blockGrass = new BlockGrass(x*Block::size, y*Block::size);
-		//if(x == baseX) {
-		//	YuEngine::Color c;
-		//	c.r = 0;
-		//	c.g = 0;
-		//	c.b = 0;
-		//	c.a = 255;
-		//	blockGrass->setLightIndice(c);
-		//}
 		myContainer->getWorld()->setBlock(blockGrass);
 
+		int relDepth = 0;
+		int stoneDepth = 5 + rand() / RAND_MAX * 10;
 		for(int dy = y-1; dy >= 0; dy--) {
-			BlockDirt* blockDirt = new BlockDirt(x*Block::size, dy*Block::size);
-			myContainer->getWorld()->setBlock(blockDirt);
+			relDepth++;
+
+			if(relDepth > stoneDepth) {
+				BlockStone* blockStone = new BlockStone(x*Block::size, dy*Block::size);
+				myContainer->getWorld()->setBlock(blockStone);
+			} else {
+				BlockDirt* blockDirt = new BlockDirt(x*Block::size, dy*Block::size);
+				myContainer->getWorld()->setBlock(blockDirt);
+			}
+
 		}
 	}
 }

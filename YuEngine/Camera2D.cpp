@@ -68,12 +68,12 @@ void Camera2D::update() {
 	//if(iInput->getKeyD()) {
 	//	this->setPosition(this->position + glm::vec2(cameraSpeed, 0.0f));
 	//}
-	if(iInput->getKeyA()) {
-		this->setScale(this->scale + scaleSpeed);
-	}	
-	if(iInput->getKeyE()) {
-		this->setScale(this->scale - scaleSpeed);
-	}	
+	//if(iInput->getKeyA()) {
+	//	this->setScale(this->scale + scaleSpeed);
+	//}	
+	//if(iInput->getKeyE()) {
+	//	this->setScale(this->scale - scaleSpeed);
+	//}	
 	if(this->needMatrixUpdate) {
 
 		glm::vec3 translate(-this->position.x + this->screenWidth/2, -this->position.y + this->screenHeight/2, 0.0f);

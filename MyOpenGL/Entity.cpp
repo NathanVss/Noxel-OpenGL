@@ -8,7 +8,7 @@
 Entity::Entity(void){
 	x = 0;
 	y = 0;
-	gravity = 2.0f;
+	gravity = 1.3f;
 	velocityX = 0;
 	velocityY = 0;
 	width = 0;
@@ -22,8 +22,7 @@ Entity::Entity(void){
 	collideOnBottomRight = false;
 	collideOnBottomLeft = false;
 }
-
-void Entity::checkCollisions(float destX, float destY) {
+glm::vec2 Entity::checkCollisions(float startX, float startY, float destX, float destY) {
 
 	bool verticalToTopMov = false;
 	bool verticalToBottomMov = false;
@@ -53,53 +52,53 @@ void Entity::checkCollisions(float destX, float destY) {
 		idleMov = false;
 
 
-		if(this->x > destX && destY > this->y) {
+		if(startX > destX && destY > startY) {
 			diagToTopLeftMov = true;
 		}
 
-		if(this->x < destX && this->y < destY) {
+		if(startX < destX && startY < destY) {
 			diagToTopRightMov = true;
 		}
-		if(this->x > destX && destY < this->y) {
+		if(startX > destX && destY < startY) {
 			diagToBottomLeftMov = true;
 		}
-		if(this->x < destX && destY < this->y) {
+		if(startX < destX && destY < startY) {
 			diagToBottomRightMov = true;
 		}
 
 
-		if(this->x == destX && destY < this->y) {
+		if(startX == destX && destY < startY) {
 			verticalToBottomMov = true;
 		}
-		if(this->x == destX && destY > this->y) {
+		if(startX == destX && destY > startY) {
 			verticalToTopMov = true;
 		}
-		if(destY == this->y && this->x < destX) {
+		if(destY == startY && startX < destX) {
 			transvToRightMov = true;
 		}
-		if(destY == this->y && this->x > destX) {
+		if(destY == startY && startX > destX) {
 			transvToLeftMov = true;
 		}
-		if(destY == this->y && this->x == destX) {
+		if(destY == startY && startX == destX) {
 			idleMov = true;
 		}
 
 		if(diagToBottomLeftMov && this->collideOnBottom) {
-			destY = this->y;
+			destY = startY;
 		} else if(diagToBottomRightMov && this->collideOnBottom) {
-			destY = this->y;
+			destY = startY;
 		} else if(diagToTopLeftMov && this->collideOnTop) {
-			destY = this->y;
+			destY = startY;
 		} else if(diagToTopRightMov && this->collideOnTop) {
-			destY = this->y;
+			destY = startY;
 		} else if (diagToBottomLeftMov && this->collideOnLeft) {
-			destX = this->x;
+			destX = startX;
 		} else if (diagToBottomRightMov && this->collideOnRight) {
-			destX = this->x;
+			destX = startX;
 		} else if (diagToTopRightMov && this->collideOnRight) {
-			destX = this->x;
+			destX = startX;
 		} else if (diagToTopLeftMov && this->collideOnLeft) {
-			destX = this->x;
+			destX = startX;
 		} else {
 			canPass = true;
 		}
@@ -109,10 +108,10 @@ void Entity::checkCollisions(float destX, float destY) {
 	std::vector<YuEngine::coords> traj;
 	destX = (int)destX;
 	destY = (int)destY;
-	YuEngine::DDAHelper trajHelper(x, y, destX, destY);
+	YuEngine::DDAHelper trajHelper(startX, startY, destX, destY);
 	YuEngine::coords trajCoords;
-	trajCoords.x = x;
-	trajCoords.y = y;
+	trajCoords.x = startX;
+	trajCoords.y = startY;
 	while(true) {
 
 		YuEngine::coords curCoords;
@@ -125,8 +124,8 @@ void Entity::checkCollisions(float destX, float destY) {
 		trajCoords = trajHelper.getNextCoords();
 	}
 	// Conversion des coords en block unit
-	int buX = floor(x / Block::size);
-	int buY = floor(y / Block::size);
+	int buX = floor(startX / Block::size);
+	int buY = floor(startY / Block::size);
 	int destBuX = floor((destX / Block::size));
 	int destBuY = floor(destY / Block::size);
 
@@ -141,37 +140,61 @@ void Entity::checkCollisions(float destX, float destY) {
 	while(true) {
 		std::vector<Block*> curBlocks;
 
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size, coords.y * Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size, coords.y * Block::size + 1 *Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size, coords.y * Block::size - 1 *Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size, coords.y * Block::size - 2 *Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size, coords.y * Block::size + 2 *Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size - 1 * Block::size, coords.y*Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 1 * Block::size, coords.y*Block::size));
+		glm::vec2 centerCurCoords(floor(((coords.x *Block::size + boundingBox.getWidth()/2) / Block::size)), floor((coords.y *Block::size - boundingBox.getHeight()/2) / Block::size));
+		int size = 3;
+		for(int fx = -size+1; fx <= size; fx++) {
+			for(int fy = -size+1; fy <= size; fy++) {
+				curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + fx * Block::size, centerCurCoords.y * Block::size + fy * Block::size));
 
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size - 1 * Block::size, coords.y*Block::size + 1 *Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size - 1 * Block::size, coords.y*Block::size - 1 *Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size - 1 * Block::size, coords.y*Block::size + 2 *Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size - 1 * Block::size, coords.y*Block::size - 2 *Block::size));
-		
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 1 * Block::size, coords.y*Block::size + 1 *Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 1 * Block::size, coords.y*Block::size - 1 *Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 1 * Block::size, coords.y*Block::size + 2 *Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 1 * Block::size, coords.y*Block::size - 2 *Block::size));
-		if((coords.x == destBuX && coords.y == destBuY)) {
-
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size - 2*Block::size, coords.y*Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size - 2 * Block::size, coords.y*Block::size + 1 *Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size - 2 * Block::size, coords.y*Block::size - 1 *Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size - 2 * Block::size, coords.y*Block::size - 2 *Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size - 2 * Block::size, coords.y*Block::size + 2 *Block::size));
-		
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 2*Block::size, coords.y*Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 2 * Block::size, coords.y*Block::size + 1 *Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 2 * Block::size, coords.y*Block::size - 1 *Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 2 * Block::size, coords.y*Block::size - 2 *Block::size));
-		curBlocks.push_back(myContainer->getWorld()->getBlock(coords.x * Block::size + 2 * Block::size, coords.y*Block::size + 2 *Block::size));
+			}
 		}
+
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size, centerCurCoords.y * Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size, centerCurCoords.y * Block::size + 1 *Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size, centerCurCoords.y * Block::size - 1 *Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size, centerCurCoords.y * Block::size - 2 *Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size, centerCurCoords.y * Block::size + 2 *Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size - 1 * Block::size, centerCurCoords.y*Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + 1 * Block::size, centerCurCoords.y*Block::size));
+
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size - 1 * Block::size, centerCurCoords.y*Block::size + 1 *Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size - 1 * Block::size, centerCurCoords.y*Block::size - 1 *Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size - 1 * Block::size, centerCurCoords.y*Block::size + 2 *Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size - 1 * Block::size, centerCurCoords.y*Block::size - 2 *Block::size));
+		//
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + 1 * Block::size, centerCurCoords.y*Block::size + 1 *Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + 1 * Block::size, centerCurCoords.y*Block::size - 1 *Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + 1 * Block::size, centerCurCoords.y*Block::size + 2 *Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + 1 * Block::size, centerCurCoords.y*Block::size - 2 *Block::size));
+
+
+
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size - 2*Block::size, centerCurCoords.y*Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size - 2 * Block::size, centerCurCoords.y*Block::size + 1 *Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size - 2 * Block::size, centerCurCoords.y*Block::size - 1 *Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size - 2 * Block::size, centerCurCoords.y*Block::size - 2 *Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size - 2 * Block::size, centerCurCoords.y*Block::size + 2 *Block::size));
+		//
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + 2*Block::size, centerCurCoords.y*Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + 2 * Block::size, centerCurCoords.y*Block::size + 1 *Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + 2 * Block::size, centerCurCoords.y*Block::size - 1 *Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + 2 * Block::size, centerCurCoords.y*Block::size - 2 *Block::size));
+		//curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + 2 * Block::size, centerCurCoords.y*Block::size + 2 *Block::size));
+
+		if((centerCurCoords.x == destBuX && centerCurCoords.y == destBuY)) {
+
+/*		curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size - 2*Block::size, centerCurCoords.y*Block::size));
+		curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size - 2 * Block::size, centerCurCoords.y*Block::size + 1 *Block::size));
+		curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size - 2 * Block::size, centerCurCoords.y*Block::size - 1 *Block::size));
+		curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size - 2 * Block::size, centerCurCoords.y*Block::size - 2 *Block::size));
+		curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size - 2 * Block::size, centerCurCoords.y*Block::size + 2 *Block::size));
+		
+		curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + 2*Block::size, centerCurCoords.y*Block::size));
+		curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + 2 * Block::size, centerCurCoords.y*Block::size + 1 *Block::size));
+		curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + 2 * Block::size, centerCurCoords.y*Block::size - 1 *Block::size));
+		curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + 2 * Block::size, centerCurCoords.y*Block::size - 2 *Block::size));
+		curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + 2 * Block::size, centerCurCoords.y*Block::size + 2 *Block::size));
+		*/}
 
 		for(int i = 0; i < curBlocks.size(); i++) {
 			if(curBlocks[i] && std::find(blocksToCheck.begin(), blocksToCheck.end(), curBlocks[i]) == blocksToCheck.end()) {
@@ -185,9 +208,9 @@ void Entity::checkCollisions(float destX, float destY) {
 		coords = ddaHelper.getNextCoords();
 	}
 	YuEngine::Color c;
-	c.r = 255;
-	c.g = 255;
-	c.b = 255;
+	c.r = 50;
+	c.g = 50;
+	c.b = 50;
 	c.a = 255;
 
 	collideOnRight = false;
@@ -199,6 +222,8 @@ void Entity::checkCollisions(float destX, float destY) {
 	collideOnBottomLeft = false;
 	collideOnBottomRight = false;
 
+
+	glm::vec2 endLocation(startX, startY);
 	for(int j = 0; j < traj.size(); j++) {
 
 
@@ -289,53 +314,68 @@ void Entity::checkCollisions(float destX, float destY) {
 
 
 		if(transvToLeftMov && this->collideOnLeft){
-			this->x = traj[j].x;
-			this->y = traj[j].y;
-			return;
+			//this->x = traj[j].x;
+			//this->y = traj[j].y;
+			endLocation = glm::vec2(traj[j].x, traj[j].y);
+			return endLocation;
 		}
 		if(transvToRightMov && this->collideOnRight){
-			this->x = traj[j].x;
-			this->y = traj[j].y;
-			return;
+			//this->x = traj[j].x;
+			//this->y = traj[j].y;
+			endLocation = glm::vec2(traj[j].x, traj[j].y);
+
+			return endLocation;
 		}
 		if(verticalToBottomMov && this->collideOnBottom) {
-			this->x = traj[j].x;
-			this->y = traj[j].y;
-			return;
+			//this->x = traj[j].x;
+			//this->y = traj[j].y;
+			endLocation = glm::vec2(traj[j].x, traj[j].y);
+
+			return endLocation;
 		}
 		if(verticalToTopMov && this->collideOnTop) {
-			this->x = traj[j].x;
-			this->y = traj[j].y;
-			return;
+			//this->x = traj[j].x;
+			//this->y = traj[j].y;
+			endLocation = glm::vec2(traj[j].x, traj[j].y);
+
+			return endLocation;
 		}
 		if(diagToTopLeftMov && (this->collideOnLeft || this->collideOnTop || this->collideOnTopLeft)) {
-			this->x = traj[j].x;
-			this->y = traj[j].y;
-			return;
+			//this->x = traj[j].x;
+			//this->y = traj[j].y;
+			endLocation = glm::vec2(traj[j].x, traj[j].y);
+
+			return endLocation;
 		}
 		if(diagToTopRightMov && (this->collideOnRight || this->collideOnTop || this->collideOnTopRight)) {
-			this->x = traj[j].x;
-			this->y = traj[j].y;
-			return;
+			//this->x = traj[j].x;
+			//this->y = traj[j].y;
+			endLocation = glm::vec2(traj[j].x, traj[j].y);
+
+			return endLocation;
 		}
 		if(diagToBottomLeftMov && (this->collideOnLeft || this->collideOnBottom || this->collideOnBottomLeft)) {
-			this->x = traj[j].x;
-			this->y = traj[j].y;
-			return;
+			//this->x = traj[j].x;
+			//this->y = traj[j].y;
+			endLocation = glm::vec2(traj[j].x, traj[j].y);
+
+			return endLocation;
 		}
 		if(diagToBottomRightMov && (this->collideOnRight || this->collideOnBottom || this->collideOnBottomRight)) {
-			this->x = traj[j].x;
-			this->y = traj[j].y;
-			return;
+			//this->x = traj[j].x;
+			//this->y = traj[j].y;
+			endLocation = glm::vec2(traj[j].x, traj[j].y);
+
+			return endLocation;
 		}
 
 	}
-
-	this->x = traj[traj.size()-1].x;
-	this->y = traj[traj.size()-1].y;
+	endLocation = glm::vec2(traj[traj.size() -1].x, traj[traj.size() - 1].y);
+	return endLocation;
+	//this->x = traj[traj.size()-1].x;
+	//this->y = traj[traj.size()-1].y;
 
 }
-
 
 
 Entity::~Entity(void)

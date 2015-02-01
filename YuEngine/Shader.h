@@ -13,6 +13,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
 
 
 // Classe Shader
@@ -28,7 +29,7 @@ class Shader
 
     Shader& operator=(Shader const &shaderACopier);
 	GLuint getUniformLocation(const std::string& uniformName);
-    bool charger();
+    bool charger(std::vector<std::string> _locations);
     bool compilerShader(GLuint &shader, GLenum type, std::string const &fichierSource);
     GLuint getProgramID() const;
 
@@ -41,6 +42,7 @@ class Shader
 	void unuse();
 
     private:
+	std::vector<std::string> locations;
 
     GLuint m_vertexID;
     GLuint m_fragmentID;

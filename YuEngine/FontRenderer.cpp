@@ -8,6 +8,8 @@
 #include <iostream>
 namespace YuEngine {
 
+	float FontRenderer::letterHeight = 8;
+
 FontRenderer::FontRenderer(void) {
 }
 
@@ -15,7 +17,7 @@ FontRenderer::FontRenderer(void) {
 FontRenderer::~FontRenderer(void) {
 }
 
-void FontRenderer::renderText(std::string text, float x, float y, float size, float r, float g, float b, float a) {
+void FontRenderer::renderText(std::string text, float x, float y, float depth, float size, float r, float g, float b, float a) {
 
 	const char* cText = text.c_str();
 	int length = strlen(cText);
@@ -213,7 +215,7 @@ void FontRenderer::renderText(std::string text, float x, float y, float size, fl
 		curX = FontSpritesheet->getCurX();
 		curY = FontSpritesheet->getCurY();
 		
-		this->container->getGameRenderer()->addGlyph(x+i*letterWidth, y, letterWidth, letterWidth, 26.0f, r, g, b, a, FontSpritesheet, curX, curY);
+		this->container->getGameRenderer()->addGlyph(x+i*letterWidth, y, letterWidth, letterWidth, depth, r, g, b, a, FontSpritesheet, curX, curY);
 
 	}
 	//delete cText;

@@ -96,6 +96,13 @@ void World::init() {
 
 }
 
+void World::resetBlocks() {
+	for(int i = 0; i < chunks.size(); i++) {
+
+		chunks[i]->init();
+	}
+}
+
 Block* World::getBlock(float x, float y) {
 
 	for(int i = 0; i < chunks.size(); i++) {

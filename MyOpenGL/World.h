@@ -28,6 +28,7 @@ public:
 	~World(void);
 	void init();
 	void generate();
+	void resetBlocks();
 
 	void render(bool obstacles);
 	void update();

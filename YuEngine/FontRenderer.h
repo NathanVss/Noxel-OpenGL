@@ -8,7 +8,9 @@ class FontRenderer: public Object
 public:
 	FontRenderer(void);
 	~FontRenderer(void);
-	void renderText(std::string, float x, float y, float size, float r, float g, float b, float a);
+
+	static float letterHeight;
+	void renderText(std::string, float x, float y, float depth, float size, float r, float g, float b, float a);
 };
 
 }

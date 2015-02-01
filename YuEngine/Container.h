@@ -9,6 +9,7 @@ class Camera2D;
 class Shader;
 class FontRenderer;
 class GameRenderer;
+class ParticlesRenderer;
 
 class Container
 {
@@ -53,8 +54,16 @@ public:
 		return this->gameRenderer;
 	}
 
+	void setParticlesRenderer(ParticlesRenderer* p) {
+		particlesRenderer = p;
+	}
+	ParticlesRenderer* getParticlesRenderer() {
+		return particlesRenderer;
+	}
+
 
 protected:
+	ParticlesRenderer* particlesRenderer;
 	Input *input;
 	Camera2D *camera;
 	SpritesheetsManager *spritesheetsManager;

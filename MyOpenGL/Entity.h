@@ -2,13 +2,15 @@
 
 #include "Object.h"
 #include <YuEngine\YuBoudingbox.h>
+#include <Dependecies\glm\glm.hpp>
+
 
 class Entity: public Object
 {
 public:
 	Entity(void);
 	~Entity(void);
-	void checkCollisions(float destX, float destY);
+	glm::vec2 checkCollisions(float starX, float startY, float destX, float destY);
 
 	float getX() {
 		return x;
@@ -16,6 +18,7 @@ public:
 	float getY() {
 		return y;
 	}
+
 
 protected:
 	float x;

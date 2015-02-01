@@ -7,6 +7,7 @@
 #include <YuEngine\Container.h>
 #include <YuEngine\Input.h>
 #include <YuEngine\Camera2D.h>
+#include <YuEngine\ParticlesRenderer.h>
 #include "BlockGrass.h"
 #include "BlockAir.h"
 #include "Chunk.h"
@@ -24,7 +25,12 @@
 #include <YuEngine\Shader.h>
 #include <YuEngine\Spritesheet.h>
 #include <YuEngine\FrameBuffer.h>
+#include "Config.h"
+
 #include "GameConsole.h"
+#include "Commander.h"
+#include "FocusManager.h"
+
 //using namespace YuEngine;
 
 MainScene::MainScene() : YuEngine::OpenGlScene(1280,720, "YuEngine Infdev") {
@@ -47,20 +53,43 @@ void MainScene::loop() {
 
 	YuEngine::FpsCounter fpsCounter;
 
+
+	Config config;
+	container->setConfig(&config);
+
 	gameRenderer->init();
 
+	std::vector<std::string> locations;
+	locations.push_back("vertexPosition");
+	locations.push_back("vertexColor");
+	locations.push_back("vertexUV");
+
 	YuEngine::Shader *lightingShader = new YuEngine::Shader("Shaders/lighting.vert", "Shaders/lighting.frag");
-	lightingShader->charger();
+	lightingShader->charger(locations);
 	container->setLightingShader(lightingShader);
 
 	YuEngine::Shader *blurShader = new YuEngine::Shader("Shaders/blur2D.vert", "Shaders/blur2D.frag");
-	blurShader->charger();
+	blurShader->charger(locations);
 	container->setBlurShader(blurShader);
 
 	YuEngine::Shader *lightRadiusShader = new YuEngine::Shader("Shaders/classic2D.vert", "Shaders/lightRadius.frag");
-	lightRadiusShader->charger();
+	lightRadiusShader->charger(locations);
 	container->setLightRadiusShader(lightRadiusShader);
-	
+
+	std::vector<std::string> particlesLocations;
+	particlesLocations.push_back("particlePos");
+	particlesLocations.push_back("particleSize");
+	YuEngine::Shader *particlesShader = new YuEngine::Shader("Shaders/particles.vert", "Shaders/particles.frag");
+	particlesShader->charger(particlesLocations);
+	container->setParticlesShader(particlesShader);
+
+
+	particlesShader->use();
+	container->getParticlesRenderer()->init();
+	particlesShader->unuse();
+
+
+
 	World* world = new World();
 	world->setMyContainer(container);
 	container->setWorld(world);
@@ -71,12 +100,12 @@ void MainScene::loop() {
 	Player player;
 	player.setMyContainer(container);
 	player.teleport(Block::size * 2, Block::size * 75);
-	//player.teleport(Block::size * 0, Block::size * 0);
+	container->setPlayer(&player);
 
 	world->init();
 	world->generate();
 
-	LightRadius lightplayer(2000, 0.1);
+	LightRadius lightplayer(2000, 0.4);
 	lightManager.addLightRadius(&lightplayer);
 
 	LightSun lightSun;
@@ -86,13 +115,32 @@ void MainScene::loop() {
 
 	YuEngine::EventTimer eTimer(10);
 
+	FocusManager focusManager;
+	focusManager.setPlayerFocus();
+	container->setFocusManager(&focusManager);
+
+	Commander commander;
+	commander.setMyContainer(container);
+	container->setCommander(&commander);
+
 	GameConsole gameConsole;
 	gameConsole.setMyContainer(container);
+	container->setGameConsole(&gameConsole);
+	gameConsole.newEntry("YuEngine InfDev");
 
+	std::vector<YuEngine::Vertex> verts;
+	std::vector<YuEngine::Vertex> alverts;
+
+		for(int i = 0; i < 1000;i++) {
+			YuEngine::Vertex vert;
+			
+			verts.push_back(vert);
+
+		}
 	while(!mustFinish) {
 		beginIteration();
 
-		//lightSun.setSeconds(lightSun.getSeconds() + 500);
+		//lightSun.setSeconds(lightSun.getSeconds() +150);
 		lightSun.setSeconds(3600*14);
 
 		//lightplayer.setPosition(1280/2, 720/2);
@@ -103,20 +151,34 @@ void MainScene::loop() {
 		fpsCounter.update();
 		world->update();
 
+		alverts.clear();
+		for(int i = 0; i < verts.size(); i++) {
+
+			int a = 1;
+			int b = 4;
+			if(b > a) {
+				float b = 5;
+			}
+
+			alverts.push_back(verts[i]);
+
+		}
+
+		//std::cout << "size : " << alverts.size() << std::endl;
 
 		eTimer.update();
 		if(eTimer.isOver()) {
-			//if(container->getInput()->getLeftClick()) {
-			//	glm::vec2 cameraPos = container->getCamera()->getPosition();
+			if(container->getInput()->getRightClick()) {
+				glm::vec2 cameraPos = container->getCamera()->getPosition();
 
-			//	cameraPos.x = cameraPos.x - width/2;
-			//	cameraPos.y = cameraPos.y + height/2;
-			//	std::cout << "CLICK" << std::endl;
-			//	std::cout <<  cameraPos.x+container->getInput()->getMouseX() << ";" << cameraPos.y - container->getInput()->getMouseY() << std::endl;
-			//	LightRadius* lightRadius = new LightRadius(200, 0.01);
-			//	lightRadius->setPosition(cameraPos.x+container->getInput()->getMouseX(), cameraPos.y - container->getInput()->getMouseY());
-			//	lightManager.addLightRadius(lightRadius);
-			//}
+				cameraPos.x = cameraPos.x - width/2;
+				cameraPos.y = cameraPos.y + height/2;
+				std::cout << "CLICK" << std::endl;
+				std::cout <<  cameraPos.x+container->getInput()->getMouseX() << ";" << cameraPos.y - container->getInput()->getMouseY() << std::endl;
+				LightRadius* lightRadius = new LightRadius(200, 0.01);
+				lightRadius->setPosition(cameraPos.x+container->getInput()->getMouseX(), cameraPos.y - container->getInput()->getMouseY());
+				lightManager.addLightRadius(lightRadius);
+			}
 			//pixelsToBmp(frameBuffer.getColorBufferId(0));
 
 			eTimer.reset();
@@ -125,8 +187,10 @@ void MainScene::loop() {
 		container->getCamera()->setPosition(glm::vec2(player.getX(), player.getY()));
 		container->getCamera()->update();
 		gameConsole.update();
+
+
+		container->getParticlesRenderer()->update();
 		
-		lightManager.update();
 		glm::vec2 cameraPos = container->getCamera()->getPosition();
 		YuEngine::YuBoudingbox cameraBox = container->getCamera()->getCameraBox();
 
@@ -135,7 +199,10 @@ void MainScene::loop() {
 			lightplayer.setRadius(lightplayer.getRadius() + 30);
 		}
 
-		lightManager.renderLighting();
+		if(config.getLighting()) {
+			lightManager.update();
+			lightManager.renderLighting();
+		}
 		glViewport(0, 0, width, height);
 
 		// RENDU DU MONDE
@@ -159,11 +226,14 @@ void MainScene::loop() {
 			gameRenderer->render(container->getClassicShader()->getProgramID());
 			container->getClassicShader()->unuse();
 
-		// LIGHT
-		gameRenderer->begin();
+		 //LIGHT
 
-		YuEngine::Spritesheet spritesheet(lightManager.getLastFrameBufferLightsRadius()->getColorBufferId(0), 1);
-		//YuEngine::Spritesheet spritesheet(lightManager.getFrameBufferVertBlur()->getColorBufferId(0), 1);
+		if(config.getLighting()) {
+
+			gameRenderer->begin();
+
+			YuEngine::Spritesheet spritesheet(lightManager.getLastFrameBufferLightsRadius()->getColorBufferId(0), 1);
+			//YuEngine::Spritesheet spritesheet(lightManager.getFrameBufferVertBlur()->getColorBufferId(0), 1);
 			gameRenderer->addGlyph(cameraBox.getX1(),cameraBox.getY1(), width, height, 15.0f, 1.0f, 1.0f, 1.0f, 1.0f, &spritesheet, 0,0,1,1);
 			container->getClassicShader()->use();
 			container->getClassicShader()->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
@@ -173,7 +243,9 @@ void MainScene::loop() {
 			// Ce qui est devant est égal au fond multiplé par la lumiere normalisée
 			glBlendFunc(GL_DST_COLOR, GL_SRC1_COLOR);
 			gameRenderer->render(container->getClassicShader()->getProgramID());
-		container->getClassicShader()->unuse();
+			container->getClassicShader()->unuse();
+		}
+
 
 
 
@@ -198,9 +270,14 @@ void MainScene::loop() {
 
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			gameRenderer->render(container->getClassicShader()->getProgramID());
-			container->getClassicShader()->unuse();
+		container->getClassicShader()->unuse();
 
 		
+		particlesShader->use();
+		container->getClassicShader()->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
+
+		container->getParticlesRenderer()->render();
+		particlesShader->unuse();
 
 		endIteration();
 

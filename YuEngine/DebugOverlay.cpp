@@ -33,7 +33,7 @@ void DebugOverlay::render() {
 	int screenHeight = this->container->getCamera()->getScreenHeight();
 	for(int i=0; i<this->debugStrings.size(); i++) {
 
-		this->container->getFontRenderer()->renderText(this->debugStrings[i], cameraPosition.x-screenWidth/2, (cameraPosition.y+screenHeight/2)-(i)*8*2, 2, 1.0f, 1.0f, 1.0f, 1.0f);
+		this->container->getFontRenderer()->renderText(this->debugStrings[i], cameraPosition.x-screenWidth/2, (cameraPosition.y+screenHeight/2)-(i)*8*2,26, 2, 1.0f, 1.0f, 1.0f, 1.0f);
 	}
 }
 }

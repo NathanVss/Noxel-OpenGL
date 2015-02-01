@@ -12,7 +12,6 @@ public:
 	~Input(void);
 	void update();
 
-	bool getKeyQ();
 	bool getKeyUp();
 	bool getKeyDown();
 	bool getKeyLeft();
@@ -27,32 +26,101 @@ public:
 	bool getKey7();
 	bool getKey8();
 	bool getKey9();
-	bool getKeyG();
-	bool getKeyI();
+
 	bool getKeyEnter();
 	bool getKeyBackSpace();
 	bool getKeyRightSlash();
-	bool getKeyO();
-	bool getKeyD();
-	bool getKeyT();
-	bool getKeyN();
 	bool getKeyLeftShift();
 
-	bool getKeyZ() {
-		return keyZ;
+	bool getKeySpace() {
+		return keySpace;
 	}
-	bool getKeyS() {
-		return keyS;
-	}
+
 	bool getKeyA() {
 		return keyA;
+	}
+	bool getKeyB() {
+		return keyB;
+	}
+	bool getKeyC() {
+		return keyC;
+	}
+	bool getKeyD() {
+		return keyD;
 	}
 	bool getKeyE() {
 		return keyE;
 	}
+	bool getKeyF() {
+		return keyF;
+	}
+	bool getKeyG() {
+		return keyG;
+	}
+	bool getKeyH() {
+		return keyH;
+	}
+	bool getKeyI() {
+		return keyI;
+	}
+	bool getKeyJ() {
+		return keyJ;
+	}
+	bool getKeyK() {
+		return keyK;
+	}
+	bool getKeyL() {
+		return keyL;
+	}
+	bool getKeyM() {
+		return keyM;
+	}
+	bool getKeyN() {
+		return keyN;
+	}
+	bool getKeyO() {
+		return keyO;
+	}
+	bool getKeyP() {
+		return keyP;
+	}
+	bool getKeyQ() {
+		return keyQ;
+	}
+	bool getKeyR() {
+		return keyR;
+	}
+	bool getKeyS() {
+		return keyS;
+	}
+	bool getKeyT() {
+		return keyT;
+	}
+	bool getKeyU() {
+		return keyU;
+	}
+	bool getKeyV() {
+		return keyV;
+	}
+	bool getKeyW() {
+		return keyW;
+	}
+	bool getKeyX() {
+		return keyX;
+	}
+	bool getKeyY() {
+		return keyY;
+	}
+	bool getKeyZ() {
+		return keyZ;
+	}
+
+	bool getKeyDot() {
+		return keyDot;
+	}
 
 	bool getLeftClick() { return mouseKeys[SDL_BUTTON_LEFT]; }
-	bool getKeySpace() { return this->keys[SDL_SCANCODE_SPACE]; }
+	bool getRightClick() { return mouseKeys[SDL_BUTTON_RIGHT]; }
 	int getMouseX() { return this->mouseX; }
 	int getMouseY() { return this->mouseY; }
 	int getRelMouseX() { return this->mouseRelX; } 
@@ -60,28 +128,48 @@ public:
 
 private:
 	SDL_Event* SdlEvent;
-	bool keys[SDL_NUM_SCANCODES];
 	bool mouseKeys[8];
 
 	bool keyRightSlash;
 	bool keyLeftShift;
-	bool keyZ;
-	bool keyS;
-	bool keyA;
-	bool keyE;
+	bool keySpace;
 
-	bool keyT;
-	bool keyO;
+	bool keyDot;
+
+
+	bool keyA;
+	bool keyB;
+	bool keyC;
 	bool keyD;
-	bool keyN;
+	bool keyE; /* Done */
+	bool keyF;
+	bool keyG; //
+	bool keyH;
+	bool keyI;
+	bool keyJ;
+	bool keyK;
+	bool keyL;
+	bool keyM;
+	bool keyN; //
+	bool keyO; //
+	bool keyP;
+	bool keyQ; //
+	bool keyR;
+	bool keyS; //
+	bool keyT;
+	bool keyU;
+	bool keyV;
+	bool keyW;
+	bool keyX;
+	bool keyY;
+	bool keyZ;
+
 	bool keyEnter;
 	bool keyBackSpace;
-	bool keyQ;
 	bool keyUp;
 	bool keyDown;
 	bool keyLeft;
 	bool keyRight;
-	bool keyG;
 	bool key0;
 	bool key1;
 	bool key2;
@@ -92,7 +180,6 @@ private:
 	bool key7;
 	bool key8;
 	bool key9;
-	bool keyI;
 
 	int mouseX;
 	int mouseY;

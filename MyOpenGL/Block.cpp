@@ -16,8 +16,16 @@ void Block::render(bool obstacles) {
 
 	} else {
 		myContainer->getGameRenderer()->addGlyph(x,y+Block::size,Block::size, Block::size, 15.0f, 1.0f*(lightIndice.r/255.0f),1.0f*(lightIndice.g/255.0f),1.0f*(lightIndice.b/255.0f),1.0f,myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), textX, textY);
+		//myContainer->getGameRenderer()->addGlyph(boundingBox.getX1(),boundingBox.getY1(),boundingBox.getWidth(), boundingBox.getHeight(), 15.0f, 1.0f*(lightIndice.r/255.0f),1.0f*(lightIndice.g/255.0f),1.0f*(lightIndice.b/255.0f),0.4f,myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), textX, textY);
 		
 	}
+
+	YuEngine::Color c;
+	c.r = 255;
+	c.g = 255;
+	c.b = 255;
+	c.a = 255;
+	lightIndice = c;
 
 	if(!hasBoundingbox) {
 		return;

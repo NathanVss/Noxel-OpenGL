@@ -2,7 +2,11 @@
 
 #include <YuEngine\Container.h>
 class World;
-
+class Commander;
+class FocusManager;
+class GameConsole;
+class Player;
+class Config;
 class Container: public YuEngine::Container
 {
 public:
@@ -39,11 +43,59 @@ public:
 		return lightRadiusShader;
 	}
 
+	void setCommander(Commander* c) {
+		commander = c;
+	}
+	Commander* getCommander() {
+		return commander;
+	}
+
+	void setFocusManager(FocusManager* f) {
+		focusManager = f;
+	}
+	FocusManager* getFocusManager() {
+		return focusManager;
+	}
+
+	void setGameConsole(GameConsole* g) {
+		gameConsole = g;
+	}
+	GameConsole* getGameConsole() {
+		return gameConsole;
+	}
+
+	void setPlayer(Player* p) {
+		player = p;
+	}
+	Player* getPlayer() {
+		return player;
+	}
+
+	void setConfig(Config* c) {
+		config = c;
+	}
+	Config* getConfig() {
+		return config;
+	}
+
+	void setParticlesShader(YuEngine::Shader* s) {
+		particlesShader = s;
+	}
+	YuEngine::Shader* getParticlesShader() {
+		return particlesShader;
+	}
+
 protected:
 	World* world;
 	YuEngine::Shader *lightingShader;
 	YuEngine::Shader *blurShader;
 	YuEngine::Shader *lightRadiusShader;
+	YuEngine::Shader *particlesShader;
+	Commander* commander;
+	FocusManager* focusManager;
+	GameConsole* gameConsole;
+	Player* player;
+	Config* config;
 
 };
 

@@ -18,7 +18,7 @@ Shader::Shader(Shader const &shaderACopier)
 
     // Chargement du nouveau shader
 
-    charger();
+	charger(shaderACopier.locations);
 }
 
 
@@ -51,7 +51,7 @@ Shader& Shader::operator=(Shader const &shaderACopier)
     // Chargement du nouveau shader
 	
 
-    charger();
+	charger(shaderACopier.locations);
 
 
     // Retour du pointeur this
@@ -88,7 +88,7 @@ GLuint Shader::getUniformLocation(const std::string& uniformName) {
 }
 
 
-bool Shader::charger()
+bool Shader::charger(std::vector<std::string> _locations)
 {
     // Destruction d'un éventuel ancien Shader
 
@@ -122,11 +122,15 @@ bool Shader::charger()
     glAttachShader(m_programID, m_fragmentID);
 
 
+	locations = _locations;
     // Verrouillage des entrées shader
+	for(int i = 0; i < locations.size(); i++) {
+		glBindAttribLocation(m_programID, i, locations[i].c_str());
 
-    glBindAttribLocation(m_programID, 0, "vertexPosition");
-    glBindAttribLocation(m_programID, 1, "vertexColor");
-    glBindAttribLocation(m_programID, 2, "vertexUV");
+	}
+    //glBindAttribLocation(m_programID, 0, "vertexPosition");
+    //glBindAttribLocation(m_programID, 1, "vertexColor");
+    //glBindAttribLocation(m_programID, 2, "vertexUV");
 
 
     // Linkage du programme
