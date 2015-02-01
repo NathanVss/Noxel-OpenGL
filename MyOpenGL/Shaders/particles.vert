@@ -21,7 +21,8 @@ void main() {
                     	    particlePos.y + (offset.y * particleSize) ,
                             0.0,
                             1.0);
-
+  // gl_Position = vec4(10,10,0,1.0);
+  // gl_Position = vec4(gl_VertexID*10,gl_VertexID*10,0,1.0);
     
     fragmentColor = vec4(0,1.0f,0,1.0f);
 }

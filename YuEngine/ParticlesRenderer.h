@@ -24,6 +24,9 @@ public:
 		velocity.x = _velX;
 		velocity.y = _velY;
 	}
+	Particle() {
+
+	};
 	~Particle() {
 
 	};
@@ -31,7 +34,11 @@ public:
 	Position position;
 	Color color;
 	float size;
+	float time;
+	float radius;
+	float timeSpeed;
 
+	float step;
 };
 
 class ParticlesRenderer : public Object
@@ -43,10 +50,16 @@ public:
 	void update();
 	void render();
 
-private:
 
+	int getParticlesNbr() {
+		return particlesNbr;
+	}
+
+private:
+	int time;
 	GLuint vbo;
 	GLuint vao;
+	int particlesNbr;
 	std::vector<Particle> particlesBuffer;
 	std::vector<Particle> aliveParticlesBuffer;
 };

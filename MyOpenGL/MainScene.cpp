@@ -99,7 +99,7 @@ void MainScene::loop() {
 
 	Player player;
 	player.setMyContainer(container);
-	player.teleport(Block::size * 2, Block::size * 75);
+	player.teleport(Block::size * -20, Block::size * 80);
 	container->setPlayer(&player);
 
 	world->init();
@@ -257,6 +257,7 @@ void MainScene::loop() {
 			debugOverlay->addDebugString(std::string("FPS : ") + fpsCounter.getLastFps());
 			debugOverlay->addDebugString(std::string("Sprites : ") + gameRenderer->getGlyphsNumber());
 			debugOverlay->addDebugString(std::string("Total Sprites : ") + gameRenderer->getTotalGlyphsNumber());
+			debugOverlay->addDebugString(std::string("Total Particles : ") + container->getParticlesRenderer()->getParticlesNbr());
 
 			gameRenderer->resetTotalGlyphsNumber();
 			debugOverlay->render();
@@ -272,10 +273,11 @@ void MainScene::loop() {
 			gameRenderer->render(container->getClassicShader()->getProgramID());
 		container->getClassicShader()->unuse();
 
-		
+		//
 		particlesShader->use();
-		container->getClassicShader()->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
+		particlesShader->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
 
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		container->getParticlesRenderer()->render();
 		particlesShader->unuse();
 

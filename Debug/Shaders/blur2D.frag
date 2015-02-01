@@ -17,13 +17,35 @@ uniform int vertical;
 uniform int invertY;
 uniform float offset;
 
-
+uniform float cameraBoxY;
 uniform float sunIndice;
+uniform float darkDepthY;
+uniform float darkDepthGradient;
 
 
 bool isWhite(vec4 texture) {
 
     return texture.r == 1.0 && texture.g == 1.0 && texture.b == 1.0;
+}
+float getDepthColor() {
+    if(vertical == 0) {
+        return 1.0;
+    }
+
+    float curY = cameraBoxY - screenHeight + gl_FragCoord.y;
+    if(curY <= darkDepthY - darkDepthGradient) {
+
+        return 0;
+
+    } else if(curY <= darkDepthY && curY > darkDepthY - darkDepthGradient) {
+
+        return 1 - (darkDepthY - curY) / darkDepthGradient;
+
+    } else {
+
+        return 1;
+    }
+
 }
 
 void main() {
@@ -37,6 +59,7 @@ void main() {
 
             coords.y = 1.0f - coords.y;
         }
+    float depthIntensity = getDepthColor();
 
     vec4 textureColor = texture(screenTexture, coords);
     if(!isWhite(textureColor)) {
@@ -108,10 +131,10 @@ void main() {
         if(vertical == 1) {
 
 
-            color = vec4(sum.rgb * sunIndice, sum.a);
+            color = vec4(sum.rgb * sunIndice * depthIntensity, sum.a);
 
         } else {
-            color = sum;
+            color = vec4(sum.rgb * depthIntensity, sum.a);
 
 
         }
@@ -119,11 +142,11 @@ void main() {
     } else {
 
         if(vertical == 1) {
-            color = vec4(textureColor.rgb * sunIndice, textureColor.a);
+            color = vec4(textureColor.rgb * sunIndice * depthIntensity, textureColor.a);
 
 
         } else {
-            color = textureColor;
+            color = vec4(textureColor.rgb * depthIntensity, textureColor.a);
 
 
         }

@@ -1,8 +1,0 @@
-﻿  Camera2D.cpp
-  Container.cpp
-  DebugOverlay.cpp
-  FontRenderer.cpp
-  GameRenderer.cpp
-  OpenGlScene.cpp
-  YuBoudingbox.cpp
-  OpenGLModern.vcxproj -> C:\Users\Nathan\Documents\Visual Studio 2012\Projects\Noxel-OpenGL\Release\YuEngine.lib

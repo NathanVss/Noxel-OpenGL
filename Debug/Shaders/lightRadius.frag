@@ -15,6 +15,7 @@ uniform int screenTextureHeight;
 uniform float lightX;
 uniform float lightY;
 uniform float lightRadius;
+uniform float lightIntensity;
 
 
 bool isWhite(vec4 texture) {
@@ -34,7 +35,8 @@ float getLightIndice() {
 
     float dist = distX + distY;
 
-    float indice = 1 - dist / (lightRadius*lightRadius);
+    float indice = 1 / (((lightIntensity*dist / lightRadius) + 1)*((lightIntensity*dist / lightRadius) + 1));
+    // float indice = 1 - dist / (lightRadius*lightRadius);
     if(indice < 0) {
 
         indice = 0;

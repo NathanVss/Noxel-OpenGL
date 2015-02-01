@@ -18,6 +18,6 @@ void main() {
     vec4 textureColor = texture(spriteTexture, fragmentUV);
 
     color = vec4(fragmentColor.r * intensity, fragmentColor.g * intensity, fragmentColor.b * intensity, fragmentColor.a) * vec4(textureColor.rgba);
-
+   // color = vec4(0,1.0,0,1.0);
     
 }
