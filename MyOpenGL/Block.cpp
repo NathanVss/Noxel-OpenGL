@@ -6,8 +6,27 @@
 #include <iostream>
 #include "Container.h"
 
+#include <YuEngine\ParticlesRenderer.h>
+
 float Block::size = 32;
 
+void Block::onDestroy() {
+
+	for(int _x = 0; _x < 8; _x++) {
+		for(int _y = 0; _y < 8; _y++) {
+
+			float velX = (double)rand() / RAND_MAX;
+			float velY = (double)rand() / RAND_MAX;
+			YuEngine::Particle particle(x + _x * Block::size / 8, y + _y * Block::size / 8, 2, velX,velY,1.0f,1.0f,1.0f,1.0f);
+			particle.age = 0;
+			particle.deathAge = 120*2;
+			myContainer->getParticlesRenderer()->addParticle(particle);
+
+		}
+
+	}
+
+}
 
 void Block::render(bool obstacles) {
 

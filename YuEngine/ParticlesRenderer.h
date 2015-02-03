@@ -34,6 +34,10 @@ public:
 	Position position;
 	Color color;
 	float size;
+	float age;
+	float deathAge;
+
+
 	float time;
 	float radius;
 	float timeSpeed;
@@ -48,11 +52,15 @@ public:
 	~ParticlesRenderer(void);
 	void init();
 	void update();
+	void updateAge();
 	void render();
 
 
+	void addParticle(Particle particle);
+
+
 	int getParticlesNbr() {
-		return particlesNbr;
+		return particlesBuffer.size();
 	}
 
 private:
@@ -60,6 +68,9 @@ private:
 	GLuint vbo;
 	GLuint vao;
 	int particlesNbr;
+
+	bool doUpdateAge;
+
 	std::vector<Particle> particlesBuffer;
 	std::vector<Particle> aliveParticlesBuffer;
 };

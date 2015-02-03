@@ -264,6 +264,9 @@ void Player::handleDigging() {
 		mouseWorld.x = floor(mouseWorld.x / Block::size) * 32;
 		mouseWorld.y = floor(mouseWorld.y / Block::size) * 32;
 
+		Block* curBlock = myContainer->getWorld()->getBlock(mouseWorld.x, mouseWorld.y);
+		curBlock->onDestroy();
+
 		BlockAir* blockAir = new BlockAir(mouseWorld.x, mouseWorld.y);
 		myContainer->getWorld()->setBlock(blockAir);
 

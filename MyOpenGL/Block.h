@@ -43,6 +43,7 @@ public:
 	YuEngine::YuBoudingbox getBoundingbox() {
 		return boundingBox;
 	}
+	virtual void onDestroy();
 
 	virtual void render(bool obstacles);
 	virtual void update();

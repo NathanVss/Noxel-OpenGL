@@ -5,6 +5,7 @@ namespace YuEngine {
 ParticlesRenderer::ParticlesRenderer(void){
 	particlesNbr = 0;
 	time = 0;
+	doUpdateAge = true;
 }
 
 
@@ -26,55 +27,6 @@ void ParticlesRenderer::init() {
 			glEnableVertexAttribArray(1); // SIZE
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE,sizeof(Particle), (void*)offsetof(Particle, position));
 			glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE,sizeof(Particle), (void*)offsetof(Particle, size));
-
-			float radius = 100;
-
-
-			for(int i = 0; i < 10000; i++) {
-				Particle particle;
-				float f = (double)rand() / RAND_MAX * 50;
-				float g = (double)rand() / RAND_MAX ;
-				float velX = (double)rand() / RAND_MAX;
-				float velY = (double)rand() / RAND_MAX;
-				//float velX = 0.5 * 1;
-				//float velY = 0.5 * 1;
-
-				float sin_ = sin(i);
-				float cos_ = cos(i);
-
-				velX *= -cos_ * 2;
-				velY *= -sin_ * 2;
-				float partRadius = radius + f;
-				sin_ *= partRadius;
-				cos_ *= partRadius;
-
-
-				//if(cos_ < 0) {
-				//	velX = -velX;
-				//}
-				//if(sin_ < 0) {
-				//	velY = -velY;
-				//}
-				//if( f < 0.5) {
-				//	velX = -velX;
-				//}
-				//if( g < 0.5) {
-				//	velY = -velY;
-				//}
-
-				particle = Particle(-20*30 + cos_,2700 + sin_,2*g, velX*1, velY*1, 1.0f,1.0f,1.0f,1.0f);
-				particle.time = i;
-				particle.radius = partRadius;
-				particle.timeSpeed = g * 0.1;
-				if(g < 0.5) {
-					particle.timeSpeed *= -1;
-				}
-				
-				particlesNbr++;
-				particlesBuffer.push_back(particle);
-
-			}
-
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glBindVertexArray(0);
@@ -82,25 +34,84 @@ void ParticlesRenderer::init() {
 
 }
 
-void ParticlesRenderer::update() {
-	time++;
+
+void ParticlesRenderer::updateAge() {
+
+	std::vector<Particle> tempVector;
+
 	for(int i = 0; i < particlesBuffer.size(); i++) {
+
+		particlesBuffer[i].age++;
 		particlesBuffer[i].position.x += particlesBuffer[i].velocity.x;
 		particlesBuffer[i].position.y += particlesBuffer[i].velocity.y;
+		particlesBuffer[i].velocity.y -= 0.05;
+		particlesBuffer[i].velocity.x *= 0.999;
 
-		//		particlesBuffer[i].position.x =-20*30 + cos(particlesBuffer[i].time) * particlesBuffer[i].radius;
-		//particlesBuffer[i].position.y = 2700 + sin(particlesBuffer[i].time) * particlesBuffer[i].radius;
-		//particlesBuffer[i].time += particlesBuffer[i].timeSpeed;
+		if(doUpdateAge) {
+			if(particlesBuffer[i].age < particlesBuffer[i].deathAge) {
 
-		//particlesBuffer[i].radius -= 1;
-
-
-		////int a = 5;
-		//particlesBuffer[i].velocity.y -= 0.001;
-		//particlesBuffer[i].velocity.x *= 0.999;
+				tempVector.push_back(particlesBuffer[i]);
+			}
+		}
 	}
 
-	void* ptr = particlesBuffer.data();
+	if(doUpdateAge) {
+
+		particlesBuffer = tempVector;
+	}
+}
+
+void ParticlesRenderer::addParticle(Particle particle) {
+
+
+	particlesBuffer.push_back(particle);
+}
+
+
+void ParticlesRenderer::update() {
+	time++;
+	int radius = 0;
+	if(time % 1 == 0 ) {
+	for(int i = 0; i < 10; i++) {
+		Particle particle;
+		float f = (double)rand() / RAND_MAX * 0;
+		float g = (double)rand() / RAND_MAX ;
+		float velX = (double)rand() / RAND_MAX;
+		float velY = (double)rand() / RAND_MAX;
+
+		float sin_ = sin(i);
+		float cos_ = cos(i);
+		//float velX = 0.1;
+		velX *= cos_ * 2;
+		if(sin_ < 0) {
+			velY *= -sin_ * 2;
+
+		} else {
+			velY *= sin_ * 2;
+
+		}
+		float partRadius = radius + f;
+		sin_ *= partRadius;
+		cos_ *= partRadius;
+
+		particle = Particle(-30*30 + cos_,2700 + sin_,2*g, velX*15, velY*15, 2.0f,1.0f,1.0f,1.0f);
+		particle.time = i;
+		particle.radius = partRadius;
+		particle.timeSpeed = g * 0.1;
+		particle.deathAge = 60*4*(g);
+		particle.age = 0;
+		if(g < 0.5) {
+			particle.timeSpeed *= -1;
+		}
+				
+		particlesNbr++;
+		particlesBuffer.push_back(particle);
+
+	}
+	}
+
+	updateAge();
+
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
@@ -119,11 +130,6 @@ void ParticlesRenderer::render() {
 	glVertexAttribDivisor(0,1);
 	glVertexAttribDivisor(1,1);
 
-	glPointSize(32);
-
-	//for(int i = 0; i < particlesBuffer.size(); i++) {
-	//	glDrawArrays(GL_TRIANGLES, 0, 1);
-	//}
 	glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, particlesBuffer.size());
 }
 

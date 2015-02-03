@@ -129,14 +129,16 @@ void MainScene::loop() {
 	gameConsole.newEntry("YuEngine InfDev");
 
 	std::vector<YuEngine::Vertex> verts;
+	std::vector<YuEngine::Vertex> copyverts;
 	std::vector<YuEngine::Vertex> alverts;
 
-		for(int i = 0; i < 1000;i++) {
+		for(int i = 0; i < 100000;i++) {
 			YuEngine::Vertex vert;
 			
 			verts.push_back(vert);
 
 		}
+
 	while(!mustFinish) {
 		beginIteration();
 
@@ -151,18 +153,20 @@ void MainScene::loop() {
 		fpsCounter.update();
 		world->update();
 
-		alverts.clear();
-		for(int i = 0; i < verts.size(); i++) {
+		//alverts.clear();
+		//for(int i = 0; i < verts.size(); i++) {
 
-			int a = 1;
-			int b = 4;
-			if(b > a) {
-				float b = 5;
-			}
+		//	int a = 1;
+		//	int b = 4;
+		//	if(b > a) {
+		//		float b = 5;
+		//	}
 
-			alverts.push_back(verts[i]);
+		//	alverts.push_back(verts[i]);
 
-		}
+		//}
+		//copyverts.clear();
+		//copyverts = alverts;
 
 		//std::cout << "size : " << alverts.size() << std::endl;
 
@@ -226,6 +230,14 @@ void MainScene::loop() {
 			gameRenderer->render(container->getClassicShader()->getProgramID());
 			container->getClassicShader()->unuse();
 
+		particlesShader->use();
+		particlesShader->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
+
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		container->getParticlesRenderer()->render();
+		particlesShader->unuse();
+
+
 		 //LIGHT
 
 		if(config.getLighting()) {
@@ -274,12 +286,7 @@ void MainScene::loop() {
 		container->getClassicShader()->unuse();
 
 		//
-		particlesShader->use();
-		particlesShader->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
 
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		container->getParticlesRenderer()->render();
-		particlesShader->unuse();
 
 		endIteration();
 
