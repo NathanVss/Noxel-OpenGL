@@ -21,6 +21,7 @@ public:
 		c.b = 255;
 		c.a = 255;
 		lightIndice = c;
+		emitParticlesOnDestroy = true;
 	};
 	virtual ~Block(void) {
 
@@ -57,9 +58,11 @@ protected:
 	int textX;
 	int textY;
 	bool hasBoundingbox;
+	bool emitParticlesOnDestroy;
 
 	YuEngine::YuBoudingbox boundingBox;
 	YuEngine::Color lightIndice;
+	YuEngine::Color particlesColors;
 
 };
 

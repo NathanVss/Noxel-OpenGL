@@ -82,7 +82,16 @@ void MainScene::loop() {
 	YuEngine::Shader *particlesShader = new YuEngine::Shader("Shaders/particles.vert", "Shaders/particles.frag");
 	particlesShader->charger(particlesLocations);
 	container->setParticlesShader(particlesShader);
+	container->getParticlesRenderer()->setParticlesShader(particlesShader);
 
+
+	std::vector<std::string> colorParticlesLocations;
+	colorParticlesLocations.push_back("particlePos");
+	colorParticlesLocations.push_back("particleSize");
+	colorParticlesLocations.push_back("particleColors");
+	YuEngine::Shader *colorParticlesShader = new YuEngine::Shader("Shaders/colorParticles.vert", "Shaders/colorParticles.frag");
+	colorParticlesShader->charger(colorParticlesLocations);
+	container->getParticlesRenderer()->setColorParticlesShader(colorParticlesShader);
 
 	particlesShader->use();
 	container->getParticlesRenderer()->init();
@@ -230,12 +239,12 @@ void MainScene::loop() {
 			gameRenderer->render(container->getClassicShader()->getProgramID());
 			container->getClassicShader()->unuse();
 
-		particlesShader->use();
-		particlesShader->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
+		//particlesShader->use();
+		//particlesShader->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
 
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		container->getParticlesRenderer()->render();
-		particlesShader->unuse();
+		//particlesShader->unuse();
 
 
 		 //LIGHT

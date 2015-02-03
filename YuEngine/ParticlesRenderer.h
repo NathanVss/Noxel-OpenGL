@@ -4,6 +4,7 @@
 #include "Vertex.h"
 #include <vector>
 #include "Object.h"
+#include "Shader.h"
 
 namespace YuEngine {
 
@@ -37,6 +38,7 @@ public:
 	float age;
 	float deathAge;
 
+	bool useColors;
 
 	float time;
 	float radius;
@@ -60,16 +62,35 @@ public:
 
 
 	int getParticlesNbr() {
-		return particlesBuffer.size();
+		return particlesBuffer.size() + colorParticlesBuffer.size();
+	}
+
+
+	void setColorParticlesShader(Shader* s) {
+		colorParticlesShader = s;
+	}
+	void setParticlesShader(Shader* s) {
+		particlesShader = s;
 	}
 
 private:
 	int time;
 	GLuint vbo;
 	GLuint vao;
+
+	GLuint vboColors;
+	GLuint vaoColors;
+
 	int particlesNbr;
 
 	bool doUpdateAge;
+	bool handleColors;
+
+	Shader* particlesShader;
+	Shader* colorParticlesShader;
+
+	std::vector<Particle> colorParticlesBuffer;
+	std::vector<Particle> aliveColorParticlesBuffer;
 
 	std::vector<Particle> particlesBuffer;
 	std::vector<Particle> aliveParticlesBuffer;

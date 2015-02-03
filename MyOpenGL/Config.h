@@ -3,7 +3,7 @@ class Config
 {
 public:
 	Config(void) {
-		lighting = false;
+		lighting = true;
 	};
 	~Config(void) {
 

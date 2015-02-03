@@ -12,18 +12,39 @@ float Block::size = 32;
 
 void Block::onDestroy() {
 
-	for(int _x = 0; _x < 8; _x++) {
-		for(int _y = 0; _y < 8; _y++) {
 
-			float velX = (double)rand() / RAND_MAX;
-			float velY = (double)rand() / RAND_MAX;
-			YuEngine::Particle particle(x + _x * Block::size / 8, y + _y * Block::size / 8, 2, velX,velY,1.0f,1.0f,1.0f,1.0f);
-			particle.age = 0;
-			particle.deathAge = 120*2;
-			myContainer->getParticlesRenderer()->addParticle(particle);
+	if(emitParticlesOnDestroy) {
+
+
+		for(int _x = 0; _x < 8*5; _x++) {
+			for(int _y = 0; _y < 8*5; _y++) {
+
+				float velX = (double)rand() / RAND_MAX * 5;
+				float velY = (double)rand() / RAND_MAX * 5;
+				float neg = (double)rand() / RAND_MAX;
+				float r = (double)rand() / RAND_MAX * 2 - 1;
+				float g = (double)rand() / RAND_MAX * 2 - 1;
+				float b = (double)rand() / RAND_MAX * 2 - 1;
+
+				//r *= 0.1;
+				//g *= 0.1;
+				//b *= 0.1;
+
+				if(neg < 0.5) {
+					neg = -1;
+				} else {
+					neg = 1;
+				}
+
+				YuEngine::Particle particle(x + _x * Block::size / 8 / 5, y + _y * Block::size / 8 / 5, 4, velX*neg,velY,particlesColors.r + r, particlesColors.g + g,particlesColors.b + b,particlesColors.a);
+				particle.age = 0;
+				particle.deathAge = 120*2;
+				particle.useColors = true;
+				myContainer->getParticlesRenderer()->addParticle(particle);
+
+			}
 
 		}
-
 	}
 
 }

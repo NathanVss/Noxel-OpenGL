@@ -12,6 +12,13 @@ public:
 		textX = 2;
 		textY = 0;
 		hasBoundingbox = false;
+		emitParticlesOnDestroy = false;
+		YuEngine::Color _particlesColors;
+		_particlesColors.r = 23.0f / 255;
+		_particlesColors.g = 120.0f / 255;
+		_particlesColors.b = 17.0f / 255;
+		_particlesColors.a = 1.0f;
+		particlesColors = _particlesColors;
 	};
 	~BlockAir(void) {
 	};

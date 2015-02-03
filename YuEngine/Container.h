@@ -70,6 +70,8 @@ protected:
 	Shader* classicShader;
 	FontRenderer* fontRenderer;
 	GameRenderer* gameRenderer;
+
+
 };
 
 }
