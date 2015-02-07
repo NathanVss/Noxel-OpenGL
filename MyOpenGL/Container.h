@@ -7,6 +7,9 @@ class FocusManager;
 class GameConsole;
 class Player;
 class Config;
+class GuiManager;
+class EntityManager;
+
 class Container: public YuEngine::Container
 {
 public:
@@ -85,6 +88,20 @@ public:
 		return particlesShader;
 	}
 
+	void setGuiManager(GuiManager* g) {
+		guiManager = g;
+	}
+	GuiManager* getGuiManager() {
+		return guiManager;
+	}
+
+	void setEntityManager(EntityManager* m) {
+		entityManager = m;
+	}
+	EntityManager* getEntityManager() {
+		return entityManager;
+	}
+
 protected:
 	World* world;
 	YuEngine::Shader *lightingShader;
@@ -96,6 +113,8 @@ protected:
 	GameConsole* gameConsole;
 	Player* player;
 	Config* config;
+	GuiManager* guiManager;
+	EntityManager* entityManager;
 
 };
 

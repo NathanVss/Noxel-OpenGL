@@ -28,4 +28,20 @@ public:
     Vertex bottomRight;
 };
 
+class InstancedGlyph {
+public:
+	InstancedGlyph() {}
+	~InstancedGlyph() {}
+	void debug() {
+		std::cout << "Glyph : " << std::endl;
+		std::cout << "[" << center.position.x << ";" << center.position.y << "] => [" << center.uv.u << ";" << center.uv.v << "]" << std::endl;
+	}
+	float width;
+	float height;
+	GLuint textureId;
+    float depth;
+    
+    Vertex center;
+};
+
 }

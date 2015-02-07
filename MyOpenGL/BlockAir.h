@@ -19,6 +19,10 @@ public:
 		_particlesColors.b = 17.0f / 255;
 		_particlesColors.a = 1.0f;
 		particlesColors = _particlesColors;
+		maxWaterQuantity = 100;
+		waterQuantity = 0;
+
+		id = Block::AirId;
 	};
 	~BlockAir(void) {
 	};

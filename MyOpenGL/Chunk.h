@@ -15,6 +15,7 @@ public:
 
 	void init();
 	void render(bool obstacles);
+	void update();
 	void setBlock(Block* block);
 	Block*** getBlocks() {
 		return blocks;

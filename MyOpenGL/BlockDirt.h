@@ -17,6 +17,11 @@ public:
 		_particlesColors.b = 52.0f / 255;
 		_particlesColors.a = 1.0f;
 		particlesColors = _particlesColors;
+
+		maxWaterQuantity = 0;
+		waterQuantity = 0;
+
+		id = Block::DirtId;
 	};
 	~BlockDirt(void);
 };

@@ -8,6 +8,8 @@
 #include <YuEngine\Camera2D.h>
 
 #include <regex>
+#include "MobChicken.h"
+#include "EntityManager.h"
 
 Commander::Commander(void)
 {
@@ -51,6 +53,7 @@ void Commander::checkCommand(std::string cmd) {
 	std::regex teleportRegex("/teleport ([0-9]{1,}) ([0-9]{1,})");
 	std::regex speedRegex("/speed ([0-9]{1,})");
 	std::regex cameraScaleRegex("/camscale ([0-9.]{1,})");
+	std::regex spawnChickensRegex("/spawn chicken ([0-9]{1,})");
 	if(std::regex_search(cmd, match, teleportRegex)) {
 		std::string sx = match[1];
 		std::string sy = match[2];
@@ -76,6 +79,16 @@ void Commander::checkCommand(std::string cmd) {
 		myContainer->getCamera()->setScale(scale);
 
 	}
+	if(std::regex_match(cmd, match, spawnChickensRegex)) {
+		std::string nbr = match[1];
+		int nbr_ = stoi(nbr);
+		for(int i = 0; i < nbr_; i++) {
+			MobChicken *chicken = new MobChicken();
+			chicken->setMyContainer(myContainer);
+			myContainer->getEntityManager()->addMobEntity(chicken);
+		}
+	}
+
 	
 
 

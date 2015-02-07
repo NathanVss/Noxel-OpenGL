@@ -3,7 +3,8 @@
 #include <sstream>
 #include <Windows.h>
 #include <Psapi.h>
-
+#include <random>
+#include "Vertex.h"
 
 
 
@@ -31,6 +32,10 @@ public:
 	static float getMemoryUsage();
 
 	static PROCESS_MEMORY_COUNTERS* ProcessMemoryCounters;
+
+	static float getRandom();
+	static Position rotatePoint(Position pointToRotate, Position pointToRotateArround, float angle);
+
 
 	Utils(void);
 	~Utils(void);

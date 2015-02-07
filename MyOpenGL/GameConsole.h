@@ -2,6 +2,8 @@
 
 #include "Object.h"
 #include <YuEngine\EventTimer.h>
+#include <YuEngine\WritingHandler.h>
+#include <YuEngine\KeyEvent.h>
 #include <vector>
 #include <string>
 
@@ -13,8 +15,9 @@ private:
 	YuEngine::EventTimer displayTextBarTimer;
 	YuEngine::EventTimer justOpenedTimer;
 
-	YuEngine::EventTimer letterTimer;
 
+	YuEngine::WritingHandler writingHandler;
+	YuEngine::KeyEvent displayingEvent;
 
 	float width;
 	float height;
@@ -22,20 +25,17 @@ private:
 	float y;
 	float letterSize;
 	int displayEntriesNbr;
-	char lastLetter;
 	bool justOpened;
 
-
-	std::vector<char> typingContent;
 	std::vector<std::string> entries;
 
 public:
 	GameConsole(void);
 	~GameConsole(void);
+	void init();
 
 	void handleTyping();
 	bool isTyping();
-	std::string getTypingContent();
 	void newEntry(std::string);
 	void submitEntry();
 	void render();

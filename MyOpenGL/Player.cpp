@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "EntityManager.h"
 #include <YuEngine\Container.h>
 #include <YuEngine\Camera2D.h>
 #include <YuEngine\GameRenderer.h>
@@ -9,27 +10,38 @@
 #include "BlockAir.h"
 #include "World.h"
 #include "FocusManager.h"
+#include <math.h>
+Player::Player(): EntityLiving(){
+	pixelSize = 3;
+	textureOffsetX = 0;
+	textureOffsetY = 4;
 
-Player::Player(): Entity(){
-	width = Block::size * 1.5;
-	height = Block::size*2 * 1.5;
-	jumpHeight = Block::size * 2;
+	width = pixelSize * 2 * 8;
+	height = pixelSize * 4 * 8;
+	jumpHeight = 25;
 	speedX = 15;
+	updateOffsets();
 
 	// Bounding Box
-	YuEngine::YuBoudingbox _boudingBox(0, 0, width-10*3, height-6*3);
+	YuEngine::YuBoudingbox _boudingBox(0, 0, width-pixelSize*9, height-pixelSize*4);
 	_boudingBox.setContainer(container);
 	boundingBox = _boudingBox;
 	placeBoundingBox();
-	
-	jumping = false;
-	goingLeft = true;
-	goingRight = false;
-	moving = false;
-	fly = true;
 
 	legsAnimationTimer = YuEngine::EventTimer(0);
 	jumpTimer = YuEngine::EventTimer(60);
+
+	armAngle = 0;
+	armAnglePhase = false;
+	isDigging = false;
+
+	switchMode = 0;
+}
+
+void Player::init() {
+
+	leftClickEvent = YuEngine::KeyEvent(YuEngine::KeyName::mouseLeft, myContainer->getInput());
+	switchEvent = YuEngine::KeyEvent(YuEngine::KeyName::w, myContainer->getInput());
 }
 
 void Player::teleport(float _x, float _y) {
@@ -38,20 +50,27 @@ void Player::teleport(float _x, float _y) {
 	placeBoundingBox();
 }
 
+void Player::updateOffsets() {
+	
+	if(goingLeft) {
+		bboxOffsetX = 3;
+		bboxOffsetY = 4;
+	} else if(goingRight) {
+		bboxOffsetX = 2;
+		bboxOffsetY = 4;
+	}
+}
 
 void Player::placeBoundingBox() {
-	boundingBox.changePos(x + 4*3,y - 6*3);
+		boundingBox.changePos(x + bboxOffsetX*pixelSize,y - bboxOffsetY*pixelSize);
 }
 void Player::transposeBBoxPosToPlayer(glm::vec2 boundingBoxPos) {
-
-	x = boundingBoxPos.x - 4*3;
-	y = boundingBoxPos.y + 6*3;
-
+	x = boundingBoxPos.x - bboxOffsetX*pixelSize;
+	y = boundingBoxPos.y + bboxOffsetY*pixelSize;
 }
 
 void Player::render() {
 
-	//boundingBox.render(myContainer);
 	//myContainer->getGameRenderer()->addGlyph(boundingBox.getX1(), boundingBox.getY1(),boundingBox.getWidth(), boundingBox.getHeight(), 15.5f, 1.0f, 1.0f, 1.0f, 1.0f,myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), 3,0);
 	
 	int walkSpeed = 8;
@@ -116,21 +135,94 @@ void Player::render() {
 			}
 		} else {
 			myContainer->getGameRenderer()->addGlyph(x, y, width, height, 16.0f, 1.0f, 1.0f, 1.0f, 1.0f, myContainer->getSpritesheetsManager()->getMiscSpritesheet(), 14,8, 16,12);
+
 			legsAnimationTimer.reset();
 
 
 		}
 
 	}
+	renderArm();
 
 }
 
+void Player::renderArm() {
+
+	float armWidth = pixelSize*8;
+	float armHeight = pixelSize*8;
+	float armSpeed = 10.0f;
+
+	int armTexX;
+	int armTexY;
+	float armX;
+	float armY;
+	float rotX;
+	float rotY;
+
+	float lowAngle;
+	float maxAngle;
+	float idleAngle;
+
+	if(goingLeft) {
+		armTexX = 15;
+		armTexY = 7;
+
+		armX = x;
+		armY = y - 17*pixelSize + 5 * pixelSize;
+
+		rotX = armX + armWidth - pixelSize * 1;
+		rotY = armY - pixelSize * 4;
+
+		lowAngle = -90;
+		maxAngle = 0;
+		idleAngle = 90;
+	} else {
+		armTexX = 14;
+		armTexY = 7;
+
+		armX = x + 4 * pixelSize;
+		armY = y - 17*pixelSize + 5 * pixelSize;
+
+		rotX = armX + pixelSize * 1;
+		rotY = armY - pixelSize * 4;
+
+		lowAngle = 0;
+		maxAngle = 90;
+
+		idleAngle = -90;
+	}
+
+	if(isDigging) {
+
+
+		if(!armAnglePhase) {
+			armAngle -= armSpeed;
+			if(armAngle <= lowAngle) {
+				armAnglePhase = true;
+			}
+		} else {
+			armAngle += armSpeed;
+			if(armAngle >= maxAngle) {
+				armAnglePhase = false;
+
+			}
+		}
+
+
+	} else {
+		armAngle = idleAngle;
+	}
+
+
+
+	myContainer->getGameRenderer()->addGlyph(armX, armY, armWidth, armHeight, rotX, rotY, armAngle, 20.0f, 1.0f, 1.0f, 1.0f, 1.0f, myContainer->getSpritesheetsManager()->getMiscSpritesheet(), armTexX,armTexY);
+}
 
 
 
 void Player::update() {
 
-
+	EntityLiving::update();
 
 	if(fly) {
 		handleFlyMoving();
@@ -139,45 +231,44 @@ void Player::update() {
 
 	}
 	handleDigging();
+	updateOffsets();
+
+	switchEvent.update();
+	if(switchEvent.getEvent()) {
+		if(switchMode == 0) {
+			switchMode = 1;
+		} else if(switchMode == 1) {
+			switchMode = 0;
+		}
+	}
 
 }
 
 void Player::handleFlyMoving() {
+	affectedByGravity = false;
 	YuEngine::Input* input = myContainer->getInput();
 
-	velocityY = 0;
 	velocityX = 0;
+	velocityY = 0;
+	if(myContainer->getFocusManager()->getPlayerFocus()) {
 
-	if(input->getKeyZ()) {
-		velocityY += speedX;
-	}
-	if(input->getKeyS()) {
-		velocityY -= speedX;
-	}
-	if(input->getKeyQ()) {
-		velocityX -= speedX;
-	}
-	if(input->getKeyD()) {
-		velocityX += speedX;
-	}
-
-	if(velocityX > 0) {
-		goingRight = true;
-		goingLeft = false;
-	} else if(velocityX < 0) {
-		goingRight = false;
-		goingLeft = true;
+		if(input->getKeyZ()) {
+			velocityY = speedX;
+		}
+		if(input->getKeyS()) {
+			velocityY = -speedX;
+		}
+		if(input->getKeyQ()) {
+			velocityX = -speedX;
+		}
+		if(input->getKeyD()) {
+			velocityX = speedX;
+		}
 	}
 
 	float destX = boundingBox.getX1() + velocityX;
 	float destY = boundingBox.getY1() + velocityY;
 
-
-	if(boundingBox.getX1() != destX) {
-		moving = true;
-	} else {
-		moving = false;
-	}
 
 	glm::vec2 endLocation = checkCollisions(boundingBox.getX1(), boundingBox.getY1(), destX, destY);
 	boundingBox.changePos(endLocation.x, endLocation.y);
@@ -185,50 +276,29 @@ void Player::handleFlyMoving() {
 }
 
 void Player::handleMoving() {
+	affectedByGravity = true;
+
 	YuEngine::Input* input = myContainer->getInput();
 
 	velocityX = 0;
-
-	if(!collideOnBottom) {
-
-		if(velocityY >= -100) {
-			velocityY -= gravity;
-		}
-
-	} else {
-		velocityY = 0;
-	}
-
 	if(myContainer->getFocusManager()->getPlayerFocus()) {
 
-		//if(input->getKeyZ()) {
-		//	velocityY += speedX;
-		//}
 		if(input->getKeyS()) {
-			velocityY -= speedX;
+			velocityY = -speedX;
 		}
 		if(input->getKeySpace() && !jumping) {
 
 			jumping = true;
 			jumpTimer.reset();
-			velocityY = 25;
+			velocityY = jumpHeight;
 		}
 		if(input->getKeyQ()) {
-			velocityX -= speedX;
+			velocityX = -speedX;
 		}
 		if(input->getKeyD()) {
-			velocityX += speedX;
+			velocityX = speedX;
 		}
 
-	}
-
-
-	if(velocityX > 0) {
-		goingRight = true;
-		goingLeft = false;
-	} else if(velocityX < 0) {
-		goingRight = false;
-		goingLeft = true;
 	}
 
 
@@ -238,13 +308,6 @@ void Player::handleMoving() {
 
 	float destX = boundingBox.getX1() + velocityX;
 	float destY = boundingBox.getY1() + velocityY;
-
-
-	if(boundingBox.getX1() != destX) {
-		moving = true;
-	} else {
-		moving = false;
-	}
 
 	// On simule le déplacement de la BBox
 	glm::vec2 endLocation = checkCollisions(boundingBox.getX1(), boundingBox.getY1(), destX, destY);
@@ -257,20 +320,36 @@ void Player::handleMoving() {
 
 void Player::handleDigging() {
 
+	leftClickEvent.update();
+	if(leftClickEvent.getEvent()) {
+		YuEngine::Position mousePos = myContainer->getCamera()->getMouseAbsPos(myContainer->getInput()->getMouseX(), myContainer->getInput()->getMouseY());
+
+		myContainer->getEntityManager()->hit(mousePos.x, mousePos.y);
+	}
 	if(myContainer->getInput()->getLeftClick()) {
-		YuEngine::YuBoudingbox cameraBox = myContainer->getCamera()->getCameraBox();
-		glm::vec2 mouseWorld(cameraBox.getX1() + myContainer->getInput()->getMouseX(), cameraBox.getY1() - myContainer->getInput()->getMouseY());
-
-		mouseWorld.x = floor(mouseWorld.x / Block::size) * 32;
-		mouseWorld.y = floor(mouseWorld.y / Block::size) * 32;
-
+		YuEngine::Position mousePos = myContainer->getCamera()->getMouseAbsPos(myContainer->getInput()->getMouseX(), myContainer->getInput()->getMouseY());
+		glm::vec2 mouseWorld;
+		mouseWorld.x = floor(mousePos.x / Block::size) * 32;
+		mouseWorld.y = floor(mousePos.y / Block::size) * 32;
 		Block* curBlock = myContainer->getWorld()->getBlock(mouseWorld.x, mouseWorld.y);
-		curBlock->onDestroy();
 
-		BlockAir* blockAir = new BlockAir(mouseWorld.x, mouseWorld.y);
-		myContainer->getWorld()->setBlock(blockAir);
+		if(switchMode == 0) {
+			curBlock->setWaterQuantity(100);
 
-		std::cout << "Mouse : " << mouseWorld.x << ";" << mouseWorld.y << std::endl;
+		} else if(switchMode == 1) {
+
+			if(curBlock->getId() != Block::AirId) {
+
+				curBlock->onDestroy();
+
+				BlockAir* blockAir = new BlockAir(mouseWorld.x, mouseWorld.y);
+				myContainer->getWorld()->setBlock(blockAir);
+				isDigging = true;
+			}
+		}
+
+	} else {
+		isDigging = false;
 	}
 
 }

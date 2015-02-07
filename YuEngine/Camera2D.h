@@ -7,6 +7,7 @@
 
 #include "Object.h"
 #include "YuBoudingbox.h"
+#include "Vertex.h"
 namespace YuEngine {
 
 
@@ -21,6 +22,8 @@ public:
 
 	void setPosition(const glm::vec2 &newPosition);
 	glm::vec2 getPosition();
+	Position getMouseAbsPos(float _x, float _y);
+
 
 	void setScale(float newScale);
 	float getScale();

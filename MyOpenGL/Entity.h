@@ -9,8 +9,10 @@ class Entity: public Object
 {
 public:
 	Entity(void);
-	~Entity(void);
+	virtual ~Entity(void);
 	glm::vec2 checkCollisions(float starX, float startY, float destX, float destY);
+	virtual void update();
+	virtual void render() = 0;
 
 	float getX() {
 		return x;
@@ -18,9 +20,22 @@ public:
 	float getY() {
 		return y;
 	}
+	YuEngine::YuBoudingbox getBoundingbox() {
+		return boundingBox;
+	}
 
+	bool getDestroy() {
+		return destroy;
+	}
+	void teleport(float _x, float _y) {
+		x = _x;
+		y = _y;
+	}
 
 protected:
+
+	bool destroy;
+
 	float x;
 	float y;
 	float gravity;

@@ -26,10 +26,15 @@
 #include <YuEngine\Spritesheet.h>
 #include <YuEngine\FrameBuffer.h>
 #include "Config.h"
+#include "GuiManager.h"
+#include "GuiInventory.h"
+#include "EntityManager.h"
 
 #include "GameConsole.h"
 #include "Commander.h"
 #include "FocusManager.h"
+#include <YuEngine\KeyEvent.h>
+#include "MobChicken.h"
 
 //using namespace YuEngine;
 
@@ -99,6 +104,22 @@ void MainScene::loop() {
 
 
 
+	GuiManager* guiManager = new GuiManager();
+	guiManager->setMyContainer(container);
+	container->setGuiManager(guiManager);
+
+
+	//GuiInventory* guiInventory = new GuiInventory(300,00);
+	//guiInventory->setMyContainer(container);
+	//guiInventory->init();
+	//guiManager->handleGui(guiInventory, true);
+
+
+	//GuiInventory* guiInventory2 = new GuiInventory(600,100);
+	//guiInventory2->setMyContainer(container);
+	//guiInventory2->init();
+	//guiManager->handleGui(guiInventory2, true);
+
 	World* world = new World();
 	world->setMyContainer(container);
 	container->setWorld(world);
@@ -106,10 +127,7 @@ void MainScene::loop() {
 	LightManager lightManager(width, height);
 	lightManager.setMyContainer(container);
 
-	Player player;
-	player.setMyContainer(container);
-	player.teleport(Block::size * -20, Block::size * 80);
-	container->setPlayer(&player);
+
 
 	world->init();
 	world->generate();
@@ -134,50 +152,38 @@ void MainScene::loop() {
 
 	GameConsole gameConsole;
 	gameConsole.setMyContainer(container);
+	gameConsole.init();
 	container->setGameConsole(&gameConsole);
 	gameConsole.newEntry("YuEngine InfDev");
 
-	std::vector<YuEngine::Vertex> verts;
-	std::vector<YuEngine::Vertex> copyverts;
-	std::vector<YuEngine::Vertex> alverts;
+	EntityManager entityManager;
+	entityManager.setMyContainer(container);
+	container->setEntityManager(&entityManager);
 
-		for(int i = 0; i < 100000;i++) {
-			YuEngine::Vertex vert;
-			
-			verts.push_back(vert);
+	Player player;
+	player.setMyContainer(container);
+	player.init();
+	player.teleport(Block::size * 50, Block::size * 80);
+	container->setPlayer(&player);
+	entityManager.addEntity(&player);
 
-		}
+	MobChicken *chicken = new MobChicken();
+	chicken->setMyContainer(container);
+
+	entityManager.addMobEntity(chicken);
+
+	float angle = 0;
 
 	while(!mustFinish) {
 		beginIteration();
-
-		//lightSun.setSeconds(lightSun.getSeconds() +150);
 		lightSun.setSeconds(3600*14);
-
-		//lightplayer.setPosition(1280/2, 720/2);
-		//lightplayer.setPosition(player.getX(), player.getY());
 
 		container->getInput()->update();
 		debugOverlay->update();
 		fpsCounter.update();
 		world->update();
 
-		//alverts.clear();
-		//for(int i = 0; i < verts.size(); i++) {
-
-		//	int a = 1;
-		//	int b = 4;
-		//	if(b > a) {
-		//		float b = 5;
-		//	}
-
-		//	alverts.push_back(verts[i]);
-
-		//}
-		//copyverts.clear();
-		//copyverts = alverts;
-
-		//std::cout << "size : " << alverts.size() << std::endl;
+		angle += 0.1f;
 
 		eTimer.update();
 		if(eTimer.isOver()) {
@@ -186,20 +192,20 @@ void MainScene::loop() {
 
 				cameraPos.x = cameraPos.x - width/2;
 				cameraPos.y = cameraPos.y + height/2;
-				std::cout << "CLICK" << std::endl;
-				std::cout <<  cameraPos.x+container->getInput()->getMouseX() << ";" << cameraPos.y - container->getInput()->getMouseY() << std::endl;
 				LightRadius* lightRadius = new LightRadius(200, 0.01);
 				lightRadius->setPosition(cameraPos.x+container->getInput()->getMouseX(), cameraPos.y - container->getInput()->getMouseY());
 				lightManager.addLightRadius(lightRadius);
 			}
-			//pixelsToBmp(frameBuffer.getColorBufferId(0));
 
 			eTimer.reset();
 		}
-		player.update();
+		entityManager.update();
+
 		container->getCamera()->setPosition(glm::vec2(player.getX(), player.getY()));
 		container->getCamera()->update();
+		container->getConfig()->setScreenDimensions(width, height);
 		gameConsole.update();
+		guiManager->update();
 
 
 		container->getParticlesRenderer()->update();
@@ -216,20 +222,20 @@ void MainScene::loop() {
 			lightManager.update();
 			lightManager.renderLighting();
 		}
+
 		glViewport(0, 0, width, height);
 
 		// RENDU DU MONDE
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//clear();
 
 
 		gameRenderer->begin();
 
 			world->render(false);
-			player.render();
-
-
+			//player.render();
+			//chicken.render();
+			entityManager.render();
 
 			container->getClassicShader()->use();
 			container->getClassicShader()->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
@@ -279,12 +285,14 @@ void MainScene::loop() {
 			debugOverlay->addDebugString(std::string("Sprites : ") + gameRenderer->getGlyphsNumber());
 			debugOverlay->addDebugString(std::string("Total Sprites : ") + gameRenderer->getTotalGlyphsNumber());
 			debugOverlay->addDebugString(std::string("Total Particles : ") + container->getParticlesRenderer()->getParticlesNbr());
+			debugOverlay->addDebugString(std::string("Entities : ") + container->getEntityManager()->getEntitiesNumber());
 
 			gameRenderer->resetTotalGlyphsNumber();
+			entityManager.renderText();
 			debugOverlay->render();
 
 			gameConsole.render();
-
+			guiManager->render();
 
 			container->getClassicShader()->use();
 			container->getClassicShader()->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());

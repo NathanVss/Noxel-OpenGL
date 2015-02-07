@@ -84,7 +84,7 @@ void ParticlesRenderer::updateAge() {
 		colorParticlesBuffer[i].age++;
 		colorParticlesBuffer[i].position.x += colorParticlesBuffer[i].velocity.x;
 		colorParticlesBuffer[i].position.y += colorParticlesBuffer[i].velocity.y;
-		colorParticlesBuffer[i].velocity.y -= 0.05;
+		colorParticlesBuffer[i].velocity.y -= colorParticlesBuffer[i].gravity;
 		colorParticlesBuffer[i].velocity.x *= 0.999;
 		
 		if(handleColors && doUpdateAge) {
@@ -149,6 +149,7 @@ void ParticlesRenderer::update() {
 		particle.timeSpeed = g * 0.1;
 		particle.deathAge = 60*4*(g);
 		particle.age = 0;
+		particle.gravity = 0.05f;
 		//particle.useColors = true;
 		if(g < 0.5) {
 			particle.timeSpeed *= -1;

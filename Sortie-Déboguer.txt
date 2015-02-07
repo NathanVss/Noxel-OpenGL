@@ -1,0 +1,80 @@
+﻿'MyOpenGL.exe' (Win32) : Chargé 'C:\Users\Nathan\Documents\Visual Studio 2012\Projects\OpenGLModern\Debug\MyOpenGL.exe'. Les symboles ont été chargés.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\ntdll.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\kernel32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\KernelBase.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Users\Nathan\Documents\Visual Studio 2012\Projects\OpenGLModern\Debug\SDL2.dll'. Le module a été généré sans symboles.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\gdi32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\user32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\advapi32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\msvcrt.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\sechost.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\rpcrt4.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\sspicli.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\cryptbase.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\lpk.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\usp10.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\imm32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\msctf.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\ole32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\oleaut32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\shell32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\shlwapi.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\version.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\winmm.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\opengl32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\glu32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\ddraw.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\dciman32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\setupapi.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\cfgmgr32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\devobj.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\dwmapi.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Users\Nathan\Documents\Visual Studio 2012\Projects\OpenGLModern\Debug\glew32.dll'. Le module a été généré sans symboles.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Users\Nathan\Documents\Visual Studio 2012\Projects\OpenGLModern\Debug\SDL2_image.dll'. Le module a été généré sans symboles.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\msvcp110.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\msvcr110.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\uxtheme.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Fraps\fraps32.dll'. Le module a été généré sans symboles.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Program Files (x86)\TeamViewer\Version9\tv_w32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\comctl32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\kernel32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Déchargé 'C:\Windows\SysWOW64\kernel32.dll'
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\advapi32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Déchargé 'C:\Windows\SysWOW64\advapi32.dll'
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\nvoglv32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\wtsapi32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\gdi32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Déchargé 'C:\Windows\SysWOW64\gdi32.dll'
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\wintrust.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\crypt32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\msasn1.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\ntmarta.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\Wldap32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\powrprof.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Déchargé 'C:\Windows\SysWOW64\powrprof.dll'
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\winsta.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+Le thread 0x2a70 s'est arrêté avec le code 0 (0x0).
+Le thread 0x30c4 s'est arrêté avec le code 0 (0x0).
+Le thread 0x3070 s'est arrêté avec le code 0 (0x0).
+Le thread 0x3ec s'est arrêté avec le code 0 (0x0).
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\clbcatq.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\msctf.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Déchargé 'C:\Windows\SysWOW64\msctf.dll'
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\ole32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Déchargé 'C:\Windows\SysWOW64\ole32.dll'
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\msctf.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Déchargé 'C:\Windows\SysWOW64\msctf.dll'
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\msctf.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Déchargé 'C:\Windows\SysWOW64\msctf.dll'
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\kernel32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Déchargé 'C:\Windows\SysWOW64\kernel32.dll'
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Windows\SysWOW64\user32.dll'. Impossible de trouver ou d'ouvrir le fichier PDB.
+'MyOpenGL.exe' (Win32) : Déchargé 'C:\Windows\SysWOW64\user32.dll'
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Users\Nathan\Documents\Visual Studio 2012\Projects\OpenGLModern\Debug\libpng16-16.dll'. Le module a été généré sans symboles.
+'MyOpenGL.exe' (Win32) : Chargé 'C:\Users\Nathan\Documents\Visual Studio 2012\Projects\OpenGLModern\Debug\zlib1.dll'. Le module a été généré sans symboles.
+Le thread 0x2844 s'est arrêté avec le code -1073741510 (0xc000013a).
+Le thread 0x10b8 s'est arrêté avec le code -1073741510 (0xc000013a).
+Le thread 0x2cb8 s'est arrêté avec le code -1073741510 (0xc000013a).
+Le thread 0x304c s'est arrêté avec le code -1073741510 (0xc000013a).
+Le thread 0x2248 s'est arrêté avec le code -1073741510 (0xc000013a).
+Le programme '[13264] MyOpenGL.exe' s'est arrêté avec le code -1073741510 (0xc000013a).

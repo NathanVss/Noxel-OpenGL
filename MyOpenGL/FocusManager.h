@@ -23,6 +23,14 @@ public:
 		return curFocus == "gameConsole";
 	}
 
+
+	void setGuiFocus() {
+		curFocus = std::string("gui");
+	}
+	bool getGuiFocus() {
+		return curFocus == "gui";
+	}
+
 private:
 	std::string curFocus;
 };

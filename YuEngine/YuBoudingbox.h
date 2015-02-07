@@ -23,6 +23,10 @@ public:
 
 	void setColor(int red, int green, int blue);
 
+	bool isInside(float _x, float _y);
+	bool isInsideRight(float _x, float _y);
+	bool isInsideLeft(float _x, float _y);
+
 	bool doesCollideTopRightOf(YuBoudingbox &yuBoudingbox);
 	bool doesCollideBottomLeftOf(YuBoudingbox &yuBoudingbox);
 	bool doesCollideBottomRightOf(YuBoudingbox &yuBoudingbox);

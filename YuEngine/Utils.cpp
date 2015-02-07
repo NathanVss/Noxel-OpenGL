@@ -28,11 +28,30 @@ Utils::Utils(void)
 }
 
 
+
 Utils::~Utils(void)
 {
 }
 
+float Utils::getRandom() {
 
+	return ((double)rand() / RAND_MAX);
+}
+
+Position Utils::rotatePoint(Position pointToRotate, Position pointToRotateArround, float angle) {
+	Position originPoint;
+	originPoint.x = pointToRotate.x - pointToRotateArround.x;
+	originPoint.y = pointToRotate.y - pointToRotateArround.y;
+
+	Position newPoint;
+	newPoint.x = originPoint.x * cos(angle) - originPoint.y * sin(angle);
+	newPoint.y = originPoint.y * cos(angle) + originPoint.x * sin(angle);
+	newPoint.x += pointToRotateArround.x;
+	newPoint.y += pointToRotateArround.y;
+
+	return newPoint;
+
+}
 
 
 

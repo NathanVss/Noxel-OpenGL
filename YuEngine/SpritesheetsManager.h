@@ -19,11 +19,15 @@ public:
 	Spritesheet* getMiscSpritesheet() {
 		return miscSpritesheet;
 	}
+	Spritesheet* getMobsSpritesheet() {
+		return mobsSpritesheet;
+	}
 	
 private:
 	Spritesheet* FontSpritesheet;
 	Spritesheet* blocksSpritesheet;
 	Spritesheet* miscSpritesheet;
+	Spritesheet* mobsSpritesheet;
 };
 
 }

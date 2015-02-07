@@ -17,6 +17,11 @@ public:
 		_particlesColors.b = 149.0f / 255;
 		_particlesColors.a = 1.0f;
 		particlesColors = _particlesColors;
+
+		maxWaterQuantity = 0;
+		waterQuantity = 0;
+
+		id = Block::StoneId;
 	};
 	virtual ~BlockStone(void) {
 

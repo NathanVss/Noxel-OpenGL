@@ -43,6 +43,11 @@ void World::update() {
 		}
 		activeChunks.push_back(chunks[i]);
 	}
+
+	for(int i = 0; i < activeChunks.size(); i++) {
+
+		activeChunks[i]->update();
+	}
 }
 
 

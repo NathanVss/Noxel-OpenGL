@@ -2,8 +2,38 @@
 
 #include <Dependecies\SDL2-2.0.3\include\SDL.h>
 #include "Object.h"
+#include <map>
 
 namespace YuEngine {
+
+
+enum class KeyName {
+	none,
+	mouseLeft,
+	up,
+	down,
+	left,
+	right,
+	top0,
+	top1,
+	top2,
+	top3,
+	top4,
+	top5,
+	top6,
+	top7,
+	top8,
+	top9,
+	enter,
+	backspace,
+	rightSlash,
+	leftShift,
+	space,
+	dot,
+	escape,
+	a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z
+
+};
 
 class Input : public Object
 {
@@ -34,6 +64,10 @@ public:
 
 	bool getKeySpace() {
 		return keySpace;
+	}
+
+	bool getKey(KeyName keyName) {
+		return keyMap[keyName];
 	}
 
 	bool getKeyA() {
@@ -119,6 +153,10 @@ public:
 		return keyDot;
 	}
 
+	bool getKeyEscape() {
+		return keyEscape;
+	}
+
 	bool getLeftClick() { return mouseKeys[SDL_BUTTON_LEFT]; }
 	bool getRightClick() { return mouseKeys[SDL_BUTTON_RIGHT]; }
 	int getMouseX() { return this->mouseX; }
@@ -127,6 +165,7 @@ public:
 	int getRelMouseY() { return this->mouseRelY; }
 
 private:
+	std::map<KeyName, bool> keyMap;
 	SDL_Event* SdlEvent;
 	bool mouseKeys[8];
 
@@ -136,6 +175,7 @@ private:
 
 	bool keyDot;
 
+	bool keyEscape;
 
 	bool keyA;
 	bool keyB;

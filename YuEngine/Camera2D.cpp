@@ -23,6 +23,17 @@ glm::mat4 Camera2D::getCameraMatrix() {
 	return this->cameraMatrix;
 
 }
+
+Position Camera2D::getMouseAbsPos(float _x, float _y) {
+
+	Position pos;
+	pos.x = position.x - screenWidth / 2  + _x;
+	pos.y = position.y + screenHeight / 2 - _y;
+	return pos;
+
+}
+
+
 void Camera2D::setPosition(const glm::vec2 &newPosition) {
 	this->position = newPosition;
 	this->needMatrixUpdate = true;

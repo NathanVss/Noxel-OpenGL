@@ -1,18 +1,22 @@
 #pragma once
 
-#include "Entity.h"
 #include <YuEngine\YuBoudingbox.h>
 #include <YuEngine\EventTimer.h>
+#include "EntityLiving.h"
+#include <YuEngine\KeyEvent.h>
 
-class Player: public Entity
+class Player: public EntityLiving
 {
 public:
 	Player(void);
-	~Player(void);
+	void init();
+	virtual ~Player(void);
 	void teleport(float _x, float _y);
 	void update();
 	void render();
+	void renderArm();
 	void placeBoundingBox();
+	void updateOffsets();
 	void transposeBBoxPosToPlayer(glm::vec2 boundingBoxPos);
 	void setSpeedX(float _speedX) {
 		speedX = _speedX;
@@ -27,17 +31,23 @@ public:
 	}
 	
 private:
-	float speedX;
 	float jumpHeight;
-
-	bool jumping;
-
-	bool goingLeft;
-	bool goingRight;
-	bool moving;
-
 	bool fly;
 
+	float armAngle;
+	bool armAnglePhase;
+	float pixelSize;
+	bool isDigging;
+
+	float textureOffsetX;
+	float textureOffsetY;
+	float bboxOffsetX;
+	float bboxOffsetY;
+
+	int switchMode;
+
+	YuEngine::KeyEvent leftClickEvent;
+	YuEngine::KeyEvent switchEvent;
 	YuEngine::EventTimer legsAnimationTimer;
 	YuEngine::EventTimer jumpTimer;
 

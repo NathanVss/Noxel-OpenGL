@@ -20,7 +20,10 @@ public:
 		_particlesColors.a = 1.0f;
 		particlesColors = _particlesColors;
 
+		maxWaterQuantity = 0;
+		waterQuantity = 0;
 
+		id = Block::GrassId;
 	};
 	~BlockGrass(void) {
 

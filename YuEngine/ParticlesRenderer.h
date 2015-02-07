@@ -37,6 +37,7 @@ public:
 	float size;
 	float age;
 	float deathAge;
+	float gravity;
 
 	bool useColors;
 

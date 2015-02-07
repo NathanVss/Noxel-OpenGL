@@ -24,6 +24,16 @@ void Chunk::init() {
 	}
 }
 
+void Chunk::update() {
+	for(int x = 0; x < Chunk::width; x++) {
+		for(int y = 0; y < Chunk::height; y++) {
+
+			blocks[x][y]->update();
+		}
+
+	}
+}
+
 
 Chunk::~Chunk(void){
 	for(int x = 0; x < Chunk::width; x++) {
