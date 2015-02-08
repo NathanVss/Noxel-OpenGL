@@ -6,6 +6,9 @@
 
 #include "Object.h"
 
+
+class Item;
+
 class Block: public Object
 {
 public:
@@ -15,11 +18,21 @@ public:
 	static int StoneId;
 	static int SandId;
 	Block(void) {
+		
+		construct();
 	};
 	Block(float _x, float _y) {
 		x = _x;
 		y = _y;
+		construct();
 		boundingBox = YuEngine::YuBoudingbox(x, y+Block::size, Block::size, Block::size);
+
+	};
+	virtual ~Block(void) {
+
+	};
+
+	void construct() {
 		YuEngine::Color c;
 		c.r = 255;
 		c.g = 255;
@@ -27,10 +40,19 @@ public:
 		c.a = 255;
 		lightIndice = c;
 		emitParticlesOnDestroy = true;
-	};
-	virtual ~Block(void) {
+		waterPressure = 0;
+		age = 0;
+		destructState = 0;
+		destructStateAmount = 0;
+		resistance = 10;
+	}
 
-	};
+	void setPosition(float _x, float _y) {
+		x = _x;
+		y = _y;
+		boundingBox = YuEngine::YuBoudingbox(x, y+Block::size, Block::size, Block::size);
+
+	}
 	float getX() {
 		return x;
 	}
@@ -74,16 +96,36 @@ public:
 	int getId() {
 		return id;
 	}
+	int getWaterPressure() {
 
+		return waterPressure;
+	}
+	void setWaterPressure(int p) {
+		waterPressure = p;
+	}
+	void addDestructState() {
+		destructState++;
+	}
+	int getDestructState() {
+		return destructState;
+	}
+	void addDestructStateAmount(int amount) {
+		destructStateAmount += amount;
+	}
 
 	virtual void onDestroy();
-
 	virtual void render(bool obstacles);
 	virtual void update();
 	static float size;
 
 protected:
 	int id;
+	int destructState;
+	int destructStateAmount;
+	int resistance;
+	int lastHitTicks;
+
+	int age;
 	bool transparent;
 	float x;
 	float y;
@@ -94,6 +136,7 @@ protected:
 
 	float maxWaterQuantity;
 	float waterQuantity;
+	int waterPressure;
 
 	YuEngine::YuBoudingbox boundingBox;
 	YuEngine::Color lightIndice;

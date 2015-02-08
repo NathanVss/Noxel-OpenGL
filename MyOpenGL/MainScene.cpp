@@ -29,12 +29,16 @@
 #include "GuiManager.h"
 #include "GuiInventory.h"
 #include "EntityManager.h"
-
+#include <YuEngine\KeyEvent.h>
 #include "GameConsole.h"
 #include "Commander.h"
 #include "FocusManager.h"
 #include <YuEngine\KeyEvent.h>
 #include "MobChicken.h"
+#include "GuiQuickInventory.h"
+#include "QuickInventory.h"
+
+#include "ItemWoodPickaxe.h"
 
 //using namespace YuEngine;
 
@@ -61,6 +65,7 @@ void MainScene::loop() {
 
 	Config config;
 	container->setConfig(&config);
+	container->getConfig()->setScreenDimensions(width, height);
 
 	gameRenderer->init();
 
@@ -94,7 +99,7 @@ void MainScene::loop() {
 	colorParticlesLocations.push_back("particlePos");
 	colorParticlesLocations.push_back("particleSize");
 	colorParticlesLocations.push_back("particleColors");
-	YuEngine::Shader *colorParticlesShader = new YuEngine::Shader("Shaders/colorParticles.vert", "Shaders/colorParticles.frag");
+	YuEngine::Shader *colorParticlesShader = new YuEngine:: Shader("Shaders/colorParticles.vert", "Shaders/colorParticles.frag");
 	colorParticlesShader->charger(colorParticlesLocations);
 	container->getParticlesRenderer()->setColorParticlesShader(colorParticlesShader);
 
@@ -109,6 +114,9 @@ void MainScene::loop() {
 	container->setGuiManager(guiManager);
 
 
+
+	//GuiQuickInventory *guiQuickInventory = new GuiQuickInventory(container);
+	//guiManager->handleGui(guiQuickInventory, true);
 	//GuiInventory* guiInventory = new GuiInventory(300,00);
 	//guiInventory->setMyContainer(container);
 	//guiInventory->init();
@@ -119,6 +127,8 @@ void MainScene::loop() {
 	//guiInventory2->setMyContainer(container);
 	//guiInventory2->init();
 	//guiManager->handleGui(guiInventory2, true);
+
+
 
 	World* world = new World();
 	world->setMyContainer(container);
@@ -150,9 +160,7 @@ void MainScene::loop() {
 	commander.setMyContainer(container);
 	container->setCommander(&commander);
 
-	GameConsole gameConsole;
-	gameConsole.setMyContainer(container);
-	gameConsole.init();
+	GameConsole gameConsole(container);
 	container->setGameConsole(&gameConsole);
 	gameConsole.newEntry("YuEngine InfDev");
 
@@ -160,9 +168,7 @@ void MainScene::loop() {
 	entityManager.setMyContainer(container);
 	container->setEntityManager(&entityManager);
 
-	Player player;
-	player.setMyContainer(container);
-	player.init();
+	Player player(container);
 	player.teleport(Block::size * 50, Block::size * 80);
 	container->setPlayer(&player);
 	entityManager.addEntity(&player);
@@ -172,7 +178,7 @@ void MainScene::loop() {
 
 	entityManager.addMobEntity(chicken);
 
-	float angle = 0;
+
 
 	while(!mustFinish) {
 		beginIteration();
@@ -183,7 +189,6 @@ void MainScene::loop() {
 		fpsCounter.update();
 		world->update();
 
-		angle += 0.1f;
 
 		eTimer.update();
 		if(eTimer.isOver()) {
@@ -206,7 +211,6 @@ void MainScene::loop() {
 		container->getConfig()->setScreenDimensions(width, height);
 		gameConsole.update();
 		guiManager->update();
-
 
 		container->getParticlesRenderer()->update();
 		
@@ -233,8 +237,6 @@ void MainScene::loop() {
 		gameRenderer->begin();
 
 			world->render(false);
-			//player.render();
-			//chicken.render();
 			entityManager.render();
 
 			container->getClassicShader()->use();
@@ -243,14 +245,11 @@ void MainScene::loop() {
 
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			gameRenderer->render(container->getClassicShader()->getProgramID());
-			container->getClassicShader()->unuse();
+		container->getClassicShader()->unuse();
 
-		//particlesShader->use();
-		//particlesShader->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());
 
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		container->getParticlesRenderer()->render();
-		//particlesShader->unuse();
 
 
 		 //LIGHT
@@ -293,6 +292,7 @@ void MainScene::loop() {
 
 			gameConsole.render();
 			guiManager->render();
+
 
 			container->getClassicShader()->use();
 			container->getClassicShader()->sendMatrix4("cameraMatrix", container->getCamera()->getCameraMatrix());

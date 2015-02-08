@@ -7,22 +7,16 @@
 #include <vector>
 #include <string>
 
-class GameConsole : public Object
+#include "Gui.h"
+
+class GameConsole : public Gui
 {
 private:
-	bool display;
-	YuEngine::EventTimer displayTimer;
 	YuEngine::EventTimer displayTextBarTimer;
-	YuEngine::EventTimer justOpenedTimer;
 
 
 	YuEngine::WritingHandler writingHandler;
-	YuEngine::KeyEvent displayingEvent;
 
-	float width;
-	float height;
-	float x;
-	float y;
 	float letterSize;
 	int displayEntriesNbr;
 	bool justOpened;
@@ -30,9 +24,8 @@ private:
 	std::vector<std::string> entries;
 
 public:
-	GameConsole(void);
+	GameConsole(Container* c);
 	~GameConsole(void);
-	void init();
 
 	void handleTyping();
 	bool isTyping();

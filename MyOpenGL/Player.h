@@ -2,14 +2,19 @@
 
 #include <YuEngine\YuBoudingbox.h>
 #include <YuEngine\EventTimer.h>
-#include "EntityLiving.h"
 #include <YuEngine\KeyEvent.h>
+
+#include "EntityLiving.h"
+
+class QuickInventory;
+class Item;
+class RendererPlayer;
 
 class Player: public EntityLiving
 {
 public:
 	Player(void);
-	void init();
+	Player(Container* c);
 	virtual ~Player(void);
 	void teleport(float _x, float _y);
 	void update();
@@ -18,24 +23,32 @@ public:
 	void placeBoundingBox();
 	void updateOffsets();
 	void transposeBBoxPosToPlayer(glm::vec2 boundingBoxPos);
-	void setSpeedX(float _speedX) {
-		speedX = _speedX;
-	}
-
+	void giveItem(Item* item);
 	void handleDigging();
 	void handleMoving();
 	void handleFlyMoving();
+	void handleAction();
 
+	void setSpeedX(float _speedX) {
+		speedX = _speedX;
+	}
 	void setFly(bool _fly) {
 		fly = _fly;
 	}
+	bool getIsDigging() {
+		return isDigging;
+	}
+	Item* getHeldItem() {
+		return heldItem;
+	}
+	
+
 	
 private:
+	RendererPlayer* rendererPlayer;
+
 	float jumpHeight;
 	bool fly;
-
-	float armAngle;
-	bool armAnglePhase;
 	float pixelSize;
 	bool isDigging;
 
@@ -46,10 +59,14 @@ private:
 
 	int switchMode;
 
+	Item* heldItem;
+
 	YuEngine::KeyEvent leftClickEvent;
+	YuEngine::KeyEvent rightClickEvent;
 	YuEngine::KeyEvent switchEvent;
-	YuEngine::EventTimer legsAnimationTimer;
 	YuEngine::EventTimer jumpTimer;
+
+	QuickInventory* quickInventory;
 
 };
 

@@ -5,9 +5,17 @@
 class BlockGrass: public Block
 {
 public:
-	BlockGrass(void){
+	BlockGrass(void) : Block() {
+		construct();
 	};
 	BlockGrass(float _x, float _y) : Block(_x,_y) {
+		construct();
+	};
+	~BlockGrass(void) {
+
+	};
+
+	void construct() {
 		textX = 0;
 		textY = 0;
 		transparent = false;
@@ -24,9 +32,7 @@ public:
 		waterQuantity = 0;
 
 		id = Block::GrassId;
-	};
-	~BlockGrass(void) {
+	}
 
-	};
 };
 

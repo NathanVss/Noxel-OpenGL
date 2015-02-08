@@ -170,14 +170,6 @@ void EntityMob::handleBehavior() {
 	}
 
 	checkHit();
-
-	float destX = boundingBox.getX1() + velocityX;
-	float destY = boundingBox.getY1() + velocityY;
-
-
-	glm::vec2 endLocation = checkCollisions(boundingBox.getX1(), boundingBox.getY1(), destX, destY);
-	boundingBox.changePos(endLocation.x, endLocation.y);
-	x =endLocation.x;
-	y = endLocation.y;
+	Entity::handleMoving();
 
 }

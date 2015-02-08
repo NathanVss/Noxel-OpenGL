@@ -11,6 +11,9 @@ public:
 	Entity(void);
 	virtual ~Entity(void);
 	glm::vec2 checkCollisions(float starX, float startY, float destX, float destY);
+	virtual void handleMoving();
+	virtual void applyGravity();
+
 	virtual void update();
 	virtual void render() = 0;
 
@@ -31,6 +34,16 @@ public:
 		x = _x;
 		y = _y;
 	}
+	void fixBoundingboxPosition() {
+		boundingBox.changePos(x, y);
+	}
+	float getWidth() {
+		return width;
+	}
+	float getHeight() {
+
+		return height;
+	}
 
 protected:
 
@@ -39,6 +52,8 @@ protected:
 	float x;
 	float y;
 	float gravity;
+	bool affectedByGravity;
+
 
 	float velocityX;
 	float velocityY;

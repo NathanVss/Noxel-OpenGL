@@ -10,23 +10,21 @@
 #include <YuEngine\Spritesheet.h>
 #include <YuEngine\FontRenderer.h>
 
-GameConsole::GameConsole(void){
-	displayTimer = YuEngine::EventTimer(1);
-	displayTextBarTimer = YuEngine::EventTimer(60);
-	justOpenedTimer = YuEngine::EventTimer(30);
+GameConsole::GameConsole(Container* c) : Gui(c, 0, 0, YuEngine::KeyName::none, YuEngine::KeyName::t) {
+	
+	YuEngine::YuBoudingbox cameraBox = myContainer->getCamera()->getCameraBox();
 	width = 600;
 	height = 300;
+	relX = cameraBox.getWidth() - width;
+	relY = 0;
+
 	display = false;
 	letterSize = 2;
 	displayEntriesNbr = 16;
 	justOpened = false;
 
-}
-
-void GameConsole::init() {
+	displayTextBarTimer = YuEngine::EventTimer(60);
 	writingHandler = YuEngine::WritingHandler(myContainer->getInput());
-	displayingEvent = YuEngine::KeyEvent(YuEngine::KeyName::t, myContainer->getInput());
-
 }
 
 GameConsole::~GameConsole(void)
@@ -34,21 +32,13 @@ GameConsole::~GameConsole(void)
 }
 
 void GameConsole::update() {
-	displayTimer.update();
 
-	displayingEvent.update();
-	if(!display && displayingEvent.getEvent()) {
 
+	Gui::update();
+	if(justDisplayed) {
 		myContainer->getFocusManager()->setGameConsoleFocus();
-		display = true;
 		justOpened = true;
-
 	}
-
-	YuEngine::YuBoudingbox cameraBox = myContainer->getCamera()->getCameraBox();
-
-	x = cameraBox.getX1() + cameraBox.getWidth() - width;
-	y = cameraBox.getY1() - cameraBox.getHeight() + height;
 
 	handleTyping();
 }
@@ -115,13 +105,13 @@ void GameConsole::render() {
 		std::string typingContent = writingHandler.getTypingContent();
 
 
-		myContainer->getGameRenderer()->addGlyph(x,y, width, height, backgroundDepth, 1.0f, 1.0f, 1.0f, 0.8f, myContainer->getSpritesheetsManager()->getMiscSpritesheet(), 0,0);
+		myContainer->getGameRenderer()->addGlyph(absX,absY+height, width, height, backgroundDepth, 1.0f, 1.0f, 1.0f, 0.8f, myContainer->getSpritesheetsManager()->getMiscSpritesheet(), 0,0);
 
 		displayTextBarTimer.update();
-		myContainer->getFontRenderer()->renderText(typingContent, x, y - height + YuEngine::FontRenderer::letterHeight * letterSize, lettersDepth, letterSize, 1.0f, 1.0f, 1.0f, 1.0f);
+		myContainer->getFontRenderer()->renderText(typingContent, absX, absY+ YuEngine::FontRenderer::letterHeight * letterSize, lettersDepth, letterSize, 1.0f, 1.0f, 1.0f, 1.0f);
 
 		if(displayTextBarTimer.isOver(30)) {
-			myContainer->getGameRenderer()->addGlyph(x + typingContent.size() * YuEngine::FontRenderer::letterHeight * letterSize, y - height + YuEngine::FontRenderer::letterHeight * letterSize, YuEngine::FontRenderer::letterHeight * letterSize, YuEngine::FontRenderer::letterHeight * letterSize, lettersDepth, 1.0f,1.0f,1.0f,1.0f, myContainer->getSpritesheetsManager()->getFontSpritesheet(), 12,2);
+			myContainer->getGameRenderer()->addGlyph(absX + typingContent.size() * YuEngine::FontRenderer::letterHeight * letterSize, absY+ YuEngine::FontRenderer::letterHeight * letterSize, YuEngine::FontRenderer::letterHeight * letterSize, YuEngine::FontRenderer::letterHeight * letterSize, lettersDepth, 1.0f,1.0f,1.0f,1.0f, myContainer->getSpritesheetsManager()->getFontSpritesheet(), 12,2);
 
 			if(displayTextBarTimer.isOver()) {
 				displayTextBarTimer.reset();
@@ -129,7 +119,7 @@ void GameConsole::render() {
 		}
 	} else {
 		opacity = 0.5;
-		myContainer->getGameRenderer()->addGlyph(x,y, width, height, backgroundDepth, 1.0f, 1.0f, 1.0f, 0.2f, myContainer->getSpritesheetsManager()->getMiscSpritesheet(), 0,0);
+		myContainer->getGameRenderer()->addGlyph(absX,absY+height, width, height, backgroundDepth, 1.0f, 1.0f, 1.0f, 0.2f, myContainer->getSpritesheetsManager()->getMiscSpritesheet(), 0,0);
 
 	}
 
@@ -141,7 +131,7 @@ void GameConsole::render() {
 		int k = 1;
 		for(int i = entries.size()-1; i >= j; i--) {
 			k++;
-			myContainer->getFontRenderer()->renderText(entries[i], x, y - height + YuEngine::FontRenderer::letterHeight * letterSize*k, lettersDepth,  letterSize, 1.0f, 1.0f, 1.0f, opacity);
+			myContainer->getFontRenderer()->renderText(entries[i], absX, absY + YuEngine::FontRenderer::letterHeight * letterSize*k, lettersDepth,  letterSize, 1.0f, 1.0f, 1.0f, opacity);
 
 		}
 	}

@@ -39,20 +39,5 @@ void EntityLiving::update() {
 	lastX = x;
 	lastY = y;
 
-	applyGravity();
-}
-
-void EntityLiving::applyGravity() {
-	if(!affectedByGravity) {
-		return;
-	}
-	if(!collideOnBottom) {
-
-		if(velocityY >= - 100) {
-			velocityY -= gravity;
-		}
-	} else {
-		velocityY = 0;
-	}
-
+	Entity::applyGravity();
 }

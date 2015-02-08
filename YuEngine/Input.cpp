@@ -15,8 +15,10 @@ Input::Input(void){
 		this->mouseKeys[i] = false;
 	}
 
+	mouseScrollY = 0;
 
 	keyMap[KeyName::mouseLeft] = false;
+	keyMap[KeyName::mouseRight] = false;
 	keyMap[KeyName::up] = false;
 	keyMap[KeyName::down] = false;
 	keyMap[KeyName::left] = false;
@@ -120,6 +122,7 @@ void Input::update() {
 
 	this->mouseRelX = 0;
 	this->mouseRelY = 0;
+	bool hasMouseWhelled = false;
 
 	while(SDL_PollEvent(this->SdlEvent)) {
 
@@ -619,9 +622,10 @@ void Input::update() {
 			case SDL_MOUSEBUTTONDOWN:
 				this->mouseKeys[this->SdlEvent->button.button] = true;
 				if(this->SdlEvent->button.button == SDL_BUTTON_LEFT) {
-					//std::cout << "LEFT CLICK" << std::endl;
-
 					keyMap[KeyName::mouseLeft] = true;
+				}
+				if(this->SdlEvent->button.button == SDL_BUTTON_RIGHT) {
+					keyMap[KeyName::mouseRight] = true;
 				}
 			break;
 
@@ -631,6 +635,15 @@ void Input::update() {
 					//std::cout << "NO LEFT CLICK" << std::endl;
 					keyMap[KeyName::mouseLeft] = false;
 				}
+				if(this->SdlEvent->button.button == SDL_BUTTON_RIGHT) {
+					keyMap[KeyName::mouseRight] = false;
+				}
+			break;
+
+			case SDL_MOUSEWHEEL:
+				hasMouseWhelled = true;
+				mouseScrollY = SdlEvent->wheel.y;
+
 			break;
 
 			case SDL_MOUSEMOTION:
@@ -651,6 +664,10 @@ void Input::update() {
 
 		}
 
+	}
+	if(!hasMouseWhelled) {
+		mouseScrollY = 0;
+		
 	}
 
 }

@@ -10,6 +10,7 @@ namespace YuEngine {
 enum class KeyName {
 	none,
 	mouseLeft,
+	mouseRight,
 	up,
 	down,
 	left,
@@ -157,6 +158,10 @@ public:
 		return keyEscape;
 	}
 
+	int getMouseScrollY() {
+		return mouseScrollY;
+	}
+
 	bool getLeftClick() { return mouseKeys[SDL_BUTTON_LEFT]; }
 	bool getRightClick() { return mouseKeys[SDL_BUTTON_RIGHT]; }
 	int getMouseX() { return this->mouseX; }
@@ -225,6 +230,8 @@ private:
 	int mouseY;
 	int mouseRelX;
 	int mouseRelY;
+
+	int mouseScrollY;
 };
 
 }

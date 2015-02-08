@@ -4,10 +4,8 @@
 #include <YuEngine\SpritesheetsManager.h>
 #include <YuEngine\Input.h>
 
-GuiInventory::GuiInventory(float _relX, float _relY) : Gui(_relX,_relY, YuEngine::KeyName::escape, YuEngine::KeyName::i) {
+GuiInventory::GuiInventory(Container *c, float _relX, float _relY) : Gui(c, _relX,_relY, YuEngine::KeyName::escape, YuEngine::KeyName::i) {
 
-	displayTimer = YuEngine::EventTimer(20);
-	closingKey = YuEngine::KeyName::escape;
 	width = 400;
 	height = 250;
 	
@@ -15,11 +13,6 @@ GuiInventory::GuiInventory(float _relX, float _relY) : Gui(_relX,_relY, YuEngine
 
 
 GuiInventory::~GuiInventory(void) {
-}
-
-void GuiInventory::init() {
-	baseInit();
-
 }
 
 void GuiInventory::render() {
@@ -30,6 +23,6 @@ void GuiInventory::render() {
 }
 
 void GuiInventory::update() {
-	baseUpdate();
+	Gui::update();
 
 }

@@ -1,47 +1,56 @@
 #include "Player.h"
 #include "EntityManager.h"
-#include <YuEngine\Container.h>
-#include <YuEngine\Camera2D.h>
-#include <YuEngine\GameRenderer.h>
 #include "Block.h"
-#include <YuEngine\SpritesheetsManager.h>
-#include <YuEngine\Input.h>
 #include "Container.h"
 #include "BlockAir.h"
 #include "World.h"
 #include "FocusManager.h"
+#include "QuickInventory.h"
+#include "ItemWoodPickaxe.h"
+#include "ItemGrassBlock.h"
+#include "RendererPlayer.h"
+
+#include <YuEngine\Container.h>
+#include <YuEngine\Camera2D.h>
+#include <YuEngine\GameRenderer.h>
+#include <YuEngine\SpritesheetsManager.h>
+#include <YuEngine\Input.h>
+
 #include <math.h>
+
+
 Player::Player(): EntityLiving(){
-	pixelSize = 3;
-	textureOffsetX = 0;
-	textureOffsetY = 4;
 
-	width = pixelSize * 2 * 8;
-	height = pixelSize * 4 * 8;
-	jumpHeight = 25;
-	speedX = 15;
-	updateOffsets();
 
-	// Bounding Box
-	YuEngine::YuBoudingbox _boudingBox(0, 0, width-pixelSize*9, height-pixelSize*4);
-	_boudingBox.setContainer(container);
-	boundingBox = _boudingBox;
-	placeBoundingBox();
-
-	legsAnimationTimer = YuEngine::EventTimer(0);
-	jumpTimer = YuEngine::EventTimer(60);
-
-	armAngle = 0;
-	armAnglePhase = false;
-	isDigging = false;
-
-	switchMode = 0;
 }
 
-void Player::init() {
+Player::Player(Container* c) : EntityLiving() {
+	myContainer = c;
+	rendererPlayer = new RendererPlayer(myContainer, this);
+	quickInventory = new QuickInventory(myContainer);
+
+	pixelSize = rendererPlayer->getPixelSize();
+	switchMode = 1;
+	textureOffsetX = 0;
+	textureOffsetY = 4;
+	width = pixelSize * 2 * 8;
+	height = pixelSize * 4 * 8;
+	jumpHeight = 10;
+	speedX = 15;
+	isDigging = false;
+
+	// Bounding Box
+	updateOffsets();
+	boundingBox = YuEngine::YuBoudingbox(0, 0, width-pixelSize*9, height-pixelSize*4);
+	placeBoundingBox();
 
 	leftClickEvent = YuEngine::KeyEvent(YuEngine::KeyName::mouseLeft, myContainer->getInput());
+	rightClickEvent = YuEngine::KeyEvent(YuEngine::KeyName::mouseRight, myContainer->getInput());
 	switchEvent = YuEngine::KeyEvent(YuEngine::KeyName::w, myContainer->getInput());
+}
+
+Player::~Player(void)
+{
 }
 
 void Player::teleport(float _x, float _y) {
@@ -50,6 +59,7 @@ void Player::teleport(float _x, float _y) {
 	placeBoundingBox();
 }
 
+/* Refresh offsets of boundingbox relative to texture */
 void Player::updateOffsets() {
 	
 	if(goingLeft) {
@@ -69,156 +79,16 @@ void Player::transposeBBoxPosToPlayer(glm::vec2 boundingBoxPos) {
 	y = boundingBoxPos.y + bboxOffsetY*pixelSize;
 }
 
+void Player::giveItem(Item* item) {
+
+	quickInventory->addItem(item);
+}
+
+
 void Player::render() {
-
-	//myContainer->getGameRenderer()->addGlyph(boundingBox.getX1(), boundingBox.getY1(),boundingBox.getWidth(), boundingBox.getHeight(), 15.5f, 1.0f, 1.0f, 1.0f, 1.0f,myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), 3,0);
-	
-	int walkSpeed = 8;
-	if(goingRight) {
-		
-
-		if(moving) {
-
-			legsAnimationTimer.update();
-			if(legsAnimationTimer.isUnder(0, walkSpeed)) {
-				myContainer->getGameRenderer()->addGlyph(x, y, width, height, 16.0f, 1.0f, 1.0f, 1.0f, 1.0f, myContainer->getSpritesheetsManager()->getMiscSpritesheet(), 10,12, 12,16);
-
-
-			} else if(legsAnimationTimer.isUnder(walkSpeed, 2*walkSpeed)) {
-				myContainer->getGameRenderer()->addGlyph(x, y, width, height, 16.0f, 1.0f, 1.0f, 1.0f, 1.0f, myContainer->getSpritesheetsManager()->getMiscSpritesheet(), 14,12, 16,16);
-
-
-
-			} else if(legsAnimationTimer.isUnder(2*walkSpeed, 3*walkSpeed)) {
-				myContainer->getGameRenderer()->addGlyph(x, y, width, height, 16.0f, 1.0f, 1.0f, 1.0f, 1.0f, myContainer->getSpritesheetsManager()->getMiscSpritesheet(), 12,12, 14,16);
-
-			} else if(legsAnimationTimer.isOver(3*walkSpeed)) {
-				myContainer->getGameRenderer()->addGlyph(x, y, width, height, 16.0f, 1.0f, 1.0f, 1.0f, 1.0f, myContainer->getSpritesheetsManager()->getMiscSpritesheet(), 14,12, 16,16);
-
-				if(legsAnimationTimer.isOver(4*walkSpeed)) {
-					legsAnimationTimer.reset();
-				}
-			}
-
-		} else {
-
-
-			myContainer->getGameRenderer()->addGlyph(x, y, width, height, 16.0f, 1.0f, 1.0f, 1.0f, 1.0f, myContainer->getSpritesheetsManager()->getMiscSpritesheet(), 14,12, 16,16);
-
-			legsAnimationTimer.reset();
-
-		}
-
-
-	} else if(goingLeft) {
-
-		if(moving) {
-
-			legsAnimationTimer.update();
-			if(legsAnimationTimer.isUnder(0, walkSpeed)) {
-
-				myContainer->getGameRenderer()->addGlyph(x, y, width, height, 16.0f, 1.0f, 1.0f, 1.0f, 1.0f, myContainer->getSpritesheetsManager()->getMiscSpritesheet(), 10,8, 12,12);
-			} else if(legsAnimationTimer.isUnder(walkSpeed, 2*walkSpeed)) {
-				myContainer->getGameRenderer()->addGlyph(x, y, width, height, 16.0f, 1.0f, 1.0f, 1.0f, 1.0f, myContainer->getSpritesheetsManager()->getMiscSpritesheet(), 14,8, 16,12);
-
-
-			} else if(legsAnimationTimer.isUnder(2*walkSpeed, 3*walkSpeed)) {
-				myContainer->getGameRenderer()->addGlyph(x, y, width, height, 16.0f, 1.0f, 1.0f, 1.0f, 1.0f, myContainer->getSpritesheetsManager()->getMiscSpritesheet(), 12,8, 14,12);
-
-
-			} else if(legsAnimationTimer.isOver(3*walkSpeed)) {
-				myContainer->getGameRenderer()->addGlyph(x, y, width, height, 16.0f, 1.0f, 1.0f, 1.0f, 1.0f, myContainer->getSpritesheetsManager()->getMiscSpritesheet(), 14,8, 16,12);
-
-				if(legsAnimationTimer.isOver(4*walkSpeed)) {
-					legsAnimationTimer.reset();
-				}
-			}
-		} else {
-			myContainer->getGameRenderer()->addGlyph(x, y, width, height, 16.0f, 1.0f, 1.0f, 1.0f, 1.0f, myContainer->getSpritesheetsManager()->getMiscSpritesheet(), 14,8, 16,12);
-
-			legsAnimationTimer.reset();
-
-
-		}
-
-	}
-	renderArm();
-
+	rendererPlayer->render();
+	quickInventory->render();
 }
-
-void Player::renderArm() {
-
-	float armWidth = pixelSize*8;
-	float armHeight = pixelSize*8;
-	float armSpeed = 10.0f;
-
-	int armTexX;
-	int armTexY;
-	float armX;
-	float armY;
-	float rotX;
-	float rotY;
-
-	float lowAngle;
-	float maxAngle;
-	float idleAngle;
-
-	if(goingLeft) {
-		armTexX = 15;
-		armTexY = 7;
-
-		armX = x;
-		armY = y - 17*pixelSize + 5 * pixelSize;
-
-		rotX = armX + armWidth - pixelSize * 1;
-		rotY = armY - pixelSize * 4;
-
-		lowAngle = -90;
-		maxAngle = 0;
-		idleAngle = 90;
-	} else {
-		armTexX = 14;
-		armTexY = 7;
-
-		armX = x + 4 * pixelSize;
-		armY = y - 17*pixelSize + 5 * pixelSize;
-
-		rotX = armX + pixelSize * 1;
-		rotY = armY - pixelSize * 4;
-
-		lowAngle = 0;
-		maxAngle = 90;
-
-		idleAngle = -90;
-	}
-
-	if(isDigging) {
-
-
-		if(!armAnglePhase) {
-			armAngle -= armSpeed;
-			if(armAngle <= lowAngle) {
-				armAnglePhase = true;
-			}
-		} else {
-			armAngle += armSpeed;
-			if(armAngle >= maxAngle) {
-				armAnglePhase = false;
-
-			}
-		}
-
-
-	} else {
-		armAngle = idleAngle;
-	}
-
-
-
-	myContainer->getGameRenderer()->addGlyph(armX, armY, armWidth, armHeight, rotX, rotY, armAngle, 20.0f, 1.0f, 1.0f, 1.0f, 1.0f, myContainer->getSpritesheetsManager()->getMiscSpritesheet(), armTexX,armTexY);
-}
-
-
 
 void Player::update() {
 
@@ -228,7 +98,6 @@ void Player::update() {
 		handleFlyMoving();
 	} else {
 		handleMoving();
-
 	}
 	handleDigging();
 	updateOffsets();
@@ -239,6 +108,27 @@ void Player::update() {
 			switchMode = 1;
 		} else if(switchMode == 1) {
 			switchMode = 0;
+		}
+
+		ItemWoodPickaxe* woodPickaxe = new ItemWoodPickaxe(myContainer);
+		quickInventory->addItem(woodPickaxe);
+	}
+
+	heldItem = quickInventory->getSelectedItem();
+
+	quickInventory->update();
+	handleAction();
+
+}
+
+void Player::handleAction() {
+	rightClickEvent.update();
+	if(rightClickEvent.getEvent()) {
+
+		if(heldItem) {
+
+			ItemStack* selectedItemStack = quickInventory->getSelectedItemStack();
+			heldItem->onUse(selectedItemStack);
 		}
 	}
 
@@ -289,7 +179,6 @@ void Player::handleMoving() {
 		if(input->getKeySpace() && !jumping) {
 
 			jumping = true;
-			jumpTimer.reset();
 			velocityY = jumpHeight;
 		}
 		if(input->getKeyQ()) {
@@ -340,10 +229,17 @@ void Player::handleDigging() {
 
 			if(curBlock->getId() != Block::AirId) {
 
-				curBlock->onDestroy();
+				curBlock->addDestructStateAmount(1);
+				if(curBlock->getDestructState() > 5) {
 
-				BlockAir* blockAir = new BlockAir(mouseWorld.x, mouseWorld.y);
-				myContainer->getWorld()->setBlock(blockAir);
+					curBlock->onDestroy();
+
+					BlockAir* blockAir = new BlockAir(mouseWorld.x, mouseWorld.y);
+					myContainer->getWorld()->setBlock(blockAir);
+
+				}
+
+
 				isDigging = true;
 			}
 		}
@@ -354,6 +250,4 @@ void Player::handleDigging() {
 
 }
 
-Player::~Player(void)
-{
-}
+

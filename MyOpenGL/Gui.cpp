@@ -2,21 +2,26 @@
 #include <YuEngine\YuBoudingbox.h>
 #include "Container.h"
 #include <YuEngine\Camera2D.h>
+#include "FocusManager.h"
 
 Gui::Gui(void){
 }
 
-Gui::Gui(int _relX, int _relY, YuEngine::KeyName _closingKey, YuEngine::KeyName _displayingKey) {
+Gui::Gui(Container* c, int _relX, int _relY, YuEngine::KeyName _closingKey, YuEngine::KeyName _displayingKey) : Object(c) {
 
 	
 	relX = _relX;
 	relY = _relY;
 	destroy = false;
 	display = false;
+	justDisplayed = false;
 	focus = false;
 	closingKey = _closingKey;
 	displayingKey = _displayingKey;
 	depth = 30.0f;
+
+	closingEvent = YuEngine::KeyEvent(closingKey, myContainer->getInput());
+	displayingEvent = YuEngine::KeyEvent(displayingKey, myContainer->getInput());
 }
 
 
@@ -24,13 +29,7 @@ Gui::~Gui(void)
 {
 }
 
-
-void Gui::baseInit() {
-	closingEvent = YuEngine::KeyEvent(closingKey, myContainer->getInput());
-	displayingEvent = YuEngine::KeyEvent(displayingKey, myContainer->getInput());
-}
-
-void Gui::baseUpdate() {
+void Gui::update() {
 
 	if(focus) {
 		closingEvent.update();
@@ -56,7 +55,13 @@ void Gui::baseUpdate() {
 
 	displayingEvent.update();
 	if(displayingEvent.getEvent() && !display) {
+
 		display = true;
+		justDisplayed = true;
+		focus = true;
+		myContainer->getFocusManager()->setGuiFocus();
+	} else {
+		justDisplayed = false;
 	}
 
 	YuEngine::YuBoudingbox cameraBox = myContainer->getCamera()->getCameraBox();

@@ -19,6 +19,7 @@ protected:
 	int id;
 	bool destroy;
 	bool display;
+	bool justDisplayed;
 	bool focus;
 
 	float depth;
@@ -33,18 +34,14 @@ protected:
 
 public:
 	Gui(void);
-	Gui(int relX, int relY, YuEngine::KeyName _keyName, YuEngine::KeyName _displayingKey);
+	Gui(Container* c, int relX, int relY, YuEngine::KeyName _keyName, YuEngine::KeyName _displayingKey);
 	~Gui(void);
 
 
 	bool hasFocus();
 	virtual void render() = 0;
 
-	void baseInit();
-	virtual void init() = 0;
-
-	void baseUpdate();
-	virtual void update() = 0;
+	void update();
 	virtual void switchDisplayState();
 
 

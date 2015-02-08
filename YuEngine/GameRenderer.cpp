@@ -216,6 +216,16 @@ int GameRenderer::addGlyph(float x, float y, float width, float height, float de
 	//texturingRectangle.debug();
 	return addGlyph(x, y, width, height, 0, 0, 0, depth, r, g, b, a, spritesheet, texturingRectangle);
 }
+int GameRenderer::addGlyph(float x, float y, float width, float height, float pointToRotateArroundX, float pointToRotateArroundY, float angle, float depth, float r, float g, float b, float a, Spritesheet* spritesheet, int u1, int v1, int u2, int v2) {
+
+	spritesheet->setCurArea(u1, v1, u2, v2);
+	TexturingRectangle texturingRectangle = spritesheet->getCoords();
+	//texturingRectangle.debug();
+	//std::cout << "ANGLE : "<< angle << std::endl;
+
+	return addGlyph(x, y, width, height, pointToRotateArroundX, pointToRotateArroundY, angle, depth, r, g, b, a, spritesheet, texturingRectangle);
+}
+
 
 int GameRenderer::addGlyph(float x, float y, float width, float height, float pointToRotateArroundX, float pointToRotateArroundY, float angle, float depth, float r, float g, float b, float a, Spritesheet* spritesheet, TexturingRectangle &texturingRectangle) {
 	

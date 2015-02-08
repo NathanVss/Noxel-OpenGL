@@ -8,7 +8,6 @@ public:
 	EntityLiving(void);
 	virtual ~EntityLiving(void);
 	virtual void update();
-	virtual void applyGravity();
 	virtual void render() = 0;
 
 	virtual float getHealth() {
@@ -20,6 +19,15 @@ public:
 	virtual bool getDead() {
 		return dead;
 	}
+	virtual bool getGoingRight() {
+		return goingRight;
+	}
+	virtual bool getGoingLeft() {
+		return goingLeft;
+	}
+	virtual bool getMoving() {
+		return moving;
+	}
 protected:
 	bool jumping;
 
@@ -29,7 +37,6 @@ protected:
 	bool goingRight;
 	bool moving;
 
-	bool affectedByGravity;
 
 	float lastX;
 	float lastY;

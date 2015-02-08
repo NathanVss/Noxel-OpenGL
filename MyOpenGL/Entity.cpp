@@ -28,6 +28,35 @@ void Entity::update() {
 
 }
 
+void Entity::applyGravity() {
+	if(!affectedByGravity) {
+		return;
+	}
+	if(!collideOnBottom) {
+
+		if(velocityY >= - 100) {
+			velocityY -= gravity;
+		}
+	} else {
+		velocityY = 0;
+	}
+
+}
+
+
+void Entity::handleMoving() {
+
+
+	float destX = boundingBox.getX1() + velocityX;
+	float destY = boundingBox.getY1() + velocityY;
+
+
+	glm::vec2 endLocation = checkCollisions(boundingBox.getX1(), boundingBox.getY1(), destX, destY);
+	boundingBox.changePos(endLocation.x, endLocation.y);
+	x = endLocation.x;
+	y = endLocation.y;
+}
+
 glm::vec2 Entity::checkCollisions(float startX, float startY, float destX, float destY) {
 
 	bool verticalToTopMov = false;

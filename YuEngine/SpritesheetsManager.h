@@ -22,12 +22,19 @@ public:
 	Spritesheet* getMobsSpritesheet() {
 		return mobsSpritesheet;
 	}
-	
+	Spritesheet* getGuiSpritesheet() {
+		return guiSpritesheet;
+	}
+	Spritesheet* getItemsSpritesheet() {
+		return itemsSpritesheet;
+	}
 private:
 	Spritesheet* FontSpritesheet;
 	Spritesheet* blocksSpritesheet;
 	Spritesheet* miscSpritesheet;
 	Spritesheet* mobsSpritesheet;
+	Spritesheet* guiSpritesheet;
+	Spritesheet* itemsSpritesheet;
 };
 
 }

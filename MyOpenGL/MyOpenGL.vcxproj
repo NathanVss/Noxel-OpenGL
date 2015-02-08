@@ -87,6 +87,7 @@
     <ClCompile Include="Commander.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="Container.cpp" />
+    <ClCompile Include="Drop.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityLiving.cpp" />
     <ClCompile Include="EntityManager.cpp" />
@@ -96,6 +97,12 @@
     <ClCompile Include="Gui.cpp" />
     <ClCompile Include="GuiInventory.cpp" />
     <ClCompile Include="GuiManager.cpp" />
+    <ClCompile Include="GuiQuickInventory.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemBlock.cpp" />
+    <ClCompile Include="ItemGrassBlock.cpp" />
+    <ClCompile Include="ItemStack.cpp" />
+    <ClCompile Include="ItemWoodPickaxe.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="LightRadius.cpp" />
@@ -106,6 +113,8 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="PixelsMap.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="QuickInventory.cpp" />
+    <ClCompile Include="RendererPlayer.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="WorldGen.cpp" />
     <ClCompile Include="WorldGenCaves.cpp" />
@@ -124,6 +133,7 @@
     <ClInclude Include="Commander.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Container.h" />
+    <ClInclude Include="Drop.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityLiving.h" />
     <ClInclude Include="EntityManager.h" />
@@ -133,6 +143,12 @@
     <ClInclude Include="Gui.h" />
     <ClInclude Include="GuiInventory.h" />
     <ClInclude Include="GuiManager.h" />
+    <ClInclude Include="GuiQuickInventory.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemBlock.h" />
+    <ClInclude Include="ItemGrassBlock.h" />
+    <ClInclude Include="ItemStack.h" />
+    <ClInclude Include="ItemWoodPickaxe.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="LightRadius.h" />
@@ -142,6 +158,8 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="PixelsMap.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="QuickInventory.h" />
+    <ClInclude Include="RendererPlayer.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="WorldGen.h" />
     <ClInclude Include="WorldGenCaves.h" />
