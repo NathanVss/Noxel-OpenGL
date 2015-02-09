@@ -9,6 +9,9 @@
 #include "ItemWoodPickaxe.h"
 #include "ItemGrassBlock.h"
 #include "RendererPlayer.h"
+#include "HealthBuffer.h"
+#include "GuiPlayerHealth.h"
+#include "GuiManager.h"
 
 #include <YuEngine\Container.h>
 #include <YuEngine\Camera2D.h>
@@ -28,6 +31,10 @@ Player::Player(Container* c) : EntityLiving() {
 	myContainer = c;
 	rendererPlayer = new RendererPlayer(myContainer, this);
 	quickInventory = new QuickInventory(myContainer);
+	healthBuffer = new HealthBuffer(10,20);
+	guiHealth = new GuiPlayerHealth(myContainer);
+	guiHealth->setHealthBuffer(healthBuffer);
+	myContainer->getGuiManager()->handleGui(guiHealth, true);
 
 	pixelSize = rendererPlayer->getPixelSize();
 	switchMode = 1;
@@ -38,6 +45,7 @@ Player::Player(Container* c) : EntityLiving() {
 	jumpHeight = 10;
 	speedX = 15;
 	isDigging = false;
+	ticks = 0;
 
 	// Bounding Box
 	updateOffsets();
@@ -94,6 +102,17 @@ void Player::update() {
 
 	EntityLiving::update();
 
+	ticks++;
+
+	if(ticks % 5 == 0) {
+
+	if(healthBuffer->getHealth() == 0) {
+		healthBuffer->setHealth(21);
+	}
+		
+	healthBuffer->hit(1);
+
+	}
 	if(fly) {
 		handleFlyMoving();
 	} else {
@@ -229,7 +248,7 @@ void Player::handleDigging() {
 
 			if(curBlock->getId() != Block::AirId) {
 
-				curBlock->addDestructStateAmount(1);
+				curBlock->addDestructStateAmount(10);
 				if(curBlock->getDestructState() > 5) {
 
 					curBlock->onDestroy();

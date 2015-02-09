@@ -97,7 +97,9 @@
     <ClCompile Include="Gui.cpp" />
     <ClCompile Include="GuiInventory.cpp" />
     <ClCompile Include="GuiManager.cpp" />
+    <ClCompile Include="GuiPlayerHealth.cpp" />
     <ClCompile Include="GuiQuickInventory.cpp" />
+    <ClCompile Include="HealthBuffer.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemBlock.cpp" />
     <ClCompile Include="ItemGrassBlock.cpp" />
@@ -143,7 +145,9 @@
     <ClInclude Include="Gui.h" />
     <ClInclude Include="GuiInventory.h" />
     <ClInclude Include="GuiManager.h" />
+    <ClInclude Include="GuiPlayerHealth.h" />
     <ClInclude Include="GuiQuickInventory.h" />
+    <ClInclude Include="HealthBuffer.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemBlock.h" />
     <ClInclude Include="ItemGrassBlock.h" />

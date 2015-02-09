@@ -9,6 +9,8 @@
 class QuickInventory;
 class Item;
 class RendererPlayer;
+class HealthBuffer;
+class GuiPlayerHealth;
 
 class Player: public EntityLiving
 {
@@ -41,11 +43,18 @@ public:
 	Item* getHeldItem() {
 		return heldItem;
 	}
-	
+	HealthBuffer* getHealthBuffer() {
+		return healthBuffer;
+	}
 
 	
 private:
 	RendererPlayer* rendererPlayer;
+
+	HealthBuffer* healthBuffer;
+	GuiPlayerHealth* guiHealth;
+
+	int ticks;
 
 	float jumpHeight;
 	bool fly;
