@@ -67,6 +67,19 @@ protected:
 	bool collideOnBottomLeft;
 	bool collideOnBottomRight;
 
+
+	bool lastCollideOnLeft;
+	bool lastCollideOnRight;
+	bool lastCollideOnTop;
+	bool lastCollideOnBottom;
+	bool lastCollideOnTopLeft;
+	bool lastCollideOnTopRight;
+	bool lastCollideOnBottomLeft;
+	bool lastCollideOnBottomRight;
+
+	float lastX;
+	float lastY;
+
 	float width;
 	float height;
 

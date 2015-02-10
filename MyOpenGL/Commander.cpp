@@ -10,6 +10,7 @@
 #include <regex>
 #include "MobChicken.h"
 #include "EntityManager.h"
+#include "HealthBuffer.h"
 
 Commander::Commander(void)
 {
@@ -34,11 +35,11 @@ void Commander::checkCommand(std::string cmd) {
 	}
 	if(cmd == "/fly") {
 		myContainer->getGameConsole()->newEntry("BIRDS BE LIKE");
-		myContainer->getPlayer()->setFly(true);
+		myContainer->getPlayer()->setMovingState(MovingStates::FLY);
 	}
 	if(cmd == "/walk") {
 		myContainer->getGameConsole()->newEntry("FROGS BE LIKE");
-		myContainer->getPlayer()->setFly(false);
+		myContainer->getPlayer()->setMovingState(MovingStates::WALK);
 	}
 	if(cmd == "/lighting off") {
 		myContainer->getGameConsole()->newEntry("Lighting off");
@@ -47,6 +48,9 @@ void Commander::checkCommand(std::string cmd) {
 	if(cmd == "/lighting on") {
 		myContainer->getGameConsole()->newEntry("And there was guit.. light.");
 		myContainer->getConfig()->setLighting(true);
+	}
+	if(cmd == "/health full") {
+		myContainer->getPlayer()->getHealthBuffer()->setHealth(20);
 	}
 
 	std::smatch match;

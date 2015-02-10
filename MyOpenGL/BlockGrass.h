@@ -16,8 +16,10 @@ public:
 	};
 
 	void construct() {
-		textX = 0;
-		textY = 0;
+		textX1 = 0;
+		textY1 = 0;
+		textX2 = 1;
+		textY2 = 1;
 		transparent = false;
 		hasBoundingbox = true;
 

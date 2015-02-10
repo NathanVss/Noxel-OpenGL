@@ -33,8 +33,7 @@ public:
 	float getHeldingHeight() {
 		return heldingHeight;
 	}
-	const static int woodPickaxeId = 1;
-	const static int blockGrassId = 10000;
+	const static int woodPickaxeId = 100000;
 protected:
 	YuEngine::Spritesheet* spritesheet;
 

@@ -17,6 +17,7 @@ public:
 	static int DirtId;
 	static int StoneId;
 	static int SandId;
+	static const int TorchId = 5;
 	Block(void) {
 		
 		construct();
@@ -113,6 +114,27 @@ public:
 		destructStateAmount += amount;
 	}
 
+	virtual bool canBePlaced(float _x, float _y) {
+		return true;
+	}
+
+	virtual void onPlacing() {
+
+	};
+
+	int getTextX1() {
+		return textX1;
+	}
+	int getTextY1() {
+		return textY1;
+	}
+	int getTextX2() {
+		return textX2;
+	}
+	int getTextY2() {
+		return textY2;
+	}
+
 	virtual void onDestroy();
 	virtual void render(bool obstacles);
 	virtual void update();
@@ -129,8 +151,10 @@ protected:
 	bool transparent;
 	float x;
 	float y;
-	int textX;
-	int textY;
+	int textX1;
+	int textY1;
+	int textX2;
+	int textY2;
 	bool hasBoundingbox;
 	bool emitParticlesOnDestroy;
 

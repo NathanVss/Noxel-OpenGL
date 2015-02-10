@@ -17,7 +17,7 @@ EntityLiving::~EntityLiving(void){
 }
 
 void EntityLiving::update() {
-
+	Entity::update();
 
 	if(health < 0) {
 		dead = true;

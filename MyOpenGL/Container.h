@@ -9,6 +9,8 @@ class Player;
 class Config;
 class GuiManager;
 class EntityManager;
+class PlayerOverlay;
+class LightManager;
 
 class Container: public YuEngine::Container
 {
@@ -102,6 +104,20 @@ public:
 		return entityManager;
 	}
 
+	void setPlayerOverlay(PlayerOverlay* p) {
+		playerOverlay = p;
+	}
+	PlayerOverlay* getPlayerOverlay() {
+		return playerOverlay;
+	}
+
+	void setLightManager(LightManager* l) {
+		lightManager = l;
+	}
+	LightManager* getLightManager() {
+		return lightManager;
+	}
+
 protected:
 	World* world;
 	YuEngine::Shader *lightingShader;
@@ -115,6 +131,8 @@ protected:
 	Config* config;
 	GuiManager* guiManager;
 	EntityManager* entityManager;
+	PlayerOverlay* playerOverlay;
+	LightManager* lightManager;
 
 };
 

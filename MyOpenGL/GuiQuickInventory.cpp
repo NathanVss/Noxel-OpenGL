@@ -7,8 +7,7 @@
 #include "Config.h"
 #include "ItemStack.h"
 GuiQuickInventory::GuiQuickInventory(Container* c) : Gui(c, 0,5, YuEngine::KeyName::none, YuEngine::KeyName::none) {
-	slotSize = 50;
-	marginBetweenSlots = 5;
+	slotSize = 50 * myContainer->getConfig()->getScreenWidth() / 1280.0f;
 
 }
 
@@ -17,8 +16,8 @@ GuiQuickInventory::~GuiQuickInventory(void){
 }
 
 void GuiQuickInventory::render() {
-	slotSize = slotSize * myContainer->getConfig()->getScreenWidth() / 1280.0f;
-	marginBetweenSlots = marginBetweenSlots * myContainer->getConfig()->getScreenWidth() / 1280.0f;
+
+	marginBetweenSlots = 5 * myContainer->getConfig()->getScreenWidth() / 1280.0f;
 	if(display) {
 		for(int i = 0; i < quickInventory->getSlots(); i++) {
 			if(i == quickInventory->getSelectedSlot()) {

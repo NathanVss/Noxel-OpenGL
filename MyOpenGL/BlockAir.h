@@ -9,8 +9,10 @@ public:
 	};
 	BlockAir(float _x, float _y) : Block(_x, _y) {
 		transparent = true;
-		textX = 2;
-		textY = 0;
+		textX1 = 2;
+		textY1 = 0;
+		textX2 = 3;
+		textY2 = 1;
 		hasBoundingbox = false;
 		emitParticlesOnDestroy = false;
 		YuEngine::Color _particlesColors;

@@ -83,6 +83,7 @@
     <ClCompile Include="BlockGrass.cpp" />
     <ClCompile Include="BlockSand.cpp" />
     <ClCompile Include="BlockStone.cpp" />
+    <ClCompile Include="BlockTorch.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="Commander.cpp" />
     <ClCompile Include="Config.cpp" />
@@ -102,7 +103,6 @@
     <ClCompile Include="HealthBuffer.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemBlock.cpp" />
-    <ClCompile Include="ItemGrassBlock.cpp" />
     <ClCompile Include="ItemStack.cpp" />
     <ClCompile Include="ItemWoodPickaxe.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -115,6 +115,7 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="PixelsMap.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerOverlay.cpp" />
     <ClCompile Include="QuickInventory.cpp" />
     <ClCompile Include="RendererPlayer.cpp" />
     <ClCompile Include="World.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="BlockGrass.h" />
     <ClInclude Include="BlockSand.h" />
     <ClInclude Include="BlockStone.h" />
+    <ClInclude Include="BlockTorch.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="Commander.h" />
     <ClInclude Include="Config.h" />
@@ -150,7 +152,6 @@
     <ClInclude Include="HealthBuffer.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemBlock.h" />
-    <ClInclude Include="ItemGrassBlock.h" />
     <ClInclude Include="ItemStack.h" />
     <ClInclude Include="ItemWoodPickaxe.h" />
     <ClInclude Include="Light.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="PixelsMap.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerOverlay.h" />
     <ClInclude Include="QuickInventory.h" />
     <ClInclude Include="RendererPlayer.h" />
     <ClInclude Include="World.h" />

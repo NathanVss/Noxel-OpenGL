@@ -6,14 +6,14 @@
 #include "Block.h"
 #include "World.h"
 
-ItemBlock::ItemBlock(Container* c, Block* _block, int _id) : Item(c), block(_block)
+ItemBlock::ItemBlock(Container* c, Block* _block) : Item(c), block(_block)
 {
-	id = _id;
+	id = block->getId();
 	stackSize = 64;
-	texX1 = 0;
-	texY1 = 0;
-	texX2 = 1;
-	texY2 = 1;
+	texX1 = block->getTextX1();
+	texY1 = block->getTextY1();
+	texX2 = block->getTextX2();
+	texY2 = block->getTextY2();
 	spritesheet = myContainer->getSpritesheetsManager()->getBlocksSpritesheet();
 }
 
@@ -33,11 +33,12 @@ void ItemBlock::onUse(ItemStack* itemStack) {
 		mouseWorld.y = floor(mousePos.y / Block::size) * 32;
 		Block* curBlock = myContainer->getWorld()->getBlock(mouseWorld.x, mouseWorld.y);
 
-		if(curBlock && curBlock->getId() == Block::AirId) {
+		if(curBlock && curBlock->getId() == Block::AirId && curBlock->canBePlaced(mouseWorld.x, mouseWorld.y)) {
 				
 			block->setPosition(mouseWorld.x, mouseWorld.y);
 
 			myContainer->getWorld()->setBlock(block);
+			block->onPlacing();
 			itemStack->emptyItem(this);
 
 		}

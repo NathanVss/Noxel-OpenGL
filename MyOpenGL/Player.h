@@ -12,6 +12,13 @@ class RendererPlayer;
 class HealthBuffer;
 class GuiPlayerHealth;
 
+enum class MovingStates {
+
+	WALK,
+	FLY
+
+};
+
 class Player: public EntityLiving
 {
 public:
@@ -30,12 +37,13 @@ public:
 	void handleMoving();
 	void handleFlyMoving();
 	void handleAction();
+	void handleFalling();
 
 	void setSpeedX(float _speedX) {
 		speedX = _speedX;
 	}
-	void setFly(bool _fly) {
-		fly = _fly;
+	void setMovingState(MovingStates state) {
+		movingState = state;
 	}
 	bool getIsDigging() {
 		return isDigging;
@@ -53,11 +61,16 @@ private:
 
 	HealthBuffer* healthBuffer;
 	GuiPlayerHealth* guiHealth;
+	MovingStates movingState;
 
 	int ticks;
 
 	float jumpHeight;
-	bool fly;
+	int fallingTicks;
+	float fallingHeight;
+	float affectedByFallingDamages;
+	float fallingDamagesMutliplicator;
+
 	float pixelSize;
 	bool isDigging;
 

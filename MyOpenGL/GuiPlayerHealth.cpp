@@ -1,13 +1,19 @@
 #include "GuiPlayerHealth.h"
 #include "HealthBuffer.h"
 #include "Container.h"
+#include "PlayerOverlay.h"
+#include "GuiQuickInventory.h"
+#include "Config.h"
+
 #include <stdio.h>
 
 #include <YuEngine\GameRenderer.h>
 #include <YuEngine\SpritesheetsManager.h>
 
-GuiPlayerHealth::GuiPlayerHealth(Container* c) : Gui(c, 0, 60, YuEngine::KeyName::none, YuEngine::KeyName::none)
-{
+GuiPlayerHealth::GuiPlayerHealth(Container* c) : Gui(c, 0, 0, YuEngine::KeyName::none, YuEngine::KeyName::none){
+
+	relY = myContainer->getPlayerOverlay()->getGuiQuickInventory()->getTopY() + 10 * myContainer->getConfig()->getScreenHeight() / 1280.0f;
+	relX = 0;
 }
 
 

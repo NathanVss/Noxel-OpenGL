@@ -17,6 +17,10 @@ public:
 		quickInventory = q;
 	}
 
+	float getTopY() {
+		return relY + slotSize;
+	}
+
 private:
 	QuickInventory* quickInventory;
 	float slotSize;

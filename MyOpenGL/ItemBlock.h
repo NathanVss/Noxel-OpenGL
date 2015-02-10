@@ -7,7 +7,7 @@ class Block;
 class ItemBlock : public Item
 {
 public:
-	ItemBlock(Container* c, Block* _block, int id);
+	ItemBlock(Container* c, Block* _block);
 	~ItemBlock(void);
 	virtual void onUse(ItemStack* itemStack);
 

@@ -3,6 +3,7 @@
 #include "Container.h"
 #include "GuiManager.h"
 #include "ItemStack.h"
+#include "PlayerOverlay.h"
 
 QuickInventory::QuickInventory(void){
 }
@@ -11,6 +12,7 @@ QuickInventory::QuickInventory(Container* c) : Object(c) {
 	gui = new GuiQuickInventory(myContainer);
 	gui->setQuickInventory(this);
 	myContainer->getGuiManager()->handleGui(gui, true);
+	myContainer->getPlayerOverlay()->setGuiQuickInventory(gui);
 
 	slots = 10;
 	selectedSlot = 0;

@@ -37,12 +37,13 @@
 #include "MobChicken.h"
 #include "GuiQuickInventory.h"
 #include "QuickInventory.h"
+#include "PlayerOverlay.h"
 
 #include "ItemWoodPickaxe.h"
 
 //using namespace YuEngine;
 
-MainScene::MainScene() : YuEngine::OpenGlScene(1280,720, "YuEngine Infdev") {
+MainScene::MainScene() : YuEngine::OpenGlScene(1530,900, "YuEngine Infdev") {
 	frameRate = ( 1000 / 60 );
 	
 	container = new Container;
@@ -136,7 +137,7 @@ void MainScene::loop() {
 
 	LightManager lightManager(width, height);
 	lightManager.setMyContainer(container);
-
+	container->setLightManager(&lightManager);
 
 
 	world->init();
@@ -168,10 +169,15 @@ void MainScene::loop() {
 	entityManager.setMyContainer(container);
 	container->setEntityManager(&entityManager);
 
+	PlayerOverlay* playerOverlay = new PlayerOverlay();
+	container->setPlayerOverlay(playerOverlay);
+
 	Player player(container);
 	player.teleport(Block::size * 50, Block::size * 80);
 	container->setPlayer(&player);
 	entityManager.addEntity(&player);
+
+
 
 	MobChicken *chicken = new MobChicken();
 	chicken->setMyContainer(container);
@@ -193,13 +199,13 @@ void MainScene::loop() {
 		eTimer.update();
 		if(eTimer.isOver()) {
 			if(container->getInput()->getRightClick()) {
-				glm::vec2 cameraPos = container->getCamera()->getPosition();
+				//glm::vec2 cameraPos = container->getCamera()->getPosition();
 
-				cameraPos.x = cameraPos.x - width/2;
-				cameraPos.y = cameraPos.y + height/2;
-				LightRadius* lightRadius = new LightRadius(200, 0.01);
-				lightRadius->setPosition(cameraPos.x+container->getInput()->getMouseX(), cameraPos.y - container->getInput()->getMouseY());
-				lightManager.addLightRadius(lightRadius);
+				//cameraPos.x = cameraPos.x - width/2;
+				//cameraPos.y = cameraPos.y + height/2;
+				//LightRadius* lightRadius = new LightRadius(200, 0.01);
+				//lightRadius->setPosition(cameraPos.x+container->getInput()->getMouseX(), cameraPos.y - container->getInput()->getMouseY());
+				//lightManager.addLightRadius(lightRadius);
 			}
 
 			eTimer.reset();

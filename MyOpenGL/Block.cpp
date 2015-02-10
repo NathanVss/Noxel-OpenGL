@@ -65,7 +65,7 @@ void Block::onDestroy() {
 	block->setMyContainer(myContainer);
 
 
-	ItemBlock* item = new ItemBlock(myContainer, block, Item::blockGrassId);
+	ItemBlock* item = new ItemBlock(myContainer, block);
 	float size = 16;
 	Drop* drop = new Drop(myContainer, item, size, size);
 
@@ -84,7 +84,7 @@ void Block::render(bool obstacles) {
 		myContainer->getGameRenderer()->addGlyph(x,y+Block::size,Block::size, Block::size, 15.0f, 1.0f*(lightIndice.r/255.0f),1.0f*(lightIndice.g/255.0f),1.0f*(lightIndice.b/255.0f),1.0f,myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), 0, 1);
 
 	} else {
-		myContainer->getGameRenderer()->addGlyph(x,y+Block::size,Block::size, Block::size, 15.0f, 1.0f*(lightIndice.r/255.0f),1.0f*(lightIndice.g/255.0f),1.0f*(lightIndice.b/255.0f),1.0f,myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), textX, textY);
+		myContainer->getGameRenderer()->addGlyph(x,y+Block::size,Block::size, Block::size, 15.0f, 1.0f*(lightIndice.r/255.0f),1.0f*(lightIndice.g/255.0f),1.0f*(lightIndice.b/255.0f),1.0f,myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), textX1, textY1, textX2, textY2);
 		//myContainer->getGameRenderer()->addGlyph(x,y+Block::size,Block::size, Block::size, 17.0f, 1.0f*(lightIndice.r/255.0f),1.0f*(lightIndice.g/255.0f),1.0f*(lightIndice.b/255.0f),(1.0f)*(waterPressure / 15.0f),myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), 3, 0);
 		//myContainer->getFontRenderer()->renderText(std::to_string(waterPressure), x, y + Block::size, 17, 1, 1.0f,1.0f,1.0f,1.0f);
 		if(maxWaterQuantity > 0 && waterQuantity > 0) {

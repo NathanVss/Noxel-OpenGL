@@ -12,6 +12,8 @@
 #include "HealthBuffer.h"
 #include "GuiPlayerHealth.h"
 #include "GuiManager.h"
+#include "BlockTorch.h"
+#include "ItemBlock.h"
 
 #include <YuEngine\Container.h>
 #include <YuEngine\Camera2D.h>
@@ -19,6 +21,8 @@
 #include <YuEngine\SpritesheetsManager.h>
 #include <YuEngine\Input.h>
 
+
+#include "PlayerOverlay.h"
 #include <math.h>
 
 
@@ -31,10 +35,12 @@ Player::Player(Container* c) : EntityLiving() {
 	myContainer = c;
 	rendererPlayer = new RendererPlayer(myContainer, this);
 	quickInventory = new QuickInventory(myContainer);
-	healthBuffer = new HealthBuffer(10,20);
+	healthBuffer = new HealthBuffer(20,20);
+
 	guiHealth = new GuiPlayerHealth(myContainer);
 	guiHealth->setHealthBuffer(healthBuffer);
 	myContainer->getGuiManager()->handleGui(guiHealth, true);
+	myContainer->getPlayerOverlay()->setGuiPlayerHealth(guiHealth);
 
 	pixelSize = rendererPlayer->getPixelSize();
 	switchMode = 1;
@@ -46,6 +52,16 @@ Player::Player(Container* c) : EntityLiving() {
 	speedX = 15;
 	isDigging = false;
 	ticks = 0;
+	fallingTicks = 0;
+	fallingHeight = 0;
+	affectedByFallingDamages = true;
+	fallingDamagesMutliplicator = 0.5f;
+
+	movingState = MovingStates::WALK;
+
+	BlockTorch* btorch = new BlockTorch();
+	ItemBlock* iblock = new ItemBlock(myContainer, btorch);
+	quickInventory->addItem(iblock);
 
 	// Bounding Box
 	updateOffsets();
@@ -104,22 +120,30 @@ void Player::update() {
 
 	ticks++;
 
-	if(ticks % 5 == 0) {
+	//if(ticks % 5 == 0) {
 
-	if(healthBuffer->getHealth() == 0) {
-		healthBuffer->setHealth(21);
-	}
-		
-	healthBuffer->hit(1);
+		//if(healthBuffer->getHealth() == 0) {
+		//	healthBuffer->setHealth(21);
+		//}
+		//	
+		//healthBuffer->hit(1);
 
-	}
-	if(fly) {
+	//}
+
+
+
+
+	if(movingState == MovingStates::FLY) {
 		handleFlyMoving();
 	} else {
 		handleMoving();
+		handleFalling();
 	}
+
 	handleDigging();
+	
 	updateOffsets();
+
 
 	switchEvent.update();
 	if(switchEvent.getEvent()) {
@@ -138,6 +162,32 @@ void Player::update() {
 	quickInventory->update();
 	handleAction();
 
+}
+
+
+void Player::handleFalling() {
+
+	if(!lastCollideOnBottom && !lastCollideOnBottomLeft && !lastCollideOnBottomRight) {
+
+		if(velocityY < 0) {
+			fallingTicks++;
+
+			fallingHeight += ( lastY - y ) ;
+		}
+	} else {
+		fallingTicks = 0;
+		fallingHeight = 0;
+	}
+
+	float damageLimit = 2;
+
+	// Obligé de verifier qu'il collide avec le sol sinon le dégat sont appliqués plusieurs fois
+	if(fallingHeight > Block::size * damageLimit && movingState == MovingStates::WALK && (collideOnBottom || collideOnBottomLeft || collideOnBottomRight) && affectedByFallingDamages) {
+		float damage = (fallingHeight-damageLimit*Block::size) / Block::size;
+		damage *= fallingDamagesMutliplicator;
+		std::cout << "TICKS : " << fallingTicks << ", DAMAGE : " << damage << std::endl;
+		healthBuffer->hit(damage);
+	}
 }
 
 void Player::handleAction() {

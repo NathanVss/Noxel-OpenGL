@@ -21,11 +21,32 @@ Entity::Entity(void){
 	collideOnTopRight = false;
 	collideOnBottomRight = false;
 	collideOnBottomLeft = false;
+
+	lastCollideOnBottom = false;
+	lastCollideOnLeft = false;
+	lastCollideOnRight = false;
+	lastCollideOnTop = false;
+	lastCollideOnTopLeft = false;
+	lastCollideOnTopRight = false;
+	lastCollideOnBottomRight = false;
+	lastCollideOnBottomLeft = false;
+
 	destroy = false;
 }
 
 void Entity::update() {
+	lastCollideOnBottom = collideOnBottom;
+	lastCollideOnLeft = collideOnLeft;
+	lastCollideOnRight = collideOnRight;
+	lastCollideOnTop = collideOnTop;
+	lastCollideOnTopLeft = collideOnTopLeft;
+	lastCollideOnTopRight = collideOnTopRight;
+	lastCollideOnBottomRight = collideOnBottomRight;
+	lastCollideOnBottomLeft = collideOnBottomLeft;
 
+	// Car on appelle cet update avant le déplacement
+	lastX = x;
+	lastY = y;
 }
 
 void Entity::applyGravity() {

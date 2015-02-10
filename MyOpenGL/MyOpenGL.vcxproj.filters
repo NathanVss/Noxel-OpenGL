@@ -135,9 +135,6 @@
     <ClCompile Include="ItemStack.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="ItemGrassBlock.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="Drop.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -151,6 +148,12 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="GuiPlayerHealth.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerOverlay.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockTorch.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -272,9 +275,6 @@
     <ClInclude Include="ItemStack.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="ItemGrassBlock.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="Drop.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -288,6 +288,12 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="GuiPlayerHealth.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerOverlay.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockTorch.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

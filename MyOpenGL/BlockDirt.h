@@ -6,8 +6,10 @@ class BlockDirt : public Block
 {
 public:
 	BlockDirt(float _x, float _y) : Block(_x, _y) {
-		textX = 1;
-		textY = 0;
+		textX1 = 1;
+		textY1 = 0;
+		textX2 = 2;
+		textY2 = 1;
 		transparent = false;
 		hasBoundingbox = true;
 

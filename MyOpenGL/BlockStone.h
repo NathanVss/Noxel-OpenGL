@@ -6,8 +6,10 @@ class BlockStone : public Block
 {
 public:
 	BlockStone(float _x, float _y) : Block(_x, _y) {
-		textX = 5;
-		textY = 0;
+		textX1 = 5;
+		textY1 = 0;
+		textX2 = 6;
+		textY2 = 1;
 		transparent = false;
 		hasBoundingbox = true;
 

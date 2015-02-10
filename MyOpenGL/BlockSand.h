@@ -6,8 +6,10 @@ class BlockSand : public Block
 {
 public:
 	BlockSand(float _x, float _y) : Block(_x, _y) {
-		textX = 4;
-		textY = 0;
+		textX1 = 4;
+		textY1 = 0;
+		textX2 = 5;
+		textY2 = 1;
 		transparent = false;
 		hasBoundingbox = true;
 
