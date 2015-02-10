@@ -31,7 +31,7 @@ void ItemBlock::onUse(ItemStack* itemStack) {
 		glm::vec2 mouseWorld;
 		mouseWorld.x = floor(mousePos.x / Block::size) * 32;
 		mouseWorld.y = floor(mousePos.y / Block::size) * 32;
-		Block* curBlock = myContainer->getWorld()->getBlock(mouseWorld.x, mouseWorld.y);
+		Block* curBlock = myContainer->getWorld()->getBlock(mouseWorld.x, mouseWorld.y, Block::landZ);
 
 		if(curBlock && curBlock->getId() == Block::AirId && curBlock->canBePlaced(mouseWorld.x, mouseWorld.y)) {
 				

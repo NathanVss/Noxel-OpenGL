@@ -5,7 +5,7 @@
 class BlockSand : public Block
 {
 public:
-	BlockSand(float _x, float _y) : Block(_x, _y) {
+	BlockSand(float _x, float _y, float _z) : Block(_x, _y, _z) {
 		textX1 = 4;
 		textY1 = 0;
 		textX2 = 5;

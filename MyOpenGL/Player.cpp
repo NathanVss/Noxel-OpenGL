@@ -289,7 +289,7 @@ void Player::handleDigging() {
 		glm::vec2 mouseWorld;
 		mouseWorld.x = floor(mousePos.x / Block::size) * 32;
 		mouseWorld.y = floor(mousePos.y / Block::size) * 32;
-		Block* curBlock = myContainer->getWorld()->getBlock(mouseWorld.x, mouseWorld.y);
+		Block* curBlock = myContainer->getWorld()->getBlock(mouseWorld.x, mouseWorld.y, Block::landZ);
 
 		if(switchMode == 0) {
 			curBlock->setWaterQuantity(100);
@@ -303,7 +303,7 @@ void Player::handleDigging() {
 
 					curBlock->onDestroy();
 
-					BlockAir* blockAir = new BlockAir(mouseWorld.x, mouseWorld.y);
+					BlockAir* blockAir = new BlockAir(mouseWorld.x, mouseWorld.y, Block::landZ);
 					myContainer->getWorld()->setBlock(blockAir);
 
 				}

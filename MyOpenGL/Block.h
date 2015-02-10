@@ -12,133 +12,61 @@ class Item;
 class Block: public Object
 {
 public:
-	static int AirId;
-	static int GrassId;
-	static int DirtId;
-	static int StoneId;
-	static int SandId;
+	static const float size;
+	static const int AirId = 0;
+	static const int GrassId = 1;
+	static const int DirtId = 2;
+	static const int StoneId = 3;
+	static const int SandId = 4;
 	static const int TorchId = 5;
-	Block(void) {
-		
-		construct();
-	};
-	Block(float _x, float _y) {
-		x = _x;
-		y = _y;
-		construct();
-		boundingBox = YuEngine::YuBoudingbox(x, y+Block::size, Block::size, Block::size);
 
-	};
-	virtual ~Block(void) {
 
-	};
+	static const int landZ = 1;
+	static const int frontZ = 2;
 
-	void construct() {
-		YuEngine::Color c;
-		c.r = 255;
-		c.g = 255;
-		c.b = 255;
-		c.a = 255;
-		lightIndice = c;
-		emitParticlesOnDestroy = true;
-		waterPressure = 0;
-		age = 0;
-		destructState = 0;
-		destructStateAmount = 0;
-		resistance = 10;
-	}
-
-	void setPosition(float _x, float _y) {
-		x = _x;
-		y = _y;
-		boundingBox = YuEngine::YuBoudingbox(x, y+Block::size, Block::size, Block::size);
-
-	}
-	float getX() {
-		return x;
-	}
-	float getY() {
-		return y;
-	}
-	bool isTransparent() {
-		return transparent;
-	}
-	void setLightIndice(YuEngine::Color l) {
-		lightIndice = l;
-	}
-	bool getHasBoudingbox() {
-		return hasBoundingbox;
-	}
-	YuEngine::YuBoudingbox getBoundingbox() {
-		return boundingBox;
-	}
-
-	bool canStoreWater() {
-		return maxWaterQuantity > waterQuantity;
-	}
-	void setWaterQuantity(float quantity) {
-		waterQuantity = quantity;
-	}
-	float getWaterQuantity() {
-
-		return waterQuantity;
-	}
-	float getWaterQuantityCanTake() {
-
-		float quantity = maxWaterQuantity - waterQuantity;
-		if(quantity < 0) {
-			return 0;
-		}
-		return quantity;
-	}
-	void addWaterQuantity(float quantity) {
-		waterQuantity += quantity;
-	}
-	int getId() {
-		return id;
-	}
-	int getWaterPressure() {
-
-		return waterPressure;
-	}
-	void setWaterPressure(int p) {
-		waterPressure = p;
-	}
-	void addDestructState() {
-		destructState++;
-	}
-	int getDestructState() {
-		return destructState;
-	}
-	void addDestructStateAmount(int amount) {
-		destructStateAmount += amount;
-	}
-
-	virtual bool canBePlaced(float _x, float _y) {
-		return true;
-	}
-
-	virtual void onPlacing() {
-
-	};
-
-	int getTextX1() {
-		return textX1;
-	}
-	int getTextY1() {
-		return textY1;
-	}
-	int getTextX2() {
-		return textX2;
-	}
-	int getTextY2() {
-		return textY2;
-	}
+	Block(void);
+	Block(float _x, float _y, float _z);
+	virtual ~Block(void);
+	void construct();
 
 	virtual void onDestroy();
 	virtual void render(bool obstacles);
 	virtual void update();
-	static float size;
+	virtual bool canBePlaced(float _x, float _y);
+	virtual void onPlacing();
+
+	void addDestructStateAmount(int amount);
+	int getId();
+	int getWaterPressure();
+	void setWaterPressure(int p);
+	void addDestructState();
+	int getDestructState();
+	void setPosition(float _x, float _y);
+	float getX();
+	float getY();
+	int getTextX1();
+	int getTextY1();
+	int getTextX2();
+	int getTextY2();
+	bool isTransparent();
+	void setLightIndice(YuEngine::Color l);
+	bool getHasBoudingbox();
+	YuEngine::YuBoudingbox getBoundingbox();
+	bool canStoreWater();
+	void setWaterQuantity(float quantity);
+	float getWaterQuantity();
+	float getWaterQuantityCanTake();
+	void addWaterQuantity(float quantity);
+
+	int getZ() {
+		return z;
+	}
+	void setPosition(float _x, float _y, int _z) {
+		x = _x;
+		y = _y;
+		z = _z;
+	}
+
 
 protected:
 	int id;
@@ -151,6 +79,7 @@ protected:
 	bool transparent;
 	float x;
 	float y;
+	int z;
 	int textX1;
 	int textY1;
 	int textX2;

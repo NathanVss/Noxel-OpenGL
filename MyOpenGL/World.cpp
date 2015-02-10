@@ -108,7 +108,7 @@ void World::resetBlocks() {
 	}
 }
 
-Block* World::getBlock(float x, float y) {
+Block* World::getBlock(float x, float y, int z) {
 
 	for(int i = 0; i < chunks.size(); i++) {
 		if(chunks[i]->getX() + Chunk::width*Block::size > x && 
@@ -120,7 +120,7 @@ Block* World::getBlock(float x, float y) {
 				float relY = y - chunks[i]->getY();
 				relX /= Block::size;
 				relY /= Block::size;
-				return chunks[i]->getBlock(relX, relY);
+				return chunks[i]->getBlock(relX, relY, z);
 
 		}
 	}

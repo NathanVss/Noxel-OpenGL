@@ -15,12 +15,51 @@
 
 #include <YuEngine\ParticlesRenderer.h>
 
-float Block::size = 32;
-int Block::AirId = 0;
-int Block::GrassId = 1;
-int Block::DirtId = 2;
-int Block::StoneId = 3;
-int Block::SandId = 4;
+const float Block::size = 32;
+
+
+Block::Block(void) {
+		
+	construct();
+};
+Block::Block(float _x, float _y, float _z) {
+	x = _x;
+	y = _y;
+	z = _z;
+	construct();
+	boundingBox = YuEngine::YuBoudingbox(x, y+Block::size, Block::size, Block::size);
+
+};
+Block::~Block(void) {
+
+};
+
+
+int Block::getTextX1() {
+	return textX1;
+}
+int Block::getTextY1() {
+	return textY1;
+}
+int Block::getTextX2() {
+	return textX2;
+}
+int Block::getTextY2() {
+	return textY2;
+}
+
+void Block::construct() {
+	lightIndice.r = 255;
+	lightIndice.g = 255;
+	lightIndice.b = 255;
+	lightIndice.a = 255;
+	emitParticlesOnDestroy = true;
+	waterPressure = 0;
+	age = 0;
+	destructState = 0;
+	destructStateAmount = 0;
+	resistance = 10;
+}
 
 void Block::onDestroy() {
 
@@ -134,9 +173,9 @@ void Block::update() {
 		if(waterQuantity > 0) {
 
 			//Block* topBlock = myContainer->getWorld()->getBlock(x, y + Block::size);
-			Block* bottomBlock = myContainer->getWorld()->getBlock(x, y - Block::size);
-			Block* rightBlock = myContainer->getWorld()->getBlock(x + Block::size, y);
-			Block* leftBlock = myContainer->getWorld()->getBlock(x - Block::size, y);
+			Block* bottomBlock = myContainer->getWorld()->getBlock(x, y - Block::size, Block::landZ);
+			Block* rightBlock = myContainer->getWorld()->getBlock(x + Block::size, y, Block::landZ);
+			Block* leftBlock = myContainer->getWorld()->getBlock(x - Block::size, y, Block::landZ);
 
 			//int leftPressure = 0;
 			//int topPressure = 0;
@@ -210,3 +249,78 @@ void Block::update() {
 		}
 	}
 }
+
+
+void Block::setPosition(float _x, float _y) {
+	x = _x;
+	y = _y;
+	boundingBox = YuEngine::YuBoudingbox(x, y+Block::size, Block::size, Block::size);
+
+}
+float Block::getX() {
+	return x;
+}
+float Block::getY() {
+	return y;
+}
+bool Block::isTransparent() {
+	return transparent;
+}
+void Block::setLightIndice(YuEngine::Color l) {
+	lightIndice = l;
+}
+bool Block::getHasBoudingbox() {
+	return hasBoundingbox;
+}
+YuEngine::YuBoudingbox Block::getBoundingbox() {
+	return boundingBox;
+}
+
+bool Block::canStoreWater() {
+	return maxWaterQuantity > waterQuantity;
+}
+void Block::setWaterQuantity(float quantity) {
+	waterQuantity = quantity;
+}
+float Block::getWaterQuantity() {
+
+	return waterQuantity;
+}
+float Block::getWaterQuantityCanTake() {
+
+	float quantity = maxWaterQuantity - waterQuantity;
+	if(quantity < 0) {
+		return 0;
+	}
+	return quantity;
+}
+void Block::addWaterQuantity(float quantity) {
+	waterQuantity += quantity;
+}
+int Block::getId() {
+	return id;
+}
+int Block::getWaterPressure() {
+
+	return waterPressure;
+}
+void Block::setWaterPressure(int p) {
+	waterPressure = p;
+}
+void Block::addDestructState() {
+	destructState++;
+}
+int Block::getDestructState() {
+	return destructState;
+}
+void Block::addDestructStateAmount(int amount) {
+	destructStateAmount += amount;
+}
+
+bool Block::canBePlaced(float _x, float _y) {
+	return true;
+}
+
+void Block::onPlacing() {
+
+};

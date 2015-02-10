@@ -7,7 +7,7 @@ class BlockAir: public Block
 public:
 	BlockAir() {
 	};
-	BlockAir(float _x, float _y) : Block(_x, _y) {
+	BlockAir(float _x, float _y, float _z) : Block(_x, _y, _z) {
 		transparent = true;
 		textX1 = 2;
 		textY1 = 0;

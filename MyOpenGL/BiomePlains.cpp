@@ -46,7 +46,7 @@ void BiomePlains::generate() {
 		if( x == (baseX + length - 1) ) {
 			lastBlockY = y;
 		}
-		BlockGrass *blockGrass = new BlockGrass(x*Block::size, y*Block::size);
+		BlockGrass *blockGrass = new BlockGrass(x*Block::size, y*Block::size, Block::landZ);
 		myContainer->getWorld()->setBlock(blockGrass);
 
 		int relDepth = 0;
@@ -55,10 +55,10 @@ void BiomePlains::generate() {
 			relDepth++;
 
 			if(relDepth > stoneDepth) {
-				BlockStone* blockStone = new BlockStone(x*Block::size, dy*Block::size);
+				BlockStone* blockStone = new BlockStone(x*Block::size, dy*Block::size, Block::landZ);
 				myContainer->getWorld()->setBlock(blockStone);
 			} else {
-				BlockDirt* blockDirt = new BlockDirt(x*Block::size, dy*Block::size);
+				BlockDirt* blockDirt = new BlockDirt(x*Block::size, dy*Block::size, Block::landZ);
 				myContainer->getWorld()->setBlock(blockDirt);
 			}
 

@@ -7,19 +7,27 @@
 
 int Chunk::width = 16;
 int Chunk::height = 16;
+int Chunk::depth = 3;
 
 Chunk::Chunk(float _x, float _y) : x(_x), y(_y) {
 
 }
 
 void Chunk::init() {
-	blocks = new Block**[Chunk::width];
+	blocks = new Block***[Chunk::width];
 	for(int x = 0; x < Chunk::width; x++) {
-		blocks[x] = new Block*[Chunk::height];
+		blocks[x] = new Block**[Chunk::height];
 		for(int y = 0; y < Chunk::height; y++) {
+			blocks[x][y] = new Block*[Chunk::depth];
+			for(int z = 0; z < Chunk::depth; z++) {
 
-			blocks[x][y] = new BlockAir(this->x + x*Block::size, this->y + y*Block::size);
-			blocks[x][y]->setMyContainer(myContainer);
+				if(z == Block::landZ) {
+					blocks[x][y][z] = new BlockAir(this->x + x*Block::size, this->y + y*Block::size, z);
+					blocks[x][y][z]->setMyContainer(myContainer);
+				} else {
+					blocks[x][y][z]= false;
+				}
+			}
 		}
 	}
 }
@@ -27,8 +35,12 @@ void Chunk::init() {
 void Chunk::update() {
 	for(int x = 0; x < Chunk::width; x++) {
 		for(int y = 0; y < Chunk::height; y++) {
+			for(int z = 0; z < Chunk::depth; z++) {
 
-			blocks[x][y]->update();
+				if(blocks[x][y][z]) {
+					blocks[x][y][z]->update();
+				}
+			}
 		}
 
 	}
@@ -38,6 +50,9 @@ void Chunk::update() {
 Chunk::~Chunk(void){
 	for(int x = 0; x < Chunk::width; x++) {
 		for(int y = 0; y < Chunk::height; y++) {
+			for(int z = 0; z < Chunk::depth; z++) {
+				delete blocks[x][y][z];
+			}
 			delete blocks[x][y];
 		}
 		delete blocks[x];
@@ -52,9 +67,9 @@ void Chunk::setBlock(Block* block) {
 	absX /= Block::size;
 	absY /= Block::size;
 	
-	delete blocks[(int)absX][(int)absY];
-	blocks[(int)absX][(int)absY] = block;
-	blocks[(int)absX][(int)absY]->setMyContainer(myContainer);
+	delete blocks[(int)absX][(int)absY][block->getZ()];
+	blocks[(int)absX][(int)absY][block->getZ()] = block;
+	blocks[(int)absX][(int)absY][block->getZ()]->setMyContainer(myContainer);
 }
 
 
@@ -64,16 +79,22 @@ void Chunk::render(bool obstacles) {
 
 		for(int y = 0; y < Chunk::height; y++) {
 
-			if(obstacles) {
+			for(int z = 0; z < Chunk::depth; z++) {
 
-				if(!blocks[x][y]->isTransparent()) {
-					blocks[x][y]->render(obstacles);
+				if(!blocks[x][y][z]) {
+					continue;
+				}
+				if(obstacles) {
+
+					if(!blocks[x][y][z]->isTransparent()) {
+						blocks[x][y][z]->render(obstacles);
+
+					}
+
+				} else {
+					blocks[x][y][z]->render(obstacles);
 
 				}
-
-			} else {
-				blocks[x][y]->render(obstacles);
-
 			}
 
 		}

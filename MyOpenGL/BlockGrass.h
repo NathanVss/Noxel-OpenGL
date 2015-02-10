@@ -8,7 +8,7 @@ public:
 	BlockGrass(void) : Block() {
 		construct();
 	};
-	BlockGrass(float _x, float _y) : Block(_x,_y) {
+	BlockGrass(float _x, float _y, float _z) : Block(_x,_y,_z) {
 		construct();
 	};
 	~BlockGrass(void) {

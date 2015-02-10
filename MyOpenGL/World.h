@@ -33,7 +33,7 @@ public:
 	void render(bool obstacles);
 	void update();
 	void setBlock(Block* block);
-	Block* getBlock(float x, float y);
+	Block* getBlock(float x, float y, int z);
 	std::vector<Chunk*>* getActiveChunks() {
 		return &activeChunks;
 	}

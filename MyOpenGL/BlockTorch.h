@@ -11,7 +11,7 @@ private:
 
 public:
 	BlockTorch(void);
-	BlockTorch(float _x, float _y);
+	BlockTorch(float _x, float _y, float _z);
 	~BlockTorch(void);
 	void construct();
 

@@ -5,7 +5,7 @@
 class BlockDirt : public Block
 {
 public:
-	BlockDirt(float _x, float _y) : Block(_x, _y) {
+	BlockDirt(float _x, float _y, float _z) : Block(_x, _y, _z) {
 		textX1 = 1;
 		textY1 = 0;
 		textX2 = 2;

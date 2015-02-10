@@ -28,7 +28,7 @@ void WorldGenCaves::generate() {
 		y = deepBase + y;
 
 		for(int dy = y; dy <= y + caveHeight; dy++) {
-			BlockAir* blockAir = new BlockAir(x*Block::size, dy*Block::size);
+			BlockAir* blockAir = new BlockAir(x*Block::size, dy*Block::size, Block::landZ);
 			myContainer->getWorld()->setBlock(blockAir);
 		}
 

@@ -8,7 +8,7 @@
 BlockTorch::BlockTorch(void) : Block() {
 	construct();
 };
-BlockTorch::BlockTorch(float _x, float _y) : Block(_x,_y) {
+BlockTorch::BlockTorch(float _x, float _y, float _z) : Block(_x,_y, _z) {
 	construct();
 };
 BlockTorch::~BlockTorch(void) {
@@ -16,6 +16,8 @@ BlockTorch::~BlockTorch(void) {
 };
 
 void BlockTorch::construct() {
+	z = Block::frontZ;
+	
 	textX1 = 7;
 	textY1 = 0;
 	textX2 = 8;

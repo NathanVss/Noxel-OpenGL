@@ -39,7 +39,7 @@ void BiomeDesert::generate() {
 		if( x == (baseX + length - 1) ) {
 			lastBlockY = y;
 		}
-		BlockSand *blockGrass = new BlockSand(x*Block::size, y*Block::size);
+		BlockSand *blockGrass = new BlockSand(x*Block::size, y*Block::size, Block::landZ);
 		//if(x == baseX) {
 		//	YuEngine::Color c;
 		//	c.r = 0;
@@ -54,9 +54,9 @@ void BiomeDesert::generate() {
 			
 			Block* block;
 			if( dy >= y-1-4) {
-				block = new BlockSand(x*Block::size, dy*Block::size);
+				block = new BlockSand(x*Block::size, dy*Block::size, Block::landZ);
 			} else {
-				block = new BlockDirt(x*Block::size, dy*Block::size);
+				block = new BlockDirt(x*Block::size, dy*Block::size, Block::landZ);
 			}
 			myContainer->getWorld()->setBlock(block);
 		}

@@ -17,15 +17,16 @@ public:
 	void render(bool obstacles);
 	void update();
 	void setBlock(Block* block);
-	Block*** getBlocks() {
+	Block**** getBlocks() {
 		return blocks;
 	}
-	Block* getBlock(int x, int y) {
-		return blocks[x][y];
+	Block* getBlock(int x, int y, int z) {
+		return blocks[x][y][z];
 	}
 
 	static int width;
 	static int height;
+	static int depth;
 
 	float getX() {
 		return x;
@@ -35,7 +36,7 @@ public:
 	}
 
 private:
-	Block*** blocks;
+	Block**** blocks;
 	float x;
 	float y;
 };
