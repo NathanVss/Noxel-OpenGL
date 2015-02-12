@@ -3,6 +3,7 @@
 #include <YuEngine\YuBoudingbox.h>
 #include <YuEngine\EventTimer.h>
 #include <YuEngine\KeyEvent.h>
+#include <YuEngine\BinarySave.h>
 
 #include "EntityLiving.h"
 
@@ -38,6 +39,10 @@ public:
 	void handleFlyMoving();
 	void handleAction();
 	void handleFalling();
+
+	void initSave();
+	void loadFromSave();
+	void writeToSave();
 
 	void setSpeedX(float _speedX) {
 		speedX = _speedX;
@@ -89,6 +94,8 @@ private:
 	YuEngine::EventTimer jumpTimer;
 
 	QuickInventory* quickInventory;
+
+	YuEngine::BinarySave binarySave;
 
 };
 

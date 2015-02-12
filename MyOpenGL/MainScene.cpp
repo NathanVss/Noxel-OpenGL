@@ -8,6 +8,8 @@
 #include <YuEngine\Input.h>
 #include <YuEngine\Camera2D.h>
 #include <YuEngine\ParticlesRenderer.h>
+#include <YuEngine\BinaryManager.h>
+
 #include "BlockGrass.h"
 #include "BlockAir.h"
 #include "Chunk.h"
@@ -25,6 +27,8 @@
 #include <YuEngine\Shader.h>
 #include <YuEngine\Spritesheet.h>
 #include <YuEngine\FrameBuffer.h>
+#include <YuEngine\BinarySave.h>
+
 #include "Config.h"
 #include "GuiManager.h"
 #include "GuiInventory.h"
@@ -63,6 +67,38 @@ void MainScene::loop() {
 
 	YuEngine::FpsCounter fpsCounter;
 
+
+	YuEngine::BinaryManager binaryManager;
+	
+	YuEngine::BinarySave binarySave("binary/data.dat");
+	binarySave.addIntVar("life");
+	binarySave.addBoolVar("canEat");
+	binarySave.addFloatVar("x");
+	binarySave.addFloatVar("y");
+	binarySave.addBoolVar("canWalk");
+	binarySave.addStringVar("name");
+
+	binarySave.setVar("life", 15);
+	binarySave.setVar("x", 105.123f);
+	binarySave.setVar("y", 100.654f);
+	binarySave.setStringVar("name", "mega nom trop cool ");
+	binarySave.setVar("canEat", true);
+	binarySave.setVar("canWalk", false);
+
+
+	binarySave.save();
+	//binarySave.get();
+
+
+	//int b = binarySave.getIntVar("life");
+	//double dx = binarySave.getDoubleVar("p");
+
+
+	std::string string("HEY MA COUILLE");
+	char* stringC = (char*)string.c_str();
+
+	void* voidStr = stringC;
+	std::string voidString = std::string((char*)voidStr);
 
 	Config config;
 	container->setConfig(&config);
@@ -173,7 +209,7 @@ void MainScene::loop() {
 	container->setPlayerOverlay(playerOverlay);
 
 	Player player(container);
-	player.teleport(Block::size * 50, Block::size * 80);
+	//player.teleport(Block::size * 50, Block::size * 80);
 	container->setPlayer(&player);
 	entityManager.addEntity(&player);
 
@@ -195,6 +231,14 @@ void MainScene::loop() {
 		fpsCounter.update();
 		world->update();
 
+		if(container->getInput()->getKey(YuEngine::KeyName::k)) {
+			//player.loadFromSave();
+			player.writeToSave();
+		}
+		if(container->getInput()->getKey(YuEngine::KeyName::l)) {
+			player.loadFromSave();
+			//player.writeToSave();
+		}
 
 		eTimer.update();
 		if(eTimer.isOver()) {
@@ -315,7 +359,7 @@ void MainScene::loop() {
 
 	}
 
-	delete world;
+	//delete world;
 }
 
 

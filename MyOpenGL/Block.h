@@ -67,6 +67,11 @@ public:
 		z = _z;
 	}
 
+	void resetDestructState() {
+		destructState = 0;
+		destructStateAmount = 0;
+	}
+
 
 protected:
 	int id;

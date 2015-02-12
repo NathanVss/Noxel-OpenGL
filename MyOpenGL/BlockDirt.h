@@ -25,6 +25,8 @@ public:
 
 		id = Block::DirtId;
 	};
-	~BlockDirt(void);
+	~BlockDirt(void) {
+
+	};
 };
 

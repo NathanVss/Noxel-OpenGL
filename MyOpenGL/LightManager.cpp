@@ -45,6 +45,9 @@ LightManager::LightManager(int _screenWidth, int _screenHeight) {
 }
 
 LightManager::~LightManager(void){
+
+	//lightsRadius.clear();
+
 }
 
 
@@ -53,6 +56,16 @@ LightManager::~LightManager(void){
 
 
 void LightManager::update() {
+
+	std::vector<LightRadius*> temp;
+	for(int i = 0; i < lightsRadius.size(); i++) {
+		if(lightsRadius[i]->getDestroy()) {
+			delete lightsRadius[i];
+		} else {
+			temp.push_back(lightsRadius[i]);
+		}
+	}
+	lightsRadius = temp;
 
 	glm::vec2 cameraPos = myContainer->getCamera()->getPosition();
 	cameraBox = YuEngine::YuBoudingbox(cameraPos.x - screenWidth/2, cameraPos.y + screenHeight/2, screenWidth, screenHeight);

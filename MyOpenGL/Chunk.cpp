@@ -25,7 +25,7 @@ void Chunk::init() {
 					blocks[x][y][z] = new BlockAir(this->x + x*Block::size, this->y + y*Block::size, z);
 					blocks[x][y][z]->setMyContainer(myContainer);
 				} else {
-					blocks[x][y][z]= false;
+					blocks[x][y][z]= nullptr;
 				}
 			}
 		}
@@ -63,16 +63,32 @@ Chunk::~Chunk(void){
 void Chunk::setBlock(Block* block) {
 	float absX = block->getX() - this->x;
 	float absY = block->getY() - this->y;
-	//std::cout << "Block : " << absX << ";" << absY << std::endl;
 	absX /= Block::size;
 	absY /= Block::size;
 	
-	delete blocks[(int)absX][(int)absY][block->getZ()];
+	if(blocks[(int)absX][(int)absY][block->getZ()]) {
+		//delete blocks[(int)absX][(int)absY][block->getZ()];
+		blocks[(int)absX][(int)absY][block->getZ()] = nullptr;
+	}
 	blocks[(int)absX][(int)absY][block->getZ()] = block;
 	blocks[(int)absX][(int)absY][block->getZ()]->setMyContainer(myContainer);
 }
 
+void Chunk::deleteBlock(Block* block) {
 
+	float absX = block->getX() - this->x;
+	float absY = block->getY() - this->y;
+	int z = block->getZ();
+	absX /= Block::size;
+	absY /= Block::size;
+	
+	if(blocks[(int)absX][(int)absY][block->getZ()]!= nullptr) {
+		//delete blocks[(int)absX][(int)absY][z];
+		blocks[(int)absX][(int)absY][z] = nullptr;
+		//blocks[(int)absX][(int)absY][block->getZ()] = false;
+	}
+
+}
 
 void Chunk::render(bool obstacles) {
 	for(int x=0; x < Chunk::width; x++) {

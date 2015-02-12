@@ -57,24 +57,57 @@ Player::Player(Container* c) : EntityLiving() {
 	affectedByFallingDamages = true;
 	fallingDamagesMutliplicator = 0.5f;
 
-	movingState = MovingStates::WALK;
+	movingState = MovingStates::FLY;
 
-	BlockTorch* btorch = new BlockTorch();
-	ItemBlock* iblock = new ItemBlock(myContainer, btorch);
-	quickInventory->addItem(iblock);
+	for(int i = 0; i < 10; i++) {
+		BlockTorch* btorch = new BlockTorch();
+		btorch->setMyContainer(myContainer);
+		ItemBlock* iblock = new ItemBlock(myContainer, btorch);
+		quickInventory->addItem(iblock);
+	}
 
+	initSave();
 	// Bounding Box
 	updateOffsets();
 	boundingBox = YuEngine::YuBoudingbox(0, 0, width-pixelSize*9, height-pixelSize*4);
 	placeBoundingBox();
+
+	loadFromSave();
+
 
 	leftClickEvent = YuEngine::KeyEvent(YuEngine::KeyName::mouseLeft, myContainer->getInput());
 	rightClickEvent = YuEngine::KeyEvent(YuEngine::KeyName::mouseRight, myContainer->getInput());
 	switchEvent = YuEngine::KeyEvent(YuEngine::KeyName::w, myContainer->getInput());
 }
 
-Player::~Player(void)
-{
+Player::~Player(void){
+	writeToSave();
+}
+
+void Player::initSave() {
+	binarySave = YuEngine::BinarySave("binary/player.dat");
+	binarySave.addIntVar("health");
+	binarySave.addFloatVar("x");
+	binarySave.addFloatVar("y");
+}
+void Player::loadFromSave() {
+
+	binarySave.get();
+	healthBuffer->setHealth(binarySave.getIntVar("health"));
+	x = binarySave.getFloatVar("x");
+	y = binarySave.getFloatVar("y");
+
+	placeBoundingBox();
+
+
+}
+
+void Player::writeToSave() {
+
+	binarySave.setVar("health", healthBuffer->getHealth());
+	binarySave.setVar("x", x);
+	binarySave.setVar("y", y);
+	binarySave.save();
 }
 
 void Player::teleport(float _x, float _y) {
@@ -269,9 +302,9 @@ void Player::handleMoving() {
 
 	// On simule le déplacement de la BBox
 	glm::vec2 endLocation = checkCollisions(boundingBox.getX1(), boundingBox.getY1(), destX, destY);
-	// On la mets à l'endroit final
+	 //On la mets à l'endroit final
 	boundingBox.changePos(endLocation.x, endLocation.y);
-	// On place le joueur en fonction de placement final de la BBox
+	 //On place le joueur en fonction de placement final de la BBox
 	transposeBBoxPosToPlayer(endLocation);
 
 }
@@ -289,7 +322,8 @@ void Player::handleDigging() {
 		glm::vec2 mouseWorld;
 		mouseWorld.x = floor(mousePos.x / Block::size) * 32;
 		mouseWorld.y = floor(mousePos.y / Block::size) * 32;
-		Block* curBlock = myContainer->getWorld()->getBlock(mouseWorld.x, mouseWorld.y, Block::landZ);
+		//Block* curBlock = myContainer->getWorld()->getBlock(mouseWorld.x, mouseWorld.y, Block::landZ);
+		Block* curBlock = myContainer->getWorld()->getFrontBlock(mouseWorld.x, mouseWorld.y);
 
 		if(switchMode == 0) {
 			curBlock->setWaterQuantity(100);
@@ -301,10 +335,15 @@ void Player::handleDigging() {
 				curBlock->addDestructStateAmount(10);
 				if(curBlock->getDestructState() > 5) {
 
+					float z = curBlock->getZ();
 					curBlock->onDestroy();
+					myContainer->getWorld()->deleteBlock(curBlock);
 
-					BlockAir* blockAir = new BlockAir(mouseWorld.x, mouseWorld.y, Block::landZ);
-					myContainer->getWorld()->setBlock(blockAir);
+					if(z == Block::landZ) {
+						BlockAir* blockAir = new BlockAir(mouseWorld.x, mouseWorld.y, Block::landZ);
+
+						myContainer->getWorld()->setBlock(blockAir);
+					}
 
 				}
 

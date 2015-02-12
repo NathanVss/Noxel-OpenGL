@@ -200,7 +200,8 @@ glm::vec2 Entity::checkCollisions(float startX, float startY, float destX, float
 		int size = 3;
 		for(int fx = -size+1; fx <= size; fx++) {
 			for(int fy = -size+1; fy <= size; fy++) {
-				curBlocks.push_back(myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + fx * Block::size, centerCurCoords.y * Block::size + fy * Block::size, Block::landZ));
+				Block* blockToAdd = myContainer->getWorld()->getBlock(centerCurCoords.x * Block::size + fx * Block::size, centerCurCoords.y * Block::size + fy * Block::size, Block::landZ);
+				curBlocks.push_back(blockToAdd);
 
 			}
 		}

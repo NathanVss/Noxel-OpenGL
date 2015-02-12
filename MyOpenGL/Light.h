@@ -15,9 +15,16 @@ public:
 		x = _x;
 		y = _y;
 	}
+	bool getDestroy() {
+		return destroy;
+	}
+	void setDestroy(bool flag) {
+		destroy = flag;
+	}
 
 protected:
 	float x;
 	float y;
+	bool destroy;
 };
 

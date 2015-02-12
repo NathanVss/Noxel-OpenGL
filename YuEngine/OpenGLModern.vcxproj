@@ -29,6 +29,8 @@
     <ClCompile Include="..\YuEngine\Utils.cpp" />
     <ClCompile Include="..\YuEngine\YuBoudingbox.cpp" />
     <ClCompile Include="..\YuEngine\YuWindow.cpp" />
+    <ClCompile Include="BinaryManager.cpp" />
+    <ClCompile Include="BinarySave.cpp" />
     <ClCompile Include="DDAHelper.cpp" />
     <ClCompile Include="EventTimer.cpp" />
     <ClCompile Include="FrameBuffer.cpp" />
@@ -58,6 +60,8 @@
     <ClInclude Include="..\YuEngine\Vertex.h" />
     <ClInclude Include="..\YuEngine\YuBoudingbox.h" />
     <ClInclude Include="..\YuEngine\YuWindow.h" />
+    <ClInclude Include="BinaryManager.h" />
+    <ClInclude Include="BinarySave.h" />
     <ClInclude Include="DDAHelper.h" />
     <ClInclude Include="EventTimer.h" />
     <ClInclude Include="FrameBuffer.h" />

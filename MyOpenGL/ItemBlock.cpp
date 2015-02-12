@@ -33,7 +33,7 @@ void ItemBlock::onUse(ItemStack* itemStack) {
 		mouseWorld.y = floor(mousePos.y / Block::size) * 32;
 		Block* curBlock = myContainer->getWorld()->getBlock(mouseWorld.x, mouseWorld.y, Block::landZ);
 
-		if(curBlock && curBlock->getId() == Block::AirId && curBlock->canBePlaced(mouseWorld.x, mouseWorld.y)) {
+		if(curBlock && curBlock->getId() == Block::AirId && block->canBePlaced(mouseWorld.x, mouseWorld.y)) {
 				
 			block->setPosition(mouseWorld.x, mouseWorld.y);
 

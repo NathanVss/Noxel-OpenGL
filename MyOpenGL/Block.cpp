@@ -12,6 +12,8 @@
 #include "Drop.h"
 #include "ItemBlock.h"
 #include "EntityManager.h"
+#include "DepthIndices.h"
+
 
 #include <YuEngine\ParticlesRenderer.h>
 
@@ -19,7 +21,7 @@ const float Block::size = 32;
 
 
 Block::Block(void) {
-		
+	z = Block::landZ;
 	construct();
 };
 Block::Block(float _x, float _y, float _z) {
@@ -96,15 +98,15 @@ void Block::onDestroy() {
 
 			}
 
-		}
+		} 
 	}
 
 
-	BlockGrass* block = new BlockGrass();
-	block->setMyContainer(myContainer);
+	//BlockGrass* block = new BlockGrass();
+	//block->setMyContainer(myContainer);
 
-
-	ItemBlock* item = new ItemBlock(myContainer, block);
+	resetDestructState();
+	ItemBlock* item = new ItemBlock(myContainer, this);
 	float size = 16;
 	Drop* drop = new Drop(myContainer, item, size, size);
 
@@ -119,11 +121,18 @@ void Block::onDestroy() {
 
 void Block::render(bool obstacles) {
 
+	float depthIndice;
+	if(z == Block::landZ) {
+		depthIndice = DepthIndice::blocksLand;
+	} else if(z == Block::frontZ) {
+		depthIndice = DepthIndice::blocksFront;
+	}
+
 	if(obstacles) {
-		myContainer->getGameRenderer()->addGlyph(x,y+Block::size,Block::size, Block::size, 15.0f, 1.0f*(lightIndice.r/255.0f),1.0f*(lightIndice.g/255.0f),1.0f*(lightIndice.b/255.0f),1.0f,myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), 0, 1);
+		myContainer->getGameRenderer()->addGlyph(x,y+Block::size,Block::size, Block::size, depthIndice, 1.0f*(lightIndice.r/255.0f),1.0f*(lightIndice.g/255.0f),1.0f*(lightIndice.b/255.0f),1.0f,myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), 0, 1);
 
 	} else {
-		myContainer->getGameRenderer()->addGlyph(x,y+Block::size,Block::size, Block::size, 15.0f, 1.0f*(lightIndice.r/255.0f),1.0f*(lightIndice.g/255.0f),1.0f*(lightIndice.b/255.0f),1.0f,myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), textX1, textY1, textX2, textY2);
+		myContainer->getGameRenderer()->addGlyph(x,y+Block::size,Block::size, Block::size, depthIndice, 1.0f*(lightIndice.r/255.0f),1.0f*(lightIndice.g/255.0f),1.0f*(lightIndice.b/255.0f),1.0f,myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), textX1, textY1, textX2, textY2);
 		//myContainer->getGameRenderer()->addGlyph(x,y+Block::size,Block::size, Block::size, 17.0f, 1.0f*(lightIndice.r/255.0f),1.0f*(lightIndice.g/255.0f),1.0f*(lightIndice.b/255.0f),(1.0f)*(waterPressure / 15.0f),myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), 3, 0);
 		//myContainer->getFontRenderer()->renderText(std::to_string(waterPressure), x, y + Block::size, 17, 1, 1.0f,1.0f,1.0f,1.0f);
 		if(maxWaterQuantity > 0 && waterQuantity > 0) {
@@ -135,12 +144,11 @@ void Block::render(bool obstacles) {
 
 		if(destructState > 0) {
 
-			myContainer->getGameRenderer()->addGlyph(x,y+Block::size,Block::size, Block::size, 15.0f, 1.0f*(lightIndice.r/255.0f),1.0f*(lightIndice.g/255.0f),1.0f*(lightIndice.b/255.0f),1.0f,myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), destructState-1, 2);
+			myContainer->getGameRenderer()->addGlyph(x,y+Block::size,Block::size, Block::size, 16.0f, 1.0f*(lightIndice.r/255.0f),1.0f*(lightIndice.g/255.0f),1.0f*(lightIndice.b/255.0f),1.0f,myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), destructState-1, 2);
 
 
 		}
 
-		//myContainer->getGameRenderer()->addGlyph(boundingBox.getX1(),boundingBox.getY1(),boundingBox.getWidth(), boundingBox.getHeight(), 15.0f, 1.0f*(lightIndice.r/255.0f),1.0f*(lightIndice.g/255.0f),1.0f*(lightIndice.b/255.0f),0.4f,myContainer->getSpritesheetsManager()->getBlocksSpritesheet(), textX, textY);
 		
 	}
 

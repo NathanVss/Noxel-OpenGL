@@ -128,6 +128,19 @@ Block* World::getBlock(float x, float y, int z) {
 
 }
 
+Block* World::getFrontBlock(float x, float y) {
+
+	Block* block;
+	for(int i = Chunk::depth - 1; i >= 0; i--) {
+		block = getBlock(x, y, i);
+		if(block) {
+			return block;
+		}
+	}
+	return false;
+}
+
+
 void World::setBlock(Block* block) {
 
 	float blockX = block->getX();
@@ -140,6 +153,25 @@ void World::setBlock(Block* block) {
 			blockY < chunks[i]->getY() + Chunk::height*Block::size) {
 
 				chunks[i]->setBlock(block);
+				break;
+
+		}
+	}
+
+}
+
+void World::deleteBlock(Block* block) {
+	
+	float blockX = block->getX();
+	float blockY = block->getY();
+
+	for(int i = 0; i < chunks.size(); i++) {
+		if(chunks[i]->getX() + Chunk::width*Block::size > blockX && 
+			blockX >= chunks[i]->getX() &&
+			blockY >= chunks[i]->getY() &&
+			blockY < chunks[i]->getY() + Chunk::height*Block::size) {
+
+				chunks[i]->deleteBlock(block);
 				break;
 
 		}

@@ -2,6 +2,7 @@
 #include "LightRadius.h"
 #include "LightManager.h"
 #include "Container.h"
+#include "World.h"
 #include <YuEngine\ParticlesRenderer.h>
 #include <YuEngine\Utils.h>
 
@@ -14,6 +15,38 @@ BlockTorch::BlockTorch(float _x, float _y, float _z) : Block(_x,_y, _z) {
 BlockTorch::~BlockTorch(void) {
 
 };
+
+void BlockTorch::onDestroy() {
+	Block::onDestroy();
+
+	light->setDestroy(true);
+}
+
+void BlockTorch::update() {
+	Block::update();
+
+	if(age % 5 == 0) {
+
+		
+
+		Block* attachedlock; 
+
+		if(position == 0) {
+			attachedlock = myContainer->getWorld()->getBlock(x, y-Block::size, Block::landZ);
+		} else if(position == 1) {
+			attachedlock = myContainer->getWorld()->getBlock(x + Block::size, y, Block::landZ);
+
+		} else if(position == 2) {
+			attachedlock = myContainer->getWorld()->getBlock(x - Block::size, y, Block::landZ);
+
+		}
+
+		if(attachedlock->getId() == Block::AirId) {
+			onDestroy();
+			myContainer->getWorld()->deleteBlock(this);
+		}
+	}
+}
 
 void BlockTorch::construct() {
 	z = Block::frontZ;
@@ -44,7 +77,49 @@ void BlockTorch::onPlacing() {
 	light->setPosition(x, y);
 	myContainer->getLightManager()->addLightRadius(light);
 
+	if(position == 0) {
+		textX1 = 7;
+		textY1 = 0;
+		textX2 = 8;
+		textY2 = 1; 
+	} else if(position == 1) {
+		textX1 = 9;
+		textY1 = 0;
+		textX2 = 10;
+		textY2 = 1;
+	} else if(position == 2) {
+		textX1 = 8;
+		textY1 = 0;
+		textX2 = 9;
+		textY2 = 1;
+	}
+
 }
+
+bool BlockTorch::canBePlaced(float _x, float _y) {
+	Block* bottomBlock = myContainer->getWorld()->getBlock(_x, _y-Block::size, Block::landZ);
+	Block* leftBlock = myContainer->getWorld()->getBlock(_x - Block::size, _y, Block::landZ);
+	Block* rightBlock = myContainer->getWorld()->getBlock(_x + Block::size, _y, Block::landZ);
+
+	if(bottomBlock->getId() != Block::AirId) {
+		position = 0;
+		return true;
+	}
+	if(rightBlock->getId() != Block::AirId) {
+		position = 1;
+		return true;
+
+	}
+	if(leftBlock->getId() != Block::AirId) {
+		position = 2;
+		return true;
+
+	}
+
+	return false;
+
+}
+
 
 void BlockTorch::render(bool flag) {
 	Block::render(flag);

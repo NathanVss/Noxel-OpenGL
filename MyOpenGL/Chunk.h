@@ -17,6 +17,7 @@ public:
 	void render(bool obstacles);
 	void update();
 	void setBlock(Block* block);
+	void deleteBlock(Block* block);
 	Block**** getBlocks() {
 		return blocks;
 	}

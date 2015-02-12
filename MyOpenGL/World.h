@@ -34,6 +34,8 @@ public:
 	void update();
 	void setBlock(Block* block);
 	Block* getBlock(float x, float y, int z);
+	Block* getFrontBlock(float x, float y);
+	void deleteBlock(Block* block);
 	std::vector<Chunk*>* getActiveChunks() {
 		return &activeChunks;
 	}

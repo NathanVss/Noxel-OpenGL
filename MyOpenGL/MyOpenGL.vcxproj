@@ -137,6 +137,7 @@
     <ClInclude Include="Commander.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Container.h" />
+    <ClInclude Include="DepthIndices.h" />
     <ClInclude Include="Drop.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityLiving.h" />
